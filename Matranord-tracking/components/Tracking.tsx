@@ -5,7 +5,7 @@ const Tracking = () => {
   return (
     <View>
       <Text>Tracking Page</Text>
-      {/* Add tracking functionality here */}
+      
     </View>
   );
 };

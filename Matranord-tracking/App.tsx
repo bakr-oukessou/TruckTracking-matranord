@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Button, StyleSheet, Pressable } from 'react-native';
+import { View, Text, Button, StyleSheet, Pressable, Image } from 'react-native';
 import { NavigationContainer, useNavigation, useRoute } from '@react-navigation/native';
 import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
@@ -60,14 +60,16 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
   
   return (
     <View style={styles}>
-      <Text style={textStyle}>Matranord</Text>
+      {/* <Text style={textStyle}>Matran<MaterialIcons name="public" size={35} color="black" />
+      rd</Text> */}
+      <Image source={require('./assets/Logo-png-1.png')} style={imagestyles.image}/>
       <Pressable onPress={() => navigation.navigate('Tracking')} android_ripple={{color: '#676B5F',radius:177}} style={({pressed}) => [
           {
             backgroundColor: pressed ? '#EAD196' : 'white',
           },
           buttonStyles,
         ]}>
-        <MaterialIcons name="local-shipping" size={24} color="#365E32" />
+        <MaterialIcons name="local-shipping" size={24} color="#AA3A3A" />
         <Text style={textStyle2}>TRACKING</Text>
       </Pressable>
       <Pressable onPress={() => navigation.navigate('CMR')} android_ripple={{color: '#676B5F',radius:177}} style={({pressed}) => [
@@ -85,7 +87,7 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
           },
           buttonStyles,
         ]}>
-        <MaterialIcons name="attach-file" size={24} color="#365E32" />
+        <MaterialIcons name="attach-file" size={24} color="black" />
         <Text style={textStyle2}>PLOMOS</Text>
       </Pressable>
     </View>
@@ -109,7 +111,7 @@ const styles = css`
   align-content:space-evenly;
   flex-grow:1;
   flex: 1;
-  // background-color: blue;
+  background-color: #FFF5E1;
   padding: 20px;
 
   & > * {
@@ -128,7 +130,14 @@ const buttonStyles = css`
     border-radius:20px;
     background-color:#B3E2A7;
 `;
-
+const imagestyles = StyleSheet.create({
+  image:{
+    margin:30,
+    alignSelf:'center',
+    objectFit:'contain',
+    height:110,
+  }
+})
 const textStyle = css`
   font-size: 50px;  
   font-family:'Poppins-Bold';

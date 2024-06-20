@@ -23,22 +23,22 @@ const TruckDetails = ({ route }: { route: TruckDetailsRouteProp}) => {
       <Text style={styles.detail}><Text style={styles.bold}>Status: </Text> {truck.status}</Text>
     <View style={styles.buttons}>
         
-      <Pressable style={styles.button}>
+      <Pressable style={styles.button} android_ripple={{color: 'grey'}}>
       <MaterialIcons name="location-on" size={30} color="black" />
         <Text>Positionnement</Text>
       </Pressable>
       
-      <Pressable style={styles.button}>
+      <Pressable style={styles.button} android_ripple={{color: 'grey'}}>
       <MaterialIcons name="local-shipping" size={30} color="black" />
         <Text>Chargement</Text>
       </Pressable>
       
-      <Pressable style={styles.button}>
+      <Pressable style={styles.button} android_ripple={{color: 'grey'}}>
       <MaterialIcons name="moving" size={30} color="black" />
         <Text>En Route</Text>
       </Pressable>
       
-      <Pressable style={styles.button}>
+      <Pressable style={styles.button} android_ripple={{color: 'grey'}}>
       <View style={{flexDirection:'row'}}>
         <MaterialIcons name="east" size={25} color="black" />
         <MaterialIcons name="maps-home-work" size={30} color="black" />
@@ -46,7 +46,7 @@ const TruckDetails = ({ route }: { route: TruckDetailsRouteProp}) => {
         <Text>Entree Douane</Text>
       </Pressable>
       
-      <Pressable style={styles.button}>
+      <Pressable style={styles.button} android_ripple={{color: 'grey'}}>
       <View style={{flexDirection:'row'}}>
         <MaterialIcons name="maps-home-work" size={30} color="black" />
         <MaterialIcons name="east" size={25} color="black" />
@@ -54,26 +54,26 @@ const TruckDetails = ({ route }: { route: TruckDetailsRouteProp}) => {
         <Text>Sortie Douane</Text>
       </Pressable>
       
-      <Pressable style={styles.button}>
+      <Pressable style={styles.button} android_ripple={{color: 'grey'}}>
       <MaterialIcons name="how-to-reg" size={30} color="black" />
         <Text>Arriver Client</Text>
       </Pressable>
       
-      <Pressable style={styles.button}>
+      <Pressable style={styles.button} android_ripple={{color: 'grey'}}>
       <MaterialIcons name="cancel" size={30} color="black" />
         <Text>Cloturer</Text>
       </Pressable>
       
-      <Pressable style={styles.button}>
+      <Pressable style={styles.button} android_ripple={{color: 'grey'}}>
       <MaterialIcons name="report" size={30} color="black" />
         <Text>Rien a Charger</Text>
       </Pressable>
 
-      <Pressable style={styles.button}>
+      <Pressable style={styles.button} android_ripple={{color: 'grey'}}>
         <Text>Valider</Text>
       </Pressable>
 
-      <Pressable style={styles.button}>
+      <Pressable style={styles.button} android_ripple={{color: 'grey'}}>
         <Text>Supprimer</Text>
       </Pressable>
       

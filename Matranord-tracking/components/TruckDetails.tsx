@@ -3,6 +3,7 @@ import { View, Text, StyleSheet, Pressable, ScrollView } from 'react-native';
 
 import { RouteProp } from '@react-navigation/native';
 import { RootStackParamList, Truck } from './types';
+import { MaterialIcons } from '@expo/vector-icons';
 
 type TruckDetailsRouteProp = RouteProp<RootStackParamList, 'TruckDetails'>;
 
@@ -23,32 +24,55 @@ const TruckDetails = ({ route }: { route: TruckDetailsRouteProp}) => {
     <View style={styles.buttons}>
         
       <Pressable style={styles.button}>
+      <MaterialIcons name="location-on" size={30} color="black" />
         <Text>Positionnement</Text>
       </Pressable>
+      
       <Pressable style={styles.button}>
+      <MaterialIcons name="local-shipping" size={30} color="black" />
         <Text>Chargement</Text>
       </Pressable>
+      
       <Pressable style={styles.button}>
+      <MaterialIcons name="moving" size={30} color="black" />
         <Text>En Route</Text>
       </Pressable>
+      
       <Pressable style={styles.button}>
+      <View style={{flexDirection:'row'}}>
+        <MaterialIcons name="east" size={25} color="black" />
+        <MaterialIcons name="maps-home-work" size={30} color="black" />
+      </View>
         <Text>Entree Douane</Text>
       </Pressable>
+      
       <Pressable style={styles.button}>
+      <View style={{flexDirection:'row'}}>
+        <MaterialIcons name="maps-home-work" size={30} color="black" />
+        <MaterialIcons name="east" size={25} color="black" />
+      </View>
         <Text>Sortie Douane</Text>
       </Pressable>
+      
       <Pressable style={styles.button}>
+      <MaterialIcons name="how-to-reg" size={30} color="black" />
         <Text>Arriver Client</Text>
       </Pressable>
+      
       <Pressable style={styles.button}>
+      <MaterialIcons name="cancel" size={30} color="black" />
         <Text>Cloturer</Text>
       </Pressable>
+      
       <Pressable style={styles.button}>
+      <MaterialIcons name="report" size={30} color="black" />
         <Text>Rien a Charger</Text>
       </Pressable>
+
       <Pressable style={styles.button}>
         <Text>Valider</Text>
       </Pressable>
+
       <Pressable style={styles.button}>
         <Text>Supprimer</Text>
       </Pressable>
@@ -61,27 +85,28 @@ const TruckDetails = ({ route }: { route: TruckDetailsRouteProp}) => {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    // justifyContent: 'center',
+    justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#FFF5E1',
-    padding: 20,
+    padding: 10,
   },
   header: {
     fontSize: 24,
     alignSelf:'center',
-    fontFamily: 'Poppins-Regular',
+    fontFamily: 'Poppins-Bold',
     marginBottom: 20,
   },
   detail: {
     fontSize: 18,
     fontFamily: 'Poppins-Regular',
     marginBottom: 10,
+    alignContent:'space-evenly'
   },
   button: {
     padding: 10,
     marginHorizontal: 9,
     marginVertical:9,
-    width: '40%',
+    width: 177,
     height:70,
     backgroundColor: '#ADD8E6',
     borderRadius: 5,

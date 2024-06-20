@@ -27,7 +27,7 @@
     [
       "expo-font",
       {
-        "fonts": ["node_modules/@expo-google-fonts/inter/Poppins_700Bold.ttf","node_modules/@expo-google-fonts/inter/Poppins-Bold.ttf"]
+        "fonts": ["node_modules/@expo-google-fonts/poppins/Poppins_700Bold.ttf","node_modules/@expo-google-fonts/poppins/Poppins-Bold.ttf","node_modules/@expo-google-fonts/poppins/Poppins-Regular.ttf"]
       }
     ]
   ]

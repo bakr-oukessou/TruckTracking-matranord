@@ -28,7 +28,8 @@
     "react-native-linear-gradient": "^2.8.3",
     "react-native-web": "~0.19.10",
     "undefined": "@expo/vector-icons/MaterialIcons",
-    "expo-linear-gradient": "~13.0.2"
+    "expo-linear-gradient": "~13.0.2",
+    "@shopify/flash-list": "1.6.4"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

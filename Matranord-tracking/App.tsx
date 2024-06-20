@@ -14,8 +14,11 @@ import * as SplashScreen from 'expo-splash-screen';
 // import LinearGradient from 'react-native-linear-gradient';
 
 import {LinearGradient} from 'expo-linear-gradient';
-const Stack = createStackNavigator();
+import TruckDetails from './components/TruckDetails';
+import { RootStackParamList } from './components/types';
 
+
+const Stack = createStackNavigator<RootStackParamList>();
 
 
 SplashScreen.preventAutoHideAsync();
@@ -28,12 +31,6 @@ const fetchFonts = () => {
   });
 };
 
-type RootStackParamList = {
-  Main: undefined;
-  Tracking: undefined;
-  CMR: undefined;
-  PLOMOS: undefined;
-};
 
 type MainScreenRouteProp = RouteProp<RootStackParamList, 'Main'>;
 type MainScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Main'>;
@@ -116,7 +113,6 @@ const styles = css`
   flex: 1;
   background-color: #FFF5E1;
   padding: 20px;
-
   & > * {
     color: black;
     font-size: 18px;
@@ -131,7 +127,8 @@ const buttonStyles = css`
     justify-content:center;
     height:100px;
     border-radius:20px;
-    background-color: #9DA19F;
+    border: 2px solid black;
+    background-color: #9CA777;
 `;
 const imagestyles = StyleSheet.create({
   image:{
@@ -169,6 +166,7 @@ const App = () => {
         <Stack.Screen name="Tracking" component={Tracking} />
         <Stack.Screen name="CMR" component={CMR} />
         <Stack.Screen name="PLOMOS" component={PLOMOS} />
+        <Stack.Screen name="TruckDetails" component={TruckDetails} />
       </Stack.Navigator>
     </NavigationContainer>
   );

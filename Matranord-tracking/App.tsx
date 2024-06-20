@@ -11,6 +11,9 @@ import * as Font from 'expo-font';
 import { useFonts } from 'expo-font'; 
 import { MaterialIcons } from '@expo/vector-icons';
 import * as SplashScreen from 'expo-splash-screen';
+// import LinearGradient from 'react-native-linear-gradient';
+
+import {LinearGradient} from 'expo-linear-gradient';
 const Stack = createStackNavigator();
 
 
@@ -64,12 +67,12 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
       rd</Text> */}
       <Image source={require('./assets/Logo-png-1.png')} style={imagestyles.image}/>
       <Pressable onPress={() => navigation.navigate('Tracking')} android_ripple={{color: '#676B5F',radius:177}} style={({pressed}) => [
-          {
-            backgroundColor: pressed ? '#EAD196' : 'white',
-          },
-          buttonStyles,
-        ]}>
-        <MaterialIcons name="local-shipping" size={24} color="#AA3A3A" />
+        {
+          backgroundColor: pressed ? '#EAD196' : 'white',
+        },
+        buttonStyles,
+      ]}>
+        <MaterialIcons name="local-shipping" size={30} color="#AA3A3A" />
         <Text style={textStyle2}>TRACKING</Text>
       </Pressable>
       <Pressable onPress={() => navigation.navigate('CMR')} android_ripple={{color: '#676B5F',radius:177}} style={({pressed}) => [
@@ -78,7 +81,7 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
           },
           buttonStyles,
         ]}>
-        <MaterialIcons name="description" size={24} color="#365E32" />
+        <MaterialIcons name="description" size={30} color="#365E32" />
         <Text style={textStyle2}>CMR</Text>
       </Pressable>
       <Pressable onPress={() => navigation.navigate('PLOMOS')} android_ripple={{color: '#676B5F',radius:177}} style={({pressed}) => [
@@ -87,7 +90,7 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
           },
           buttonStyles,
         ]}>
-        <MaterialIcons name="attach-file" size={24} color="black" />
+        <MaterialIcons name="attach-file" size={30} color="black" />
         <Text style={textStyle2}>PLOMOS</Text>
       </Pressable>
     </View>
@@ -128,7 +131,7 @@ const buttonStyles = css`
     justify-content:center;
     height:100px;
     border-radius:20px;
-    background-color:#B3E2A7;
+    background-color: #9DA19F;
 `;
 const imagestyles = StyleSheet.create({
   image:{
@@ -147,7 +150,8 @@ const textStyle = css`
   padding:20px;
 `;
 const textStyle2 = css`
-  font-size: 18px;  
+  font-size: 20px;
+  padding-top:5px;  
   font-family:'Poppins-Regular';
   text-align: center;
   width:auto;

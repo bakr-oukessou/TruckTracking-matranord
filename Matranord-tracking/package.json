@@ -29,7 +29,9 @@
     "react-native-web": "~0.19.10",
     "undefined": "@expo/vector-icons/MaterialIcons",
     "expo-linear-gradient": "~13.0.2",
-    "@shopify/flash-list": "1.6.4"
+    "@shopify/flash-list": "1.6.4",
+    "react-native-maps": "1.14.0",
+    "expo-location": "~17.0.1"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

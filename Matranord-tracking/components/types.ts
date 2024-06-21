@@ -4,6 +4,7 @@ export type RootStackParamList = {
     CMR: undefined;
     PLOMOS: undefined;
     TruckDetails: { truck: Truck };
+    MapScreen:{ truck: Truck };
   };
   
   export interface Truck {

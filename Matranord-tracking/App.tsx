@@ -16,6 +16,7 @@ import * as SplashScreen from 'expo-splash-screen';
 import {LinearGradient} from 'expo-linear-gradient';
 import TruckDetails from './components/TruckDetails';
 import { RootStackParamList } from './components/types';
+import MapScreen from './components/Location';
 
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -167,6 +168,7 @@ const App = () => {
         <Stack.Screen name="CMR" component={CMR} />
         <Stack.Screen name="PLOMOS" component={PLOMOS} />
         <Stack.Screen name="TruckDetails" component={TruckDetails} />
+        <Stack.Screen name="MapScreen" component={MapScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

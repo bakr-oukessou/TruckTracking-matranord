@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StatusBar, StyleSheet, Pressable } from 'react-native';
+import { View, Text, StatusBar, StyleSheet, Pressable, ImageBackground } from 'react-native';
 import { FlashList } from "@shopify/flash-list";
 import { css } from '@emotion/native';
 import { useNavigation } from '@react-navigation/native';
@@ -27,7 +27,14 @@ const DATA: Truck[] = [
     status: "Delivered",
   },
 ];
-
+const images = [
+  require("../assets/background.jpg"),
+  require("../assets/background2.jpg"),
+  require("../assets/background3.jpg"),
+  require("../assets/background4.avif"),
+  require("../assets/background5.webp"),
+  require("../assets/background6.jpg")
+];
 type TrackingScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Tracking'>;
 const Tracking = () => {
   const styles = css`
@@ -45,10 +52,16 @@ const Tracking = () => {
       font-family: 'Poppins-Regular';
     }
   `;
+
+  const getRandomImage = () => {
+    return images[Math.floor(Math.random() * images.length)];
+  };
+
   const navigation = useNavigation<TrackingScreenNavigationProp>();
   const renderItem = ({ item }: { item: Truck }) => (
     <View style={itemStyles.container}>
-      <Pressable  onPress={() => navigation.navigate('TruckDetails', { truck: item })}android_ripple={{color: 'grey'}} style={({pressed}) => [
+      <ImageBackground source={getRandomImage()} style={itemStyles.imageBackground}>
+      <Pressable onPress={() => navigation.navigate('TruckDetails', { truck: item })}android_ripple={{color: 'grey'}} style={({pressed}) => [
         {
           backgroundColor: pressed ? '#EAD196' : 'white',
         },
@@ -60,8 +73,9 @@ const Tracking = () => {
         <Text style={itemStyles.text}><Text style={itemStyles.bold}>Trajet:</Text> {item.trajet}</Text>
         <Text style={itemStyles.text}><Text style={itemStyles.bold}>Chargement:</Text> {item.chargement}</Text>
         <Text style={itemStyles.text}><Text style={itemStyles.bold}>Dechargement:</Text> {item.dechargement}</Text>
-        <Text style={itemStyles.text}><Text style={itemStyles.bold}>Status:</Text> {item.status}</Text>
+        <Text style={[itemStyles.text, itemStyles.status]}><Text style={[itemStyles.bold, itemStyles.statusData]}>Status:</Text> {item.status}</Text>
       </Pressable>
+      </ImageBackground>
     </View>
   );
 
@@ -95,7 +109,8 @@ const itemStyles = StyleSheet.create({
     padding: 20,
     // marginVertical: 8,
     // marginHorizontal: 16,
-    backgroundColor: '#E9B384',
+    backgroundColor: 'rgba(222, 143, 95, 0.6)',
+    // backgroundColor: 'rgba(173, 216, 230, 0.7)',
     borderRadius: 10,
     elevation: 5, 
     shadowColor: '#000', 
@@ -113,6 +128,29 @@ const itemStyles = StyleSheet.create({
     fontSize: 16,
     paddingLeft:5,  
     fontFamily: 'Poppins-Bold',
+  },
+  imageBackground: {
+    // marginHorizontal: 9,
+    // marginVertical: 9,
+    // width: 177,
+    // height: 70,
+    objectFit:'fill',
+    borderRadius: 12,
+    overflow: 'hidden', // Ensures the border radius is applied to the image background
+  },
+  status:{
+    alignSelf:'flex-end',
+    alignItems:'center',
+    textAlign:'right',
+    color:'#000',
+    padding:4,
+    borderWidth:2,
+    borderRadius:8,
+    borderColor:'black',
+    fontWeight:'700'
+  },
+  statusData:{
+    color:'#FFB000',
   }
 });
 

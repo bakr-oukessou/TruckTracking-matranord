@@ -64,7 +64,7 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
       {/* <Text style={textStyle}>Matran<MaterialIcons name="public" size={35} color="black" />
       rd</Text> */}
       <Image source={require('./assets/Logo-png-1.png')} style={imagestyles.image}/>
-      <Pressable onPress={() => navigation.navigate('Tracking')} android_ripple={{color: '#676B5F',radius:177}} style={({pressed}) => [
+      <Pressable onPress={() => navigation.navigate('Tracking')} android_ripple={{color: 'gray',radius:175}} style={({pressed}) => [
         {
           backgroundColor: pressed ? '#EAD196' : 'white',
         },
@@ -73,7 +73,7 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
         <MaterialIcons name="local-shipping" size={30} color="#AA3A3A" />
         <Text style={textStyle2}>TRACKING</Text>
       </Pressable>
-      <Pressable onPress={() => navigation.navigate('CMR')} android_ripple={{color: '#676B5F',radius:177}} style={({pressed}) => [
+      <Pressable onPress={() => navigation.navigate('CMR')} android_ripple={{color: 'gray',radius:175}} style={({pressed}) => [
           {
             backgroundColor: pressed ? '#EAD196' : 'white',
           },
@@ -82,7 +82,7 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
         <MaterialIcons name="description" size={30} color="#365E32" />
         <Text style={textStyle2}>CMR</Text>
       </Pressable>
-      <Pressable onPress={() => navigation.navigate('PLOMOS')} android_ripple={{color: '#676B5F',radius:177}} style={({pressed}) => [
+      <Pressable onPress={() => navigation.navigate('PLOMOS')} android_ripple={{color: 'gray',radius:175}} style={({pressed}) => [
           {
             backgroundColor: pressed ? '#EAD196' : 'white',
           },
@@ -129,7 +129,7 @@ const buttonStyles = css`
     height:100px;
     border-radius:20px;
     border: 2px solid black;
-    background-color: #9CA777;
+    background-color: #F1C27B;
 `;
 const imagestyles = StyleSheet.create({
   image:{

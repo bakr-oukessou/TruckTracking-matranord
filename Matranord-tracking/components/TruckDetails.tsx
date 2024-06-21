@@ -170,7 +170,7 @@ const styles = StyleSheet.create({
   },
   image:{
     objectFit:'fill',
-    borderRadius: 12,
+    // borderRadius: 12,
     overflow: 'hidden',
     
   }

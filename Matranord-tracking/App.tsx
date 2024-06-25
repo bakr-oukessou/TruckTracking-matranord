@@ -11,11 +11,12 @@ import * as Font from 'expo-font';
 import { useFonts } from 'expo-font'; 
 import { MaterialIcons } from '@expo/vector-icons';
 import * as SplashScreen from 'expo-splash-screen';
+import axios from 'axios';
 // import LinearGradient from 'react-native-linear-gradient';
 
 import {LinearGradient} from 'expo-linear-gradient';
 import TruckDetails from './components/TruckDetails';
-import { RootStackParamList } from './components/types';
+import { RootStackParamList } from './types/types';
 import MapScreen from './components/Location';
 
 
@@ -33,6 +34,27 @@ const fetchFonts = () => {
 };
 
 
+const API_BASE_URL = 'http://localhost:8080/api';
+
+export const getAllTrucks = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/trucks`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching trucks:', error);
+    throw error;
+  }
+};
+
+export const getTruckById = async (id: any) => { 
+  try {
+    const response = await axios.get(`${API_BASE_URL}/trucks/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching truck with id ${id}:`, error);
+    throw error;
+  }
+};
 type MainScreenRouteProp = RouteProp<RootStackParamList, 'Main'>;
 type MainScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Main'>;
 

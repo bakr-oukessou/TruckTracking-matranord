@@ -1,11 +1,12 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StatusBar, StyleSheet, Pressable, ImageBackground } from 'react-native';
 import { FlashList } from "@shopify/flash-list";
 import { css } from '@emotion/native';
 import { useNavigation } from '@react-navigation/native';
-import { RootStackParamList, Truck } from './types';
+import { RootStackParamList, Truck } from '../types/types';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { MasonryFlashList } from "@shopify/flash-list";
+import { getAllTrucks } from '../App';
 
 const DATA: Truck[] = [
   {
@@ -52,6 +53,23 @@ const Tracking = () => {
       font-family: 'Poppins-Regular';
     }
   `;
+
+  ////////////////////// API Call//////////////////
+  // const [trucks, setTrucks] = useState<Truck[]>([]);
+
+  // useEffect(() => {
+  //   const fetchTrucks = async () => {
+  //     try {
+  //       const data = await getAllTrucks();
+  //       setTrucks(data);
+  //     } catch (error) {
+  //       console.error('Error fetching trucks:', error);
+  //     }
+  //   };
+
+  //   fetchTrucks();
+  // }, []);
+ ///////////////////////////////////////////
 
   const getRandomImage = () => {
     return images[Math.floor(Math.random() * images.length)];

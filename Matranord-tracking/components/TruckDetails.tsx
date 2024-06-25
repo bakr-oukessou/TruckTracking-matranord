@@ -2,7 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, Pressable, ScrollView, Animated, ImageBackground } from 'react-native';
 
 import { RouteProp, useNavigation } from '@react-navigation/native';
-import { RootStackParamList, Truck } from './types';
+import { RootStackParamList, Truck } from '../types/types';
 import { MaterialIcons } from '@expo/vector-icons';
 import { StackNavigationProp } from '@react-navigation/stack';
 

@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import App from './App';
+import App from '../App';
 import Tracking from '../components/Tracking';
 import CMR from '../components/CMR';
 import PLOMOS from '../components/Plomos';

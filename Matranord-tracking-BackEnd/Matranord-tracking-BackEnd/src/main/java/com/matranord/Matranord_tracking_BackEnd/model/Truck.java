@@ -20,6 +20,17 @@ public class Truck{
     private String dechargement;
     private String status;
 
+    public Truck(String status, String dechargement, String chargement, String trajet, String numeroDeDossier, String matricule, Date date, int id) {
+        this.status = status;
+        this.dechargement = dechargement;
+        this.chargement = chargement;
+        this.trajet = trajet;
+        this.numeroDeDossier = numeroDeDossier;
+        this.matricule = matricule;
+        this.date = date;
+        this.id = id;
+    }
+
     public Date getDate() {
         return date;
     }

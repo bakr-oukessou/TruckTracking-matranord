@@ -5,7 +5,7 @@ import jakarta.persistence.*;
 import java.util.Date;
 
 @Entity
-@Table(name = "Truck")
+//@Table(name = "Truck")
 public class Truck{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +23,19 @@ public class Truck{
 
     public Truck() {
     }
+
+//    public Truck(String matricule, Date date, String numeroDeDossier, String trajet, String dechargement, String chargement, String status, String longitude, String latitude, String positionnement) {
+//        this.date = new Date();
+//        this.matricule = "";
+//        this.numeroDossier = "";
+//        this.trajet = "";
+//        this.dechargement = "";
+//        this.chargement = "";
+//        this.longitude = "";
+//        this.latitude = "";
+//        this.positionnement = "";
+//        this.status = "";
+//    }
 
     public Truck(String matricule, Date date, String numeroDeDossier, String trajet, String dechargement, String chargement, String status, String longitude, String latitude, String positionnement) {
         this.date = date;
@@ -53,11 +66,11 @@ public class Truck{
         this.matricule = matricule;
     }
 
-    public String getNumeroDeDossier() {
+    public String getNumeroDossier() {
         return numeroDossier;
     }
 
-    public void setNumeroDeDossier(String numeroDeDossier) {
+    public void setNumeroDossier(String numeroDeDossier) {
         this.numeroDossier = numeroDeDossier;
     }
 

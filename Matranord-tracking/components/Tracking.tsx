@@ -8,36 +8,37 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { MasonryFlashList } from "@shopify/flash-list";
 import { getAllTrucks } from '../App';
 import { Searchbar } from 'react-native-paper';
+import axios from 'axios';
 
-const DATA: Truck[] = [
-  {
-    date: "2024-06-14",
-    matricule: "ABC123",
-    numeroDeDossier: "001",
-    trajet: "Route A to B",
-    chargement: "Goods A",
-    dechargement: "Goods B",
-    status: "En route",
-  },
-  {
-    date: "2024-06-15",
-    matricule: "XYZ789",
-    numeroDeDossier: "002",
-    trajet: "Route C to D",
-    chargement: "Goods C",
-    dechargement: "Goods D",
-    status: "Delivered",
-  },
-  {
-    date: "2024-06-15",
-    matricule: "IJK789",
-    numeroDeDossier: "003",
-    trajet: "Route A to D",
-    chargement: "Goods B",
-    dechargement: "Goods E",
-    status: "En douane",
-  },
-];
+// const DATA: Truck[] = [
+//   {
+//     date: "2024-06-14",
+//     matricule: "ABC123",
+//     numeroDeDossier: "001",
+//     trajet: "Route A to B",
+//     chargement: "Goods A",
+//     dechargement: "Goods B",
+//     status: "En route",
+//   },
+//   {
+//     date: "2024-06-15",
+//     matricule: "XYZ789",
+//     numeroDeDossier: "002",
+//     trajet: "Route C to D",
+//     chargement: "Goods C",
+//     dechargement: "Goods D",
+//     status: "Delivered",
+//   },
+//   {
+//     date: "2024-06-15",
+//     matricule: "IJK789",
+//     numeroDeDossier: "003",
+//     trajet: "Route A to D",
+//     chargement: "Goods B",
+//     dechargement: "Goods E",
+//     status: "En douane",
+//   },
+// ];
 const images = [
   require("../assets/background.jpg"),
   require("../assets/background2.jpg"),
@@ -67,15 +68,20 @@ const Tracking = () => {
 
   const fetchTrucks = async () => {
     try {
-      setIsLoading(true);
+      setIsLoading(true); 
       const data = await getAllTrucks();
-      console.log("Fetched trucks:", data); // Add this line
+      // console.log("Fetched trucks:", data);
       setTrucks(data);
-      setFilteredTrucks(data); // Initialize filteredTrucks with all trucks
+      setFilteredTrucks(data);
       setIsLoading(false);
     } catch (err) {
-      console.error("Error fetching trucks:", err); // Add this line
-      setError('Failed to fetch trucks');
+      console.error("Error fetching trucks:", err);
+      if (axios .isAxiosError(err)) {
+        console.error("Response data:", err.response?.data);
+        console.error("Response status:", err.response?.status);
+        console.error("Response headers:", err.response?.headers);
+      }
+      setError('Failed to fetch trucks: ' + (err as Error).message);
       setIsLoading(false);
     }
   };

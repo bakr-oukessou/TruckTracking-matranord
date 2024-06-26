@@ -21,5 +21,11 @@ public class TruckService {
         return truckRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Truck not found"));    }
 
-    // Add more methods as needed
+    public Truck saveTruck(Truck truck) {
+        return truckRepository.save(truck);
+    }
+
+    public void deleteTruck(Long id) {
+        truckRepository.deleteById(id);
+    }
 }

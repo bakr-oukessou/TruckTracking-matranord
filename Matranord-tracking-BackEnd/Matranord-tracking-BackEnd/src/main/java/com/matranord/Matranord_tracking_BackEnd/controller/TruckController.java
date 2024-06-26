@@ -3,10 +3,7 @@ package com.matranord.Matranord_tracking_BackEnd.controller;
 import com.matranord.Matranord_tracking_BackEnd.model.Truck;
 import com.matranord.Matranord_tracking_BackEnd.services.TruckService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,4 +23,20 @@ public class TruckController {
         return truckService.getTruckById(id);
     }
 
+    @PostMapping
+    public Truck createTruck(@RequestBody Truck truck) {
+        return truckService.saveTruck(truck);
+    }
+
+    @PutMapping("/{id}")
+    public Truck updateTruck(@PathVariable Long id, @RequestBody Truck truckDetails) {
+        Truck truck = truckService.getTruckById(id);
+        // Update truck properties
+        return truckService.saveTruck(truck);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteTruck(@PathVariable Long id) {
+        truckService.deleteTruck(id);
+    }
 }

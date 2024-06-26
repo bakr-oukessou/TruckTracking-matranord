@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StatusBar, StyleSheet, Pressable, ImageBackground } from 'react-native';
+import { View, Text, StatusBar, StyleSheet, Pressable, ImageBackground , Animated } from 'react-native';
 import { FlashList } from "@shopify/flash-list";
 import { css } from '@emotion/native';
 import { useNavigation } from '@react-navigation/native';
@@ -7,6 +7,7 @@ import { RootStackParamList, Truck } from '../types/types';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { MasonryFlashList } from "@shopify/flash-list";
 import { getAllTrucks } from '../App';
+import { Searchbar } from 'react-native-paper';
 
 const DATA: Truck[] = [
   {
@@ -27,6 +28,15 @@ const DATA: Truck[] = [
     dechargement: "Goods D",
     status: "Delivered",
   },
+  {
+    date: "2024-06-15",
+    matricule: "IJK789",
+    numeroDeDossier: "003",
+    trajet: "Route A to D",
+    chargement: "Goods B",
+    dechargement: "Goods E",
+    status: "En douane",
+  },
 ];
 const images = [
   require("../assets/background.jpg"),
@@ -38,46 +48,54 @@ const images = [
 ];
 type TrackingScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Tracking'>;
 const Tracking = () => {
-  const styles = css`
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-content: space-evenly;
-    flex-grow: 1;
-    flex: 1;
-    background-color: #FFF5E1;
-    padding: 20px;
-    & > * {
-      color: black;
-      font-size: 18px;
-      font-family: 'Poppins-Regular';
+  
+
+  //////////////////// API Call//////////////////
+  const [trucks, setTrucks] = useState<Truck[]>([]);
+  const [filteredTrucks, setFilteredTrucks] = useState<Truck[]>([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+
+  useEffect(() => {
+    filterTrucks();
+  }, [searchQuery, trucks]);
+
+  useEffect(() => {
+    fetchTrucks();
+  }, []);
+
+  const fetchTrucks = async () => {
+    try {
+      setIsLoading(true);
+      const data = await getAllTrucks();
+      console.log("Fetched trucks:", data); // Add this line
+      setTrucks(data);
+      setFilteredTrucks(data); // Initialize filteredTrucks with all trucks
+      setIsLoading(false);
+    } catch (err) {
+      console.error("Error fetching trucks:", err); // Add this line
+      setError('Failed to fetch trucks');
+      setIsLoading(false);
     }
-  `;
-
-  ////////////////////// API Call//////////////////
-  // const [trucks, setTrucks] = useState<Truck[]>([]);
-
-  // useEffect(() => {
-  //   const fetchTrucks = async () => {
-  //     try {
-  //       const data = await getAllTrucks();
-  //       setTrucks(data);
-  //     } catch (error) {
-  //       console.error('Error fetching trucks:', error);
-  //     }
-  //   };
-
-  //   fetchTrucks();
-  // }, []);
- ///////////////////////////////////////////
+  };
+  const filterTrucks = () => {
+    const filtered = trucks.filter(truck => 
+      truck.matricule.toLowerCase().includes(searchQuery.toLowerCase())
+    );
+    setFilteredTrucks(filtered);
+  };
+  /////////////////////////////////////////
 
   const getRandomImage = () => {
     return images[Math.floor(Math.random() * images.length)];
   };
+ 
 
   const navigation = useNavigation<TrackingScreenNavigationProp>();
   const renderItem = ({ item }: { item: Truck }) => (
     <View style={itemStyles.container}>
+      
       <ImageBackground source={getRandomImage()} style={itemStyles.imageBackground}>
       <Pressable onPress={() => navigation.navigate('TruckDetails', { truck: item })}android_ripple={{color: 'grey'}} style={({pressed}) => [
         {
@@ -100,8 +118,14 @@ const Tracking = () => {
   return (
     <View style={styles}>
       <Text style={itemStyles.title}>TRUCKS</Text>
+      <Searchbar
+      placeholder="Search by matricule"
+      onChangeText={setSearchQuery}
+      value={searchQuery}
+      // style={itemStyles.searchBar}
+    />
       <MasonryFlashList
-        data={DATA}
+        data={filteredTrucks}
         numColumns={1}
         renderItem={renderItem}
         estimatedItemSize={100}
@@ -117,6 +141,7 @@ const itemStyles = StyleSheet.create({
     marginVertical: 8,
     borderRadius: 13,
     marginHorizontal: 12,
+    position:'relative'
   },
   text: {
     fontSize: 16,
@@ -171,5 +196,21 @@ const itemStyles = StyleSheet.create({
     color:'#FFB000',
   }
 });
+
+const styles = css`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: space-evenly;
+    flex-grow: 1;
+    flex: 1;
+    background-color: #FFF5E1;
+    padding: 20px;
+    & > * {
+      color: black;
+      font-size: 18px;
+      font-family: 'Poppins-Regular';
+    }
+  `;
 
 export default Tracking;

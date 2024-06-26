@@ -1,34 +1,40 @@
 package com.matranord.Matranord_tracking_BackEnd.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 import java.util.Date;
 
 @Entity
+@Table(name = "Truck")
 public class Truck{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-    private Date date;
     private String matricule;
-    private String numeroDeDossier;
+    private Date date;
+    private String numeroDossier;
     private String trajet;
     private String chargement;
     private String dechargement;
     private String status;
+    private String longitude ;
+    private String latitude;
+    private String positionnement;
 
-    public Truck(String status, String dechargement, String chargement, String trajet, String numeroDeDossier, String matricule, Date date, int id) {
-        this.status = status;
+    public Truck() {
+    }
+
+    public Truck(String matricule, Date date, String numeroDeDossier, String trajet, String dechargement, String chargement, String status, String longitude, String latitude, String positionnement) {
+        this.date = date;
+        this.matricule = matricule;
+        this.numeroDossier = numeroDeDossier;
+        this.trajet = trajet;
         this.dechargement = dechargement;
         this.chargement = chargement;
-        this.trajet = trajet;
-        this.numeroDeDossier = numeroDeDossier;
-        this.matricule = matricule;
-        this.date = date;
-        this.id = id;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.positionnement = positionnement;
+        this.status = status;
     }
 
     public Date getDate() {
@@ -48,11 +54,11 @@ public class Truck{
     }
 
     public String getNumeroDeDossier() {
-        return numeroDeDossier;
+        return numeroDossier;
     }
 
     public void setNumeroDeDossier(String numeroDeDossier) {
-        this.numeroDeDossier = numeroDeDossier;
+        this.numeroDossier = numeroDeDossier;
     }
 
     public String getTrajet() {
@@ -85,5 +91,29 @@ public class Truck{
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getPositionnement() {
+        return positionnement;
+    }
+
+    public void setPositionnement(String positionnement) {
+        this.positionnement = positionnement;
     }
 }

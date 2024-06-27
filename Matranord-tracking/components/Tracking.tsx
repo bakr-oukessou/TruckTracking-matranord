@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, StatusBar, StyleSheet, Pressable, ImageBackground , Animated } from 'react-native';
+import { View, Text, StatusBar, StyleSheet, Pressable, ImageBackground ,
+  Animated,StyleProp,
+  ViewStyle,
+  Platform,
+  ScrollView,
+  SafeAreaView,
+  I18nManager,
+  NativeSyntheticEvent,
+  NativeScrollEvent, } from 'react-native';
 import { FlashList } from "@shopify/flash-list";
 import { css } from '@emotion/native';
 import { useNavigation } from '@react-navigation/native';
@@ -7,7 +15,7 @@ import { RootStackParamList, Truck } from '../types/types';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { MasonryFlashList } from "@shopify/flash-list";
 import { getAllTrucks } from '../App';
-import { Searchbar } from 'react-native-paper';
+import { AnimatedFAB, Modal, PaperProvider, Portal, Searchbar, TextInput } from 'react-native-paper';
 import axios from 'axios';
 
 // const DATA: Truck[] = [
@@ -47,8 +55,27 @@ const images = [
   require("../assets/background5.webp"),
   require("../assets/background6.jpg")
 ];
+
+interface MyComponentProps {
+  animatedValue: Animated.Value;
+  visible: boolean;
+  extended: boolean;
+  label: string;
+  animateFrom: 'right' | 'left';
+  style?: StyleProp<ViewStyle>;
+  iconMode: 'dynamic' | 'static';
+}
+
 type TrackingScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Tracking'>;
-const Tracking = () => {
+const Tracking: React.FC<MyComponentProps> = ({
+  animatedValue,  
+  visible,
+  extended,
+  label,
+  animateFrom,
+  style,
+  iconMode,
+}) => {
   
 
   //////////////////// API Call//////////////////
@@ -93,10 +120,23 @@ const Tracking = () => {
   };
   /////////////////////////////////////////
 
+ /////////// random background images//////////////////
   const getRandomImage = () => {
     return images[Math.floor(Math.random() * images.length)];
   };
- 
+ /////////////////////////////////////////////////////
+
+ /////////// Add FAB button ///////////////////////
+  const [isExtended, setIsExtended] = React.useState(true);
+
+  const onScroll = ({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const currentScrollPosition = Math.floor(nativeEvent?.contentOffset?.y) ?? 0;
+
+    setIsExtended(currentScrollPosition <= 0);
+  };
+
+  const fabStyle: StyleProp<ViewStyle> = { [animateFrom]: 16 };
+  /////////////////////////////////////////////////
 
   const navigation = useNavigation<TrackingScreenNavigationProp>();
   const renderItem = ({ item }: { item: Truck }) => (
@@ -108,7 +148,7 @@ const Tracking = () => {
           backgroundColor: pressed ? '#EAD196' : 'white',
         },
         itemStyles.item,
-      ]}>
+      ]}> 
         <Text style={itemStyles.text}><Text style={itemStyles.bold}>Date:</Text> {item.date}</Text>
         <Text style={itemStyles.text}><Text style={itemStyles.bold}>Matricule:</Text> {item.matricule}</Text>
         <Text style={itemStyles.text}><Text style={itemStyles.bold}>Numero de Dossier:</Text> {item.numeroDeDossier}</Text>
@@ -121,7 +161,14 @@ const Tracking = () => {
     </View>
   );
 
+  const [Visible, setVisible] = React.useState(false);
+
+  const [text, setText] = React.useState("");
+
+  const showModal = () => setVisible(true);
+  const hideModal = () => setVisible(false);
   return (
+    <PaperProvider>
     <View style={styles}>
       <Text style={itemStyles.title}>TRUCKS</Text>
       <Searchbar
@@ -131,14 +178,46 @@ const Tracking = () => {
       // style={itemStyles.searchBar}
     />
       <MasonryFlashList
+        onScroll={onScroll}
         data={filteredTrucks}
         numColumns={1}
         renderItem={renderItem}
         estimatedItemSize={100}
       />
+      <AnimatedFAB
+        icon={'plus'}
+        label={'NEW'}
+        extended={isExtended}
+        onPress={showModal}
+        visible={visible}
+        animateFrom={animateFrom}
+        iconMode={iconMode}
+        style={[itemStyles.fabStyle, style, fabStyle]}
+      />
+      <Portal>
+        <Modal visible={Visible} onDismiss={hideModal} contentContainerStyle={containerStyle.containerStyle}>
+          <TextInput
+            label="Email"
+            value={text}
+            onChangeText={text => setText(text)}
+          />
+        </Modal>
+      </Portal>
     </View>
+    </PaperProvider>
   );
 };
+
+const containerStyle = StyleSheet.create({
+  containerStyle: {
+  backgroundColor: 'white',
+  padding: 50,
+  width:200,
+  alignSelf:'center',
+  justifyContent:'center',
+  // flexWrap:'nowrap'
+  }
+});
 
 const itemStyles = StyleSheet.create({
   container: {
@@ -200,7 +279,12 @@ const itemStyles = StyleSheet.create({
   },
   statusData:{
     color:'#FFB000',
-  }
+  },
+  fabStyle: {
+    bottom: 16,
+    right: 16,
+    position: 'absolute',
+  },
 });
 
 const styles = css`

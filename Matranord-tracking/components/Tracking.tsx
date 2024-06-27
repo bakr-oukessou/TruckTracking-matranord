@@ -11,11 +11,11 @@ import { View, Text, StatusBar, StyleSheet, Pressable, ImageBackground ,
 import { FlashList } from "@shopify/flash-list";
 import { css } from '@emotion/native';
 import { useNavigation } from '@react-navigation/native';
-import { RootStackParamList, Truck } from '../types/types';
+import { MyComponentProps, RootStackParamList, Truck } from '../types/types';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { MasonryFlashList } from "@shopify/flash-list";
 import { getAllTrucks } from '../App';
-import { AnimatedFAB, Modal, PaperProvider, Portal, Searchbar, TextInput } from 'react-native-paper';
+import { AnimatedFAB, Button, Modal, PaperProvider, Portal, Searchbar, TextInput } from 'react-native-paper';
 import axios from 'axios';
 
 // const DATA: Truck[] = [
@@ -55,16 +55,6 @@ const images = [
   require("../assets/background5.webp"),
   require("../assets/background6.jpg")
 ];
-
-interface MyComponentProps {
-  animatedValue: Animated.Value;
-  visible: boolean;
-  extended: boolean;
-  label: string;
-  animateFrom: 'right' | 'left';
-  style?: StyleProp<ViewStyle>;
-  iconMode: 'dynamic' | 'static';
-}
 
 type TrackingScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Tracking'>;
 const Tracking: React.FC<MyComponentProps> = ({
@@ -170,7 +160,7 @@ const Tracking: React.FC<MyComponentProps> = ({
   return (
     <PaperProvider>
     <View style={styles}>
-      <Text style={itemStyles.title}>TRUCKS</Text>
+      {/* <Text style={itemStyles.title}>TRUCKS</Text> */}
       <Searchbar
       placeholder="Search by matricule"
       onChangeText={setSearchQuery}
@@ -197,10 +187,50 @@ const Tracking: React.FC<MyComponentProps> = ({
       <Portal>
         <Modal visible={Visible} onDismiss={hideModal} contentContainerStyle={containerStyle.containerStyle}>
           <TextInput
-            label="Email"
+            label="Matricule"
             value={text}
+            style={itemStyles.textinput}
             onChangeText={text => setText(text)}
           />
+          <TextInput
+            label="DATE"
+            value={text}
+            onChangeText={text => setText(text)}
+            style={itemStyles.textinput}
+          />
+          <TextInput
+            label="Numero de dossier"
+            value={text}
+            style={itemStyles.textinput}
+            onChangeText={text => setText(text)}
+          />
+          <TextInput
+            label="Trajet"
+            value={text}
+            style={itemStyles.textinput}
+            onChangeText={text => setText(text)}
+          />
+          <TextInput
+            label="Chargement"
+            value={text}
+            style={itemStyles.textinput}
+            onChangeText={text => setText(text)}
+          />
+          <TextInput
+            label="Dechargement"
+            value={text}
+            style={itemStyles.textinput}
+            onChangeText={text => setText(text)}
+          />
+          <TextInput
+            label="Status"
+            value={text}
+            style={itemStyles.textinput}
+            onChangeText={text => setText(text)}
+          />
+          <Button icon="check" mode="contained" onPress={() => console.log('Pressed')}>
+            Enregister
+          </Button>
         </Modal>
       </Portal>
     </View>
@@ -210,9 +240,10 @@ const Tracking: React.FC<MyComponentProps> = ({
 
 const containerStyle = StyleSheet.create({
   containerStyle: {
-  backgroundColor: 'white',
-  padding: 50,
-  width:200,
+  backgroundColor: '#FFF5E1',
+  padding: 40,
+  bottom:10,
+  width:350,
   alignSelf:'center',
   justifyContent:'center',
   // flexWrap:'nowrap'
@@ -285,6 +316,13 @@ const itemStyles = StyleSheet.create({
     right: 16,
     position: 'absolute',
   },
+  textinput:{
+    // padding:10,
+    height:50,
+    margin:10,
+    borderColor:'purple',
+    borderWidth:1,
+  }
 });
 
 const styles = css`

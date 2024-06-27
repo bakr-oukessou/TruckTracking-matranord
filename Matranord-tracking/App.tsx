@@ -177,7 +177,7 @@ const textStyle2 = css`
   width:auto;
   top:0;
 `;
-const App = () => { 
+const App: React.FC = () => { 
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Main">
@@ -186,7 +186,7 @@ const App = () => {
           component={MainScreenWrapper}
           options={{ headerShown: false }}
         />
-        <Stack.Screen name="Tracking" component={Tracking} />
+        <Stack.Screen name="Tracking" component={Tracking} options={{ title: 'Trucks' }} />
         <Stack.Screen name="CMR" component={CMR} />
         <Stack.Screen name="PLOMOS" component={PLOMOS} />
         <Stack.Screen name="TruckDetails" component={TruckDetails} />

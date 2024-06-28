@@ -116,6 +116,8 @@ const Tracking: React.FC<MyComponentProps> = ({
   };
  /////////////////////////////////////////////////////
 
+
+
  /////////// Add FAB button ///////////////////////
   const [isExtended, setIsExtended] = React.useState(true);
 
@@ -127,6 +129,8 @@ const Tracking: React.FC<MyComponentProps> = ({
 
   const fabStyle: StyleProp<ViewStyle> = { [animateFrom]: 16 };
   /////////////////////////////////////////////////
+
+
 
   const navigation = useNavigation<TrackingScreenNavigationProp>();
   const renderItem = ({ item }: { item: Truck }) => (
@@ -141,7 +145,7 @@ const Tracking: React.FC<MyComponentProps> = ({
       ]}> 
         <Text style={itemStyles.text}><Text style={itemStyles.bold}>Date:</Text> {item.date}</Text>
         <Text style={itemStyles.text}><Text style={itemStyles.bold}>Matricule:</Text> {item.matricule}</Text>
-        <Text style={itemStyles.text}><Text style={itemStyles.bold}>Numero de Dossier:</Text> {item.numeroDeDossier}</Text>
+        <Text style={itemStyles.text}><Text style={itemStyles.bold}>Numero de Dossier:</Text> {item.numeroDossier}</Text>
         <Text style={itemStyles.text}><Text style={itemStyles.bold}>Trajet:</Text> {item.trajet}</Text>
         <Text style={itemStyles.text}><Text style={itemStyles.bold}>Chargement:</Text> {item.chargement}</Text>
         <Text style={itemStyles.text}><Text style={itemStyles.bold}>Dechargement:</Text> {item.dechargement}</Text>

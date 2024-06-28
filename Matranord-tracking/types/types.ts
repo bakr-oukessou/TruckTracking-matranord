@@ -12,7 +12,7 @@ export type RootStackParamList = {
   export interface Truck {
     date: string;
     matricule: string;
-    numeroDeDossier: string;
+    numeroDossier: string;
     trajet: string;
     chargement: string;
     dechargement: string;

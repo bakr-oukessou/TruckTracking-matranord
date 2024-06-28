@@ -19,7 +19,7 @@ const TruckDetails = ({ route }: { route: TruckDetailsRouteProp}) => {
         <Text style={styles.header}>Truck Details</Text>
         <Text style={styles.detail}><Text style={styles.bold}>Date: </Text>{truck.date}</Text>
         <Text style={styles.detail}><Text style={styles.bold}>Matricule: </Text>{truck.matricule} </Text>
-        <Text style={styles.detail}><Text style={styles.bold}>Numero de Dossier: </Text>{truck.numeroDeDossier}</Text>
+        <Text style={styles.detail}><Text style={styles.bold}>Numero de Dossier: </Text>{truck.numeroDossier}</Text>
         <Text style={styles.detail}><Text style={styles.bold}>Trajet: </Text> {truck.trajet}</Text>
         <Text style={styles.detail}><Text style={styles.bold}>Chargement: </Text>{truck.chargement}</Text>
         <Text style={styles.detail}><Text style={styles.bold}>Dechargement: </Text> {truck.dechargement}</Text>

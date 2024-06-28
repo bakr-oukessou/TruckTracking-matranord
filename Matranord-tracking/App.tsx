@@ -29,7 +29,6 @@ const fetchFonts = () => {
   return Font.loadAsync({
     'Poppins-Bold': require('./assets/fonts/Poppins-Bold.ttf'),
     'Poppins-Regular': require('./assets/fonts/Poppins-Regular.ttf'),
-
   });
 };
 

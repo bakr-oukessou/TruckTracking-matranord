@@ -16,7 +16,7 @@ create table Truck(
 INSERT INTO Truck(
 	matricule,
 	date,
-    numeroDossier,
+    NumeroDossier,
     trajet,
     chargement,
     dechargement,

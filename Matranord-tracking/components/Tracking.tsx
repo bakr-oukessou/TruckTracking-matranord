@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { View, Text, StatusBar, StyleSheet, Pressable, ImageBackground ,
   Animated,StyleProp,
   ViewStyle,
@@ -7,16 +7,19 @@ import { View, Text, StatusBar, StyleSheet, Pressable, ImageBackground ,
   SafeAreaView,
   I18nManager,
   NativeSyntheticEvent,
-  NativeScrollEvent, } from 'react-native';
+  NativeScrollEvent,
+  RefreshControl, } from 'react-native';
 import { FlashList } from "@shopify/flash-list";
 import { css } from '@emotion/native';
 import { useNavigation } from '@react-navigation/native';
 import { MyComponentProps, RootStackParamList, Truck } from '../types/types';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { MasonryFlashList } from "@shopify/flash-list";
-import { getAllTrucks } from '../App';
-import { AnimatedFAB, Button, Modal, PaperProvider, Portal, Searchbar, TextInput } from 'react-native-paper';
+import { createTruck, getAllTrucks } from './Api/api';
+import { AnimatedFAB, Button, Modal, PaperProvider, Portal, Searchbar, Snackbar, TextInput } from 'react-native-paper';
 import axios from 'axios';
+import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
+import DateTimePicker from 'react-native-modal-datetime-picker';
 
 const images = [
   require("../assets/background.jpg"),
@@ -99,8 +102,74 @@ const Tracking: React.FC<MyComponentProps> = ({
   };
 
   const fabStyle: StyleProp<ViewStyle> = { [animateFrom]: 16 };
-  /////////////////////////////////////////////////
 
+  const [refreshing, setRefreshing] = useState(false);
+
+  const [matricule, setMatricule] = useState('');
+  const [date, setDate] = useState('');
+  const [numeroDossier, setNumeroDossier] = useState('');
+  const [trajet, setTrajet] = useState('');
+  const [chargement, setChargement] = useState('');
+  const [dechargement, setDechargement] = useState('');
+  const [status, setStatus] = useState('');
+
+  // const [snackbarVisible, setSnackbarVisible] = useState(false);
+
+  const [snackbar, setSnackbar] = useState({
+    visible: false,
+    message: '',
+    type: 'success', // or 'error'
+  });
+
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    fetchTrucks().then(() => setRefreshing(false));
+  }, []);
+
+  const handleSubmit = async () => {
+    try {
+      const newTruck = {
+        matricule,
+        date,
+        numeroDossier,
+        trajet,
+        chargement,
+        dechargement,
+        status,
+      };
+  
+      const createdTruck = await createTruck(newTruck);
+      console.log('Truck added successfully:', createdTruck);
+    
+      setMatricule('');
+      setDate('');
+      setNumeroDossier('');
+      setTrajet('');
+      setChargement('');
+      setDechargement('');
+      setStatus('');
+
+      hideModal();
+
+      
+      setSnackbar({
+        visible: true,
+        message: 'Truck added successfully!',
+        type: 'success',
+      });
+      // getAllTrucks();
+
+    } catch (error) {
+      console.error('Error adding truck:', error);
+      setSnackbar({
+        visible: true,
+        message: 'Error adding truck. Please try again.',
+        type: 'error',
+      }); 
+    }
+  };
+  /////////////////////////////////////////////////
 
 
   const navigation = useNavigation<TrackingScreenNavigationProp>();
@@ -132,6 +201,23 @@ const Tracking: React.FC<MyComponentProps> = ({
 
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);
+
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirm = (selectedDate: Date) => {
+    const formattedDate = selectedDate.toISOString().split('T')[0]; // Format: YYYY-MM-DD
+    setDate(formattedDate);
+    hideDatePicker();
+  };
+
   return (
     <PaperProvider>
     <View style={styles}>
@@ -148,6 +234,7 @@ const Tracking: React.FC<MyComponentProps> = ({
         numColumns={1}
         renderItem={renderItem}
         estimatedItemSize={100}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       />
       <AnimatedFAB
         icon={'plus'}
@@ -163,50 +250,70 @@ const Tracking: React.FC<MyComponentProps> = ({
         <Modal visible={Visible} onDismiss={hideModal} contentContainerStyle={containerStyle.containerStyle}>
           <TextInput
             label="Matricule"
-            value={text}
+            value={matricule}
             style={itemStyles.textinput}
-            onChangeText={text => setText(text)}
+            onChangeText={text => setMatricule(text)}
           />
           <TextInput
             label="DATE"
-            value={text}
-            onChangeText={text => setText(text)}
+            value={date}
+            onChangeText={text => setDate(text)}
             style={itemStyles.textinput}
+            onFocus={showDatePicker}
+            // editable={false}
+          />
+          <DateTimePicker
+            isVisible={isDatePickerVisible}
+            mode="date"
+            onConfirm={handleConfirm}
+            onCancel={hideDatePicker}
+            date={date ? new Date(date) : new Date()}
           />
           <TextInput
             label="Numero de dossier"
-            value={text}
+            value={numeroDossier}
             style={itemStyles.textinput}
-            onChangeText={text => setText(text)}
+            onChangeText={text => setNumeroDossier(text)}
           />
           <TextInput
             label="Trajet"
-            value={text}
+            value={trajet}
             style={itemStyles.textinput}
-            onChangeText={text => setText(text)}
+            onChangeText={text => setTrajet(text)}
           />
           <TextInput
             label="Chargement"
-            value={text}
+            value={chargement}
             style={itemStyles.textinput}
-            onChangeText={text => setText(text)}
+            onChangeText={text => setChargement(text)}
           />
           <TextInput
             label="Dechargement"
-            value={text}
+            value={dechargement}
             style={itemStyles.textinput}
-            onChangeText={text => setText(text)}
+            onChangeText={text => setDechargement(text)}
           />
           <TextInput
             label="Status"
-            value={text}
+            value={status}
             style={itemStyles.textinput}
-            onChangeText={text => setText(text)}
+            onChangeText={text => setStatus(text)}
           />
-          <Button icon="check" mode="contained" onPress={() => console.log('Pressed')} style={{backgroundColor:'#729762'}}>
+          <Button icon="check" mode="contained" onPress={handleSubmit} style={{backgroundColor:'#729762'}}>
             Enregister
           </Button>
         </Modal>
+        <Snackbar
+          visible={snackbar.visible}
+          onDismiss={() => setSnackbar(prev => ({ ...prev, visible: false }))}
+          action={{
+            label: 'Close',
+            onPress: () => setSnackbar(prev => ({ ...prev, visible: false })),
+          }}
+          duration={3000}
+          style={{ backgroundColor: snackbar.type === 'success' ? '#4CAF50' : '#F44336' }}>
+          {snackbar.message}
+        </Snackbar>
       </Portal>
     </View>
     </PaperProvider>

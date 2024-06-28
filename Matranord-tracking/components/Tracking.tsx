@@ -18,35 +18,6 @@ import { getAllTrucks } from '../App';
 import { AnimatedFAB, Button, Modal, PaperProvider, Portal, Searchbar, TextInput } from 'react-native-paper';
 import axios from 'axios';
 
-// const DATA: Truck[] = [
-//   {
-//     date: "2024-06-14",
-//     matricule: "ABC123",
-//     numeroDeDossier: "001",
-//     trajet: "Route A to B",
-//     chargement: "Goods A",
-//     dechargement: "Goods B",
-//     status: "En route",
-//   },
-//   {
-//     date: "2024-06-15",
-//     matricule: "XYZ789",
-//     numeroDeDossier: "002",
-//     trajet: "Route C to D",
-//     chargement: "Goods C",
-//     dechargement: "Goods D",
-//     status: "Delivered",
-//   },
-//   {
-//     date: "2024-06-15",
-//     matricule: "IJK789",
-//     numeroDeDossier: "003",
-//     trajet: "Route A to D",
-//     chargement: "Goods B",
-//     dechargement: "Goods E",
-//     status: "En douane",
-//   },
-// ];
 const images = [
   require("../assets/background.jpg"),
   require("../assets/background2.jpg"),
@@ -232,7 +203,7 @@ const Tracking: React.FC<MyComponentProps> = ({
             style={itemStyles.textinput}
             onChangeText={text => setText(text)}
           />
-          <Button icon="check" mode="contained" onPress={() => console.log('Pressed')}>
+          <Button icon="check" mode="contained" onPress={() => console.log('Pressed')} style={{backgroundColor:'#729762'}}>
             Enregister
           </Button>
         </Modal>
@@ -322,9 +293,9 @@ const itemStyles = StyleSheet.create({
   },
   textinput:{
     // padding:10,
-    height:50,
+    height:45,
     margin:10,
-    borderColor:'purple',
+    borderColor:'#AF8260',
     borderWidth:1,
   }
 });

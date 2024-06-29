@@ -1,3 +1,5 @@
+import { Animated, StyleProp, ViewStyle } from "react-native";
+
 export type RootStackParamList = {
     Main: undefined;
     Tracking: undefined;
@@ -10,10 +12,18 @@ export type RootStackParamList = {
   export interface Truck {
     date: string;
     matricule: string;
-    numeroDeDossier: string;
+    numeroDossier: string;
     trajet: string;
     chargement: string;
     dechargement: string;
     status: string;
   }
-  
+  export interface MyComponentProps {
+    animatedValue: Animated.Value;
+    visible: boolean;
+    extended: boolean;
+    label: string;
+    animateFrom: 'left' | 'right';
+    style?: StyleProp<ViewStyle>;
+    iconMode: 'static' | 'dynamic';
+  }

@@ -29,32 +29,10 @@ const fetchFonts = () => {
   return Font.loadAsync({
     'Poppins-Bold': require('./assets/fonts/Poppins-Bold.ttf'),
     'Poppins-Regular': require('./assets/fonts/Poppins-Regular.ttf'),
-
   });
 };
 
 
-const API_BASE_URL = 'http://10.0.2.2:8080/api';
-
-export const getAllTrucks = async () => {
-  try {
-    const response = await axios.get(`${API_BASE_URL}/trucks`);
-    return response.data;
-  } catch (error) {
-    console.error('Error fetching trucks:', error);
-    throw error;
-  }
-};
-
-export const getTruckById = async (id: any) => { 
-  try {
-    const response = await axios.get(`${API_BASE_URL}/trucks/${id}`);
-    return response.data;
-  } catch (error) {
-    console.error(`Error fetching truck with id ${id}:`, error);
-    throw error;
-  }
-};
 type MainScreenRouteProp = RouteProp<RootStackParamList, 'Main'>;
 type MainScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Main'>;
 
@@ -177,7 +155,7 @@ const textStyle2 = css`
   width:auto;
   top:0;
 `;
-const App = () => { 
+const App: React.FC = () => { 
   return (
     <NavigationContainer>
       <Stack.Navigator initialRouteName="Main">
@@ -186,8 +164,8 @@ const App = () => {
           component={MainScreenWrapper}
           options={{ headerShown: false }}
         />
-        <Stack.Screen name="Tracking" component={Tracking} />
-        <Stack.Screen name="CMR" component={CMR} />
+        <Stack.Screen name="Tracking" component={Tracking} options={{ title: 'Trucks' }} />
+        <Stack.Screen name="CMR" component={CMR} />  
         <Stack.Screen name="PLOMOS" component={PLOMOS} />
         <Stack.Screen name="TruckDetails" component={TruckDetails} />
         <Stack.Screen name="MapScreen" component={MapScreen} />

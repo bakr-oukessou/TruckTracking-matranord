@@ -37,7 +37,7 @@ public class TruckController {
         return truckService.getTruckById(id);
     }
 
-    @PostMapping
+    @PostMapping()
     public Truck createTruck(@RequestBody Truck truck) {
         return truckService.saveTruck(truck);
     }

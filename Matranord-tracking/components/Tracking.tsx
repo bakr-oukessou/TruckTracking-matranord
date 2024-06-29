@@ -1,44 +1,26 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StatusBar, StyleSheet, Pressable, ImageBackground , Animated } from 'react-native';
+import React, { useCallback, useEffect, useState } from 'react';
+import { View, Text, StatusBar, StyleSheet, Pressable, ImageBackground ,
+  Animated,StyleProp,
+  ViewStyle,
+  Platform,
+  ScrollView,
+  SafeAreaView,
+  I18nManager,
+  NativeSyntheticEvent,
+  NativeScrollEvent,
+  RefreshControl, } from 'react-native';
 import { FlashList } from "@shopify/flash-list";
 import { css } from '@emotion/native';
 import { useNavigation } from '@react-navigation/native';
-import { RootStackParamList, Truck } from '../types/types';
+import { MyComponentProps, RootStackParamList, Truck } from '../types/types';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { MasonryFlashList } from "@shopify/flash-list";
-import { getAllTrucks } from '../App';
-import { Searchbar } from 'react-native-paper';
+import { createTruck, getAllTrucks } from './Api/api';
+import { AnimatedFAB, Button, Modal, PaperProvider, Portal, Searchbar, Snackbar, TextInput } from 'react-native-paper';
 import axios from 'axios';
+import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
+import DateTimePicker from 'react-native-modal-datetime-picker';
 
-// const DATA: Truck[] = [
-//   {
-//     date: "2024-06-14",
-//     matricule: "ABC123",
-//     numeroDeDossier: "001",
-//     trajet: "Route A to B",
-//     chargement: "Goods A",
-//     dechargement: "Goods B",
-//     status: "En route",
-//   },
-//   {
-//     date: "2024-06-15",
-//     matricule: "XYZ789",
-//     numeroDeDossier: "002",
-//     trajet: "Route C to D",
-//     chargement: "Goods C",
-//     dechargement: "Goods D",
-//     status: "Delivered",
-//   },
-//   {
-//     date: "2024-06-15",
-//     matricule: "IJK789",
-//     numeroDeDossier: "003",
-//     trajet: "Route A to D",
-//     chargement: "Goods B",
-//     dechargement: "Goods E",
-//     status: "En douane",
-//   },
-// ];
 const images = [
   require("../assets/background.jpg"),
   require("../assets/background2.jpg"),
@@ -47,8 +29,17 @@ const images = [
   require("../assets/background5.webp"),
   require("../assets/background6.jpg")
 ];
+
 type TrackingScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Tracking'>;
-const Tracking = () => {
+const Tracking: React.FC<MyComponentProps> = ({
+  animatedValue,  
+  visible,
+  extended,
+  label,
+  animateFrom,
+  style,
+  iconMode,
+}) => {
   
 
   //////////////////// API Call//////////////////
@@ -93,10 +84,93 @@ const Tracking = () => {
   };
   /////////////////////////////////////////
 
+ /////////// random background images//////////////////
   const getRandomImage = () => {
     return images[Math.floor(Math.random() * images.length)];
   };
- 
+ /////////////////////////////////////////////////////
+
+
+
+ /////////// Add FAB button ///////////////////////
+  const [isExtended, setIsExtended] = React.useState(true);
+
+  const onScroll = ({ nativeEvent }: NativeSyntheticEvent<NativeScrollEvent>) => {
+    const currentScrollPosition = Math.floor(nativeEvent?.contentOffset?.y) ?? 0;
+
+    setIsExtended(currentScrollPosition <= 0);
+  };
+
+  const fabStyle: StyleProp<ViewStyle> = { [animateFrom]: 16 };
+
+  const [refreshing, setRefreshing] = useState(false);
+
+  const [matricule, setMatricule] = useState('');
+  const [date, setDate] = useState('');
+  const [numeroDossier, setNumeroDossier] = useState('');
+  const [trajet, setTrajet] = useState('');
+  const [chargement, setChargement] = useState('');
+  const [dechargement, setDechargement] = useState('');
+  const [status, setStatus] = useState('');
+
+  // const [snackbarVisible, setSnackbarVisible] = useState(false);
+
+  const [snackbar, setSnackbar] = useState({
+    visible: false,
+    message: '',
+    type: 'success', // or 'error'
+  });
+
+
+  const onRefresh = useCallback(() => {
+    setRefreshing(true);
+    fetchTrucks().then(() => setRefreshing(false));
+  }, []);
+
+  const handleSubmit = async () => {
+    try {
+      const newTruck = {
+        matricule,
+        date,
+        numeroDossier,
+        trajet,
+        chargement,
+        dechargement,
+        status,
+      };
+  
+      const createdTruck = await createTruck(newTruck);
+      console.log('Truck added successfully:', createdTruck);
+    
+      setMatricule('');
+      setDate('');
+      setNumeroDossier('');
+      setTrajet('');
+      setChargement('');
+      setDechargement('');
+      setStatus('');
+
+      hideModal();
+
+      
+      setSnackbar({
+        visible: true,
+        message: 'Truck added successfully!',
+        type: 'success',
+      });
+      // getAllTrucks();
+
+    } catch (error) {
+      console.error('Error adding truck:', error);
+      setSnackbar({
+        visible: true,
+        message: 'Error adding truck. Please try again.',
+        type: 'error',
+      }); 
+    }
+  };
+  /////////////////////////////////////////////////
+
 
   const navigation = useNavigation<TrackingScreenNavigationProp>();
   const renderItem = ({ item }: { item: Truck }) => (
@@ -108,10 +182,10 @@ const Tracking = () => {
           backgroundColor: pressed ? '#EAD196' : 'white',
         },
         itemStyles.item,
-      ]}>
+      ]}> 
         <Text style={itemStyles.text}><Text style={itemStyles.bold}>Date:</Text> {item.date}</Text>
         <Text style={itemStyles.text}><Text style={itemStyles.bold}>Matricule:</Text> {item.matricule}</Text>
-        <Text style={itemStyles.text}><Text style={itemStyles.bold}>Numero de Dossier:</Text> {item.numeroDeDossier}</Text>
+        <Text style={itemStyles.text}><Text style={itemStyles.bold}>Numero de Dossier:</Text> {item.numeroDossier}</Text>
         <Text style={itemStyles.text}><Text style={itemStyles.bold}>Trajet:</Text> {item.trajet}</Text>
         <Text style={itemStyles.text}><Text style={itemStyles.bold}>Chargement:</Text> {item.chargement}</Text>
         <Text style={itemStyles.text}><Text style={itemStyles.bold}>Dechargement:</Text> {item.dechargement}</Text>
@@ -121,9 +195,33 @@ const Tracking = () => {
     </View>
   );
 
+  const [Visible, setVisible] = React.useState(false);
+
+  const [text, setText] = React.useState("");
+
+  const showModal = () => setVisible(true);
+  const hideModal = () => setVisible(false);
+
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirm = (selectedDate: Date) => {
+    const formattedDate = selectedDate.toISOString().split('T')[0]; // Format: YYYY-MM-DD
+    setDate(formattedDate);
+    hideDatePicker();
+  };
+
   return (
+    <PaperProvider>
     <View style={styles}>
-      <Text style={itemStyles.title}>TRUCKS</Text>
+      {/* <Text style={itemStyles.title}>TRUCKS</Text> */}
       <Searchbar
       placeholder="Search by matricule"
       onChangeText={setSearchQuery}
@@ -131,14 +229,108 @@ const Tracking = () => {
       // style={itemStyles.searchBar}
     />
       <MasonryFlashList
+        onScroll={onScroll}
         data={filteredTrucks}
         numColumns={1}
         renderItem={renderItem}
         estimatedItemSize={100}
+        refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
       />
+      <AnimatedFAB
+        icon={'plus'}
+        label={'NEW'}
+        extended={isExtended}
+        onPress={showModal}
+        visible={visible}
+        animateFrom={animateFrom}
+        iconMode={iconMode}
+        style={[itemStyles.fabStyle, style, fabStyle]}
+      />
+      <Portal>
+        <Modal visible={Visible} onDismiss={hideModal} contentContainerStyle={containerStyle.containerStyle}>
+          <TextInput
+            label="Matricule"
+            value={matricule}
+            style={itemStyles.textinput}
+            onChangeText={text => setMatricule(text)}
+          />
+          <TextInput
+            label="DATE"
+            value={date}
+            onChangeText={text => setDate(text)}
+            style={itemStyles.textinput}
+            onFocus={showDatePicker}
+            // editable={false}
+          />
+          <DateTimePicker
+            isVisible={isDatePickerVisible}
+            mode="date"
+            onConfirm={handleConfirm}
+            onCancel={hideDatePicker}
+            date={date ? new Date(date) : new Date()}
+          />
+          <TextInput
+            label="Numero de dossier"
+            value={numeroDossier}
+            style={itemStyles.textinput}
+            onChangeText={text => setNumeroDossier(text)}
+          />
+          <TextInput
+            label="Trajet"
+            value={trajet}
+            style={itemStyles.textinput}
+            onChangeText={text => setTrajet(text)}
+          />
+          <TextInput
+            label="Chargement"
+            value={chargement}
+            style={itemStyles.textinput}
+            onChangeText={text => setChargement(text)}
+          />
+          <TextInput
+            label="Dechargement"
+            value={dechargement}
+            style={itemStyles.textinput}
+            onChangeText={text => setDechargement(text)}
+          />
+          <TextInput
+            label="Status"
+            value={status}
+            style={itemStyles.textinput}
+            onChangeText={text => setStatus(text)}
+          />
+          <Button icon="check" mode="contained" onPress={handleSubmit} style={{backgroundColor:'#729762'}}>
+            Enregister
+          </Button>
+        </Modal>
+        <Snackbar
+          visible={snackbar.visible}
+          onDismiss={() => setSnackbar(prev => ({ ...prev, visible: false }))}
+          action={{
+            label: 'Close',
+            onPress: () => setSnackbar(prev => ({ ...prev, visible: false })),
+          }}
+          duration={3000}
+          style={{ backgroundColor: snackbar.type === 'success' ? '#4CAF50' : '#F44336' }}>
+          {snackbar.message}
+        </Snackbar>
+      </Portal>
     </View>
+    </PaperProvider>
   );
 };
+
+const containerStyle = StyleSheet.create({
+  containerStyle: {
+  backgroundColor: '#FFF5E1',
+  padding: 40,
+  bottom:10,
+  width:350,
+  alignSelf:'center',
+  justifyContent:'center',
+  // flexWrap:'nowrap'
+  }
+});
 
 const itemStyles = StyleSheet.create({
   container: {
@@ -200,6 +392,18 @@ const itemStyles = StyleSheet.create({
   },
   statusData:{
     color:'#FFB000',
+  },
+  fabStyle: {
+    bottom: 16,
+    right: 16,
+    position: 'absolute',
+  },
+  textinput:{
+    // padding:10,
+    height:45,
+    margin:10,
+    borderColor:'#AF8260',
+    borderWidth:1,
   }
 });
 

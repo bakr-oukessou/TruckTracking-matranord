@@ -2,23 +2,43 @@ package com.matranord.Matranord_tracking_BackEnd.model;
 
 import jakarta.persistence.*;
 
-import java.util.Date;
+import java.sql.Date;
+
 
 @Entity
-//@Table(name = "Truck")
+@Table(name = "Truck")
 public class Truck{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(name = "matricule",nullable = false)
     private String matricule;
+
+    @Column(name = "date",nullable = false)
     private Date date;
-    private String numeroDossier;
+
+    @Column(name = "numero_dossier",nullable = false)
+    private String numero_dossier;
+
+    @Column(name = "trajet",nullable = false)
     private String trajet;
+
+    @Column(name = "chargement",nullable = false)
     private String chargement;
+
+    @Column(name = "dechargement",nullable = false)
     private String dechargement;
+
+    @Column(name = "status",nullable = false)
     private String status;
+
+    @Column(name = "longitude")
     private String longitude ;
+
+    @Column(name = "latitude")
     private String latitude;
+
+    @Column(name = "positionnement")
     private String positionnement;
 
     public Truck() {
@@ -37,10 +57,10 @@ public class Truck{
 //        this.status = "";
 //    }
 
-    public Truck(String matricule, Date date, String numeroDeDossier, String trajet, String dechargement, String chargement, String status, String longitude, String latitude, String positionnement) {
+    public Truck(String matricule, Date date, String numeroDossier, String trajet, String dechargement, String chargement, String status, String longitude, String latitude, String positionnement) {
         this.date = date;
         this.matricule = matricule;
-        this.numeroDossier = numeroDeDossier;
+        this.numero_dossier = numeroDossier;
         this.trajet = trajet;
         this.dechargement = dechargement;
         this.chargement = chargement;
@@ -67,11 +87,11 @@ public class Truck{
     }
 
     public String getNumeroDossier() {
-        return numeroDossier;
+        return numero_dossier;
     }
 
-    public void setNumeroDossier(String numeroDeDossier) {
-        this.numeroDossier = numeroDeDossier;
+    public void setNumeroDossier(String numeroDossier) {
+        this.numero_dossier = numeroDossier;
     }
 
     public String getTrajet() {

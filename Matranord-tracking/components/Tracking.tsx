@@ -243,7 +243,7 @@ const Tracking: React.FC<MyComponentProps> = ({
         onPress={showModal}
         visible={visible}
         animateFrom={animateFrom}
-        iconMode={iconMode}
+        // iconMode={iconMode}
         style={[itemStyles.fabStyle, style, fabStyle]}
       />
       <Portal>

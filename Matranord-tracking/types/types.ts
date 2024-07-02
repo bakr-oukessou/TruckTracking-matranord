@@ -1,3 +1,4 @@
+import { StackScreenProps } from "@react-navigation/stack";
 import { Animated, StyleProp, ViewStyle } from "react-native";
 
 export type RootStackParamList = {
@@ -19,6 +20,15 @@ export type RootStackParamList = {
     status: string;
   }
   export interface MyComponentProps {
+    animatedValue: Animated.Value;
+    visible: boolean;
+    extended: boolean;
+    label: string;
+    animateFrom: 'left' | 'right';
+    style?: StyleProp<ViewStyle>;
+    iconMode: 'static' | 'dynamic';
+  }
+  export interface MyComponentProps extends Partial<StackScreenProps<RootStackParamList, 'Tracking'>> {
     animatedValue: Animated.Value;
     visible: boolean;
     extended: boolean;

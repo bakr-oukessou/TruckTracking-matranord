@@ -30,7 +30,7 @@ const images = [
   require("../assets/background6.jpg")
 ];
 
-type TrackingScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Tracking'>;
+type TrackingScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Tracking'> & MyComponentProps;
 const Tracking: React.FC<MyComponentProps> = ({
   animatedValue,  
   visible,

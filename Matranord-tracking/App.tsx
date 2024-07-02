@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Button, StyleSheet, Pressable, Image } from 'react-native';
+import { View, Text, Button, StyleSheet, Pressable, Image, Animated } from 'react-native';
 import { NavigationContainer, useNavigation, useRoute } from '@react-navigation/native';
-import { createStackNavigator, StackNavigationProp } from '@react-navigation/stack';
+import { createStackNavigator, StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
 import Tracking from './components/Tracking';
 import CMR from './components/CMR';
@@ -155,6 +155,18 @@ const textStyle2 = css`
   width:auto;
   top:0;
 `;
+const TrackingWrapper: React.FC<StackScreenProps<RootStackParamList, 'Tracking'>> = ({ navigation, route }) => (
+  <Tracking
+    navigation={navigation}
+    route={route}
+    animatedValue={new Animated.Value(0)}
+    visible={true}
+    extended={true}
+    label="Label"
+    animateFrom="right"
+    iconMode="static"
+  />
+);
 const App: React.FC = () => { 
   return (
     <NavigationContainer>
@@ -164,7 +176,7 @@ const App: React.FC = () => {
           component={MainScreenWrapper}
           options={{ headerShown: false }}
         />
-        <Stack.Screen name="Tracking" component={Tracking} options={{ title: 'Trucks' }} />
+        <Stack.Screen name="Tracking" component={TrackingWrapper} options={{ title: 'Trucks' }}/>
         <Stack.Screen name="CMR" component={CMR} />  
         <Stack.Screen name="PLOMOS" component={PLOMOS} />
         <Stack.Screen name="TruckDetails" component={TruckDetails} />

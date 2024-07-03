@@ -25,7 +25,6 @@ const TruckDetails = ({ route }: { route: TruckDetailsRouteProp}) => {
         <Text style={styles.detail}><Text style={styles.bold}>Dechargement: </Text> {truck.dechargement}</Text>
         <Text style={styles.detail}><Text style={styles.bold}>Status: </Text> {truck.status}</Text>
       </View>
-
     <View style={styles.buttons}>
         
       <Pressable 
@@ -123,7 +122,7 @@ const styles = StyleSheet.create({
     marginVertical:9,
     borderColor:'black',
     borderWidth:1,
-    width: 177,
+    width: 167,
     height:70,
     backgroundColor: '#ADD8E6',
     borderRadius: 5,
@@ -150,13 +149,13 @@ const styles = StyleSheet.create({
     alignContent:'space-evenly'
   },
   buttons:{
-    // marginHorizontal: 5,
     display:'flex',
     flexDirection:'row',
     flexWrap:'wrap',
     fontFamily: 'Poppins-Regular',
     flex:1,
     flexGrow:1,
+    justifyContent:'center',
   },
   bold:{
     fontSize: 16,

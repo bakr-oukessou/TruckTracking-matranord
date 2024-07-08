@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectMigrations">
+    <option name="MigrateToGradleLocalJavaHome">
+      <set>
+        <option value="$PROJECT_DIR$/Matranord-tracking/node_modules/@react-native/gradle-plugin" />
+        <option value="$PROJECT_DIR$/Matranord-tracking/node_modules/react-native-safe-area-context/android" />
+        <option value="$PROJECT_DIR$/Matranord-tracking-BackEnd/Matranord-tracking-BackEnd" />
+      </set>
+    </option>
+  </component>
+</project>

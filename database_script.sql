@@ -4,7 +4,7 @@ create table Truck(
 	id int primary key auto_increment,
     matricule varchar(20),
     date date,
-    NumeroDossier varchar(50),
+    Numero_dossier varchar(50),
     trajet varchar(250),
     chargement varchar(150),
     dechargement varchar(150),
@@ -16,7 +16,7 @@ create table Truck(
 INSERT INTO Truck(
 	matricule,
 	date,
-    NumeroDossier,
+    Numero_dossier,
     trajet,
     chargement,
     dechargement,

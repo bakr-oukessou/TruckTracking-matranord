@@ -24,15 +24,6 @@
         <option name="resolveExternalAnnotations" value="false" />
       </GradleProjectSettings>
       <GradleProjectSettings>
-        <option name="externalProjectPath" value="$PROJECT_DIR$/Matranord-tracking/node_modules/react-native-maps/android" />
-        <option name="modules">
-          <set>
-            <option value="$PROJECT_DIR$/Matranord-tracking/node_modules/react-native-maps/android" />
-          </set>
-        </option>
-        <option name="resolveExternalAnnotations" value="false" />
-      </GradleProjectSettings>
-      <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$/Matranord-tracking/node_modules/react-native-safe-area-context/android" />
         <option name="gradleJvm" value="#GRADLE_LOCAL_JAVA_HOME" />
         <option name="modules">

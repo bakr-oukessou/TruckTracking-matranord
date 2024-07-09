@@ -14,7 +14,6 @@ import * as SplashScreen from 'expo-splash-screen';
 import axios from 'axios';
 // import LinearGradient from 'react-native-linear-gradient';
 
-import {LinearGradient} from 'expo-linear-gradient';
 import TruckDetails from './components/TruckDetails';
 import { RootStackParamList } from './types/types';
 import MapScreen from './components/Location';

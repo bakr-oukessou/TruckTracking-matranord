@@ -45,8 +45,8 @@ public class Truck{
     }
 
 //    public Truck(String matricule, Date date, String numeroDeDossier, String trajet, String dechargement, String chargement, String status, String longitude, String latitude, String positionnement) {
-//        this.date = new Date();
 //        this.matricule = "";
+//        this.date = new Date();
 //        this.numeroDossier = "";
 //        this.trajet = "";
 //        this.dechargement = "";
@@ -58,8 +58,8 @@ public class Truck{
 //    }
 
     public Truck(String matricule, Date date, String numeroDossier, String trajet, String dechargement, String chargement, String status, String longitude, String latitude, String positionnement) {
-        this.date = date;
         this.matricule = matricule;
+        this.date = date;
         this.numero_dossier = numeroDossier;
         this.trajet = trajet;
         this.dechargement = dechargement;

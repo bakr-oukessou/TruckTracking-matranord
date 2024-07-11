@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/trucks")
@@ -51,6 +52,17 @@ public class TruckController {
 
     @DeleteMapping("/{id}")
     public void deleteTruck(@PathVariable Long id) {
+        truckService.deleteTruck(id);
+    }
+
+    //******************Firebase methods******************
+    @PutMapping("/{id}")
+    public void updateTruck(@PathVariable String id, @RequestBody Map<String, Object> updates) {
+        truckService.updateTruck(id, updates);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteTruck(@PathVariable String id) {
         truckService.deleteTruck(id);
     }
 }

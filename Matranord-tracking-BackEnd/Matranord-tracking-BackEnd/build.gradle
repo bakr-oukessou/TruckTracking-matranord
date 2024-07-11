@@ -12,6 +12,7 @@ plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.3.1'
 	id 'io.spring.dependency-management' version '1.1.5'
+	id 'com.google.gms.google-services' version '4.4.2' apply false
 //	id 'com.android.application' version '8.5.0'
 //	id 'com.android.library' version '8.5.0'
 }
@@ -42,6 +43,9 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.springframework.boot:spring-boot-starter-web-services'
 	implementation 'org.springframework.boot:spring-boot-starter-webflux'
+	implementation platform('com.google.firebase:firebase-bom:33.1.1')
+	implementation 'com.google.firebase:firebase-admin:9.1.1'
+	implementation 'com.google.firebase:firebase-database'
 	runtimeOnly 'com.mysql:mysql-connector-j'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
 	testImplementation 'io.projectreactor:reactor-test'

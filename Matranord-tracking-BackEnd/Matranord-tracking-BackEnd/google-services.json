@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "769760275952",
+    "firebase_url": "https://trucktracking-fa6fc-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "trucktracking-fa6fc",
+    "storage_bucket": "trucktracking-fa6fc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:769760275952:android:69a3b485bc72b8fb204135",
+        "android_client_info": {
+          "package_name": "com.matranord.Matranord_tracking_BackEnd"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAvR7m8ajE6f4JNyKYa0G7-t6KD5EuG1as"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

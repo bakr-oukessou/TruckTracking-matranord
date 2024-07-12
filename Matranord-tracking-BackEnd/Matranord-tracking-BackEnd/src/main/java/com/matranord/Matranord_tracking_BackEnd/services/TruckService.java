@@ -37,7 +37,7 @@ public class TruckService {
     }
 
 
-    // **************Firebase Methods***********
+    // **************Firebase Methods**************
     public TruckService() {
         this.databaseReference = FirebaseDatabase.getInstance().getReference("trucks");
     }
@@ -45,6 +45,7 @@ public class TruckService {
     public void addTruck(Truck truck) {
         databaseReference.push().setValueAsync(truck);
     }
+
     public List<Truck> getTrucks() throws InterruptedException {
         List<Truck> trucks = new ArrayList<>();
         CountDownLatch latch = new CountDownLatch(1);

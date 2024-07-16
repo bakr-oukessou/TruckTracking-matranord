@@ -68,7 +68,7 @@ const SignIn: React.FC<Props> = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#C80036',
-    height: 700,
+    height: 'auto',
   },
   subView: {
     backgroundColor: 'white',
@@ -76,6 +76,8 @@ const styles = StyleSheet.create({
     marginTop: 240,
     borderTopRightRadius: 40,
     borderTopLeftRadius: 40,
+    alignSelf:'center'
+
   },
   headerTxt: {
     fontSize: 40,
@@ -83,6 +85,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'white',
     position: 'absolute',
+    fontFamily:'Poppins-Regular',
     marginTop: 140,
   },
   subTxt: {

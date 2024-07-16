@@ -5,6 +5,8 @@ import firebase from 'firebase/app';
 import 'firebase/auth';
 import { useSignUp } from "@clerk/clerk-expo";
 import { useRouter } from "expo-router";
+import { AnimatedMapView } from 'react-native-maps/lib/MapView';
+import Animated, { FadeIn } from 'react-native-reanimated';
 
 interface Props {
   navigation: any;
@@ -61,7 +63,7 @@ const SignUp: React.FC<Props> = ({ navigation }) => {
     }
   };
   return (
-    <View style={styles.container}>
+    <Animated.View style={styles.container} entering={FadeIn}>
       {!pendingVerification && (
         <>
 
@@ -107,14 +109,14 @@ const SignUp: React.FC<Props> = ({ navigation }) => {
           <Button title="Verify Email" onPress={onPressVerify} />
         </>
       )}
-    </View>
+    </Animated.View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#C80036',
-    height: 700,
+    height: 'auto',
   },
   subView: {
     backgroundColor: 'white',
@@ -122,7 +124,9 @@ const styles = StyleSheet.create({
     marginTop: 240,
     borderTopRightRadius: 40,
     borderTopLeftRadius: 40,
-    alignItems:'center'
+    // alignItems:'center',
+    alignSelf:'center',
+    fontFamily:'Poppins-Regular'
   },
   headerTxt: {
     fontSize: 40,
@@ -131,6 +135,7 @@ const styles = StyleSheet.create({
     color: 'white',
     position: 'absolute',
     marginTop: 140,
+    fontFamily:'Poppins-Regular'
   },
   subTxt: {
     color: 'black',

@@ -1,7 +1,10 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { View, Text, StyleSheet,TouchableOpacity, Button } from 'react-native';
+import {TextInput} from 'react-native-paper';
 import firebase from 'firebase/app';
 import 'firebase/auth';
+import { useSignUp } from "@clerk/clerk-expo";
+import { useRouter } from "expo-router";
 
 interface Props {
   navigation: any;
@@ -10,24 +13,77 @@ interface Props {
 const SignUp: React.FC<Props> = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [pass, setPass] = useState('');
+  const { isLoaded, signUp, setActive } = useSignUp();
+  const router = useRouter();
 
+  const [emailAddress, setEmailAddress] = React.useState("");
+  const [password, setPassword] = React.useState("");
+  const [pendingVerification, setPendingVerification] = React.useState(false);
+  const [code, setCode] = React.useState("");
+
+  const onSignUpPress = async () => {
+    if (!isLoaded) {
+      return;
+    }
+
+    try {
+      await signUp.create({
+        emailAddress,
+        password,
+      });
+
+      await signUp.prepareEmailAddressVerification({ strategy: "email_code" });
+
+      setPendingVerification(true);
+    } catch (err: any) {
+      console.error(JSON.stringify(err, null, 2));
+    }
+  };
+
+  const onPressVerify = async () => {
+    if (!isLoaded) {
+      return;
+    }
+
+    try {
+      const completeSignUp = await signUp.attemptEmailAddressVerification({
+        code,
+      });
+
+      if (completeSignUp.status === 'complete') {
+        await setActive({ session: completeSignUp.createdSessionId });
+        router.replace('/');
+      } else {
+        console.error(JSON.stringify(completeSignUp, null, 2));
+      }
+    } catch (err: any) {
+      console.error(JSON.stringify(err, null, 2));
+    }
+  };
   return (
     <View style={styles.container}>
+      {!pendingVerification && (
+        <>
+
       <Text style={styles.headerTxt}>WELCOME</Text>
       <View style={styles.subView}>
         <Text style={styles.subTxt}>Signup</Text>
-        <TextInput style={styles.nameInput} placeholder="Username" />
+        <TextInput style={styles.nameInput} label="Username" />
         <TextInput
+          autoCapitalize="none"
+          value={emailAddress}
           style={styles.nameInput}
-          placeholder="Email"
-          onChangeText={(email) => setEmail(email)}
+          label="Email"
+          onChangeText={(email) => setEmailAddress(email)}
         />
         <TextInput
+          value={password}
           style={styles.nameInput}
-          placeholder="Password"
-          onChangeText={(pass) => setPass(pass)}
+          label="Password"
+          secureTextEntry={true}
+          onChangeText={(pass) => setPassword(pass)}
         />
-        <TouchableOpacity style={styles.btn}>
+        <TouchableOpacity style={styles.btn} onPress={onSignUpPress}>
           <Text style={styles.btnTxt}>SignUp</Text>
         </TouchableOpacity>
         <View style={styles.endView}>
@@ -39,13 +95,25 @@ const SignUp: React.FC<Props> = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       </View>
+      </>
+      )}
+      {pendingVerification && (
+        <>
+          <TextInput
+            value={code}
+            placeholder="Code..."
+            onChangeText={(code) => setCode(code)}
+          />
+          <Button title="Verify Email" onPress={onPressVerify} />
+        </>
+      )}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#521be3',
+    backgroundColor: '#C80036',
     height: 700,
   },
   subView: {
@@ -54,6 +122,7 @@ const styles = StyleSheet.create({
     marginTop: 240,
     borderTopRightRadius: 40,
     borderTopLeftRadius: 40,
+    alignItems:'center'
   },
   headerTxt: {
     fontSize: 40,
@@ -80,7 +149,7 @@ const styles = StyleSheet.create({
   btn: {
     height: 50,
     width: 200,
-    backgroundColor: 'blue',
+    backgroundColor: '#9c0327',
     borderRadius: 80,
     borderWidth: 2,
     marginLeft: 70,

@@ -56,7 +56,7 @@ const SignIn: React.FC<Props> = ({ navigation }) => {
           <Text style={styles.endTxt}>Create an account?</Text>
           <TouchableOpacity
             style={styles.endBtn}
-            onPress={() => navigation.navigate('signup')}>
+            onPress={() => navigation.navigate('SignUp')}>
             <Text style={styles.loginTxt}>SignUp</Text>
           </TouchableOpacity>
         </View>
@@ -67,7 +67,7 @@ const SignIn: React.FC<Props> = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#521be3',
+    backgroundColor: '#C80036',
     height: 700,
   },
   subView: {
@@ -102,7 +102,7 @@ const styles = StyleSheet.create({
   btn: {
     height: 50,
     width: 200,
-    backgroundColor: 'blue',
+    backgroundColor: '#952323',
     borderRadius: 80,
     borderWidth: 2,
     marginLeft: 70,

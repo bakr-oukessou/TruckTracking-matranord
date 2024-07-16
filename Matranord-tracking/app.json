@@ -24,16 +24,19 @@
       "favicon": "./assets/favicon.png"
     },
     "plugins": [
-    [
-      "expo-font",
-      {
-        "fonts": ["node_modules/@expo-google-fonts/poppins/Poppins_700Bold.ttf",
-        "node_modules/@expo-google-fonts/poppins/Poppins-Bold.ttf",
-        "node_modules/@expo-google-fonts/poppins/Poppins-400Regular.ttf",
-        "assets/fonts/Poppins-Bold.ttf",
-        "assets/fonts/Poppins-Regular.ttf"]
-      }
+      [
+        "expo-font",
+        {
+          "fonts": [
+            "node_modules/@expo-google-fonts/poppins/Poppins_700Bold.ttf",
+            "node_modules/@expo-google-fonts/poppins/Poppins-Bold.ttf",
+            "node_modules/@expo-google-fonts/poppins/Poppins-400Regular.ttf",
+            "assets/fonts/Poppins-Bold.ttf",
+            "assets/fonts/Poppins-Regular.ttf"
+          ]
+        }
+      ],
+      "expo-router"
     ]
-  ]
   }
 }

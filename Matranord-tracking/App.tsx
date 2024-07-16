@@ -13,7 +13,7 @@ import { MaterialIcons } from '@expo/vector-icons';
 import * as SplashScreen from 'expo-splash-screen';
 import axios from 'axios';
 // import LinearGradient from 'react-native-linear-gradient';
-
+import * as SecureStore from 'expo-secure-store';
 import TruckDetails from './components/TruckDetails';
 import { RootStackParamList } from './types/types';
 import MapScreen from './components/Location';
@@ -21,6 +21,33 @@ import Mainscreen from './components/auth/main';
 import SignUp from './components/auth/signUp';
 import SignIn from './components/auth/signIn';
 import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo"
+
+//***********token**************/
+const tokenCache = {
+  async getToken(key: string) {
+    try {
+      const item = await SecureStore.getItemAsync(key);
+      if (item) {
+        console.log(`${key} was used 🔐 \n`);
+      } else {
+        console.log("No values stored under key: " + key);
+      }
+      return item;
+    } catch (error) {
+      console.error("SecureStore get item error: ", error);
+      await SecureStore.deleteItemAsync(key);
+      return null;
+    }
+  },
+  async saveToken(key: string, value: string) {
+    try {
+      return SecureStore.setItemAsync(key, value);
+    } catch (err) {
+      return;
+    }
+  },
+};
+//*****************************/
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -103,6 +130,8 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
   );
 };
 
+
+
 const MainScreenWrapper: React.FC = () => {
   const navigation = useNavigation<MainScreenNavigationProp>();
   const route = useRoute<MainScreenRouteProp>();
@@ -177,7 +206,7 @@ const TrackingWrapper: React.FC<StackScreenProps<RootStackParamList, 'Tracking'>
 );
 const App: React.FC = () => { 
   return (
-    <ClerkProvider publishableKey={publishableKey}>
+    <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
       <ClerkLoaded>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Main">
@@ -189,8 +218,8 @@ const App: React.FC = () => {
           <Stack.Screen name="Tracking" component={TrackingWrapper} options={{ title: 'Trucks' }}/>
           <Stack.Screen name="CMR" component={CMR} />  
           <Stack.Screen name="MainScreen" component={Mainscreen} />  
-          <Stack.Screen name="SignUp" component={SignUp} />  
-          <Stack.Screen name="SignIn" component={SignIn} />  
+          <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }}/>  
+          <Stack.Screen name="SignIn" component={SignIn} options={{ headerShown: false }}/>  
           <Stack.Screen name="PLOMOS" component={PLOMOS} />
           <Stack.Screen name="TruckDetails" component={TruckDetails} />
           <Stack.Screen name="MapScreen" component={MapScreen} />

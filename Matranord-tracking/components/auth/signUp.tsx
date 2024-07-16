@@ -1,56 +1,46 @@
-import React, { Component } from 'react';
-import {
-  Text,
-  View,
-  StyleSheet,
-  TextInput,
-  TouchableOpacity,
-} from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import firebase from 'firebase/app';
 import 'firebase/auth';
-
-interface State {
-  email: string;
-  pass: string;
-}
 
 interface Props {
   navigation: any;
 }
 
-export default class Signup extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      email: '',
-      pass: ''
-    }
-  }
-}
-const SignUp = () => {
-  
-    return (
-      <View style={styles.container}>
-        <Text style={styles.headerTxt}>WELCOME</Text>
-        <View style={styles.subView}>
-          <Text style={styles.subTxt}>Signup</Text>
-          <TextInput style={styles.nameInput} placeholder="Username" />
-          <TextInput style={styles.nameInput} placeholder="Email" onChangeText={(email) => { this.setState({ email }) }} />
-          <TextInput style={styles.nameInput} placeholder="Password" onChangeText={(pass) => { this.setState({ pass }) }} />
-          <TouchableOpacity style={styles.btn} >
-            <Text style={styles.btnTxt}>SignUp</Text>
+const SignUp: React.FC<Props> = ({ navigation }) => {
+  const [email, setEmail] = useState('');
+  const [pass, setPass] = useState('');
+
+  return (
+    <View style={styles.container}>
+      <Text style={styles.headerTxt}>WELCOME</Text>
+      <View style={styles.subView}>
+        <Text style={styles.subTxt}>Signup</Text>
+        <TextInput style={styles.nameInput} placeholder="Username" />
+        <TextInput
+          style={styles.nameInput}
+          placeholder="Email"
+          onChangeText={(email) => setEmail(email)}
+        />
+        <TextInput
+          style={styles.nameInput}
+          placeholder="Password"
+          onChangeText={(pass) => setPass(pass)}
+        />
+        <TouchableOpacity style={styles.btn}>
+          <Text style={styles.btnTxt}>SignUp</Text>
+        </TouchableOpacity>
+        <View style={styles.endView}>
+          <Text style={styles.endTxt}>Already have an account?</Text>
+          <TouchableOpacity
+            style={styles.endBtn}
+            onPress={() => navigation.navigate('login')}>
+            <Text style={styles.loginTxt}>Login</Text>
           </TouchableOpacity>
-          <View style={styles.endView}>
-            <Text style={styles.endTxt}>Already have an account?</Text>
-            <TouchableOpacity
-              style={styles.endBtn}
-              onPress={() => this.props.navigation.navigate('login')}>
-              <Text style={styles.loginTxt}>Login</Text>
-            </TouchableOpacity>
-          </View>
         </View>
       </View>
-    );
+    </View>
+  );
 };
 
 const styles = StyleSheet.create({
@@ -122,4 +112,5 @@ const styles = StyleSheet.create({
     marginTop: 17,
   },
 });
+
 export default SignUp;

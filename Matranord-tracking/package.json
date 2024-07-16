@@ -9,6 +9,7 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@clerk/clerk-expo": "^1.2.6",
     "@emotion/native": "^11.11.0",
     "@emotion/react": "^11.11.4",
     "@expo-google-fonts/inter": "^0.2.3",
@@ -24,6 +25,7 @@
     "expo-app-loading": "^1.0.3",
     "expo-font": "~12.0.7",
     "expo-location": "~17.0.1",
+    "expo-secure-store": "^13.0.2",
     "expo-splash-screen": "~0.27.5",
     "expo-status-bar": "~1.12.1",
     "firebase": "^10.12.3",

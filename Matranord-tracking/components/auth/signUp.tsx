@@ -34,7 +34,7 @@ const SignUp: React.FC<Props> = ({ navigation }) => {
           <Text style={styles.endTxt}>Already have an account?</Text>
           <TouchableOpacity
             style={styles.endBtn}
-            onPress={() => navigation.navigate('login')}>
+            onPress={() => navigation.navigate('SignIn')}>
             <Text style={styles.loginTxt}>Login</Text>
           </TouchableOpacity>
         </View>
@@ -50,7 +50,7 @@ const styles = StyleSheet.create({
   },
   subView: {
     backgroundColor: 'white',
-    height: 430,
+    height: 530,
     marginTop: 240,
     borderTopRightRadius: 40,
     borderTopLeftRadius: 40,

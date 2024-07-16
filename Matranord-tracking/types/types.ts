@@ -9,6 +9,8 @@ export type RootStackParamList = {
     TruckDetails: { truck: Truck };
     MapScreen:{ truck: Truck };
     MainScreen:undefined;
+    SignUp:undefined;
+    SignIn:undefined;
   };
   
   export interface Truck {

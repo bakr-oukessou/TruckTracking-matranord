@@ -18,9 +18,16 @@ import TruckDetails from './components/TruckDetails';
 import { RootStackParamList } from './types/types';
 import MapScreen from './components/Location';
 import Mainscreen from './components/auth/main';
-
+import SignUp from './components/auth/signUp';
+import SignIn from './components/auth/signIn';
+import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo"
 
 const Stack = createStackNavigator<RootStackParamList>();
+
+const publishableKey = process.env.EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY!;
+if (!publishableKey) {
+  throw new Error('Missing Publishable Key. Please set EXPO_PUBLIC_CLERK_PUBLISHABLE_KEY in your .env')
+}
 
 
 SplashScreen.preventAutoHideAsync();
@@ -81,16 +88,16 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
           buttonStyles,
         ]}>
         <MaterialIcons name="description" size={30} color="#365E32" />
-        <Text style={textStyle2}>CMR</Text>
+        <Text style={textStyle2}>MainScreen</Text>
       </Pressable>
-      <Pressable onPress={() => navigation.navigate('PLOMOS')} android_ripple={{color: 'gray',radius:175}} style={({pressed}) => [
+      <Pressable onPress={() => navigation.navigate('SignUp')} android_ripple={{color: 'gray',radius:175}} style={({pressed}) => [
           {
             backgroundColor: pressed ? '#EAD196' : 'white',
           },
           buttonStyles,
         ]}>
         <MaterialIcons name="attach-file" size={30} color="black" />
-        <Text style={textStyle2}>PLOMOS</Text>
+        <Text style={textStyle2}>SignUp</Text>
       </Pressable>
     </View>
   );
@@ -170,20 +177,27 @@ const TrackingWrapper: React.FC<StackScreenProps<RootStackParamList, 'Tracking'>
 );
 const App: React.FC = () => { 
   return (
-    <NavigationContainer>
-      <Stack.Navigator initialRouteName="Main">
-        <Stack.Screen
-          name="Main"
-          component={MainScreenWrapper}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen name="Tracking" component={TrackingWrapper} options={{ title: 'Trucks' }}/>
-        <Stack.Screen name="MainScreen" component={Mainscreen} />  
-        <Stack.Screen name="PLOMOS" component={PLOMOS} />
-        <Stack.Screen name="TruckDetails" component={TruckDetails} />
-        <Stack.Screen name="MapScreen" component={MapScreen} />
-      </Stack.Navigator>
-    </NavigationContainer>
+    <ClerkProvider publishableKey={publishableKey}>
+      <ClerkLoaded>
+      <NavigationContainer>
+        <Stack.Navigator initialRouteName="Main">
+          <Stack.Screen
+            name="Main"
+            component={MainScreenWrapper}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen name="Tracking" component={TrackingWrapper} options={{ title: 'Trucks' }}/>
+          <Stack.Screen name="CMR" component={CMR} />  
+          <Stack.Screen name="MainScreen" component={Mainscreen} />  
+          <Stack.Screen name="SignUp" component={SignUp} />  
+          <Stack.Screen name="SignIn" component={SignIn} />  
+          <Stack.Screen name="PLOMOS" component={PLOMOS} />
+          <Stack.Screen name="TruckDetails" component={TruckDetails} />
+          <Stack.Screen name="MapScreen" component={MapScreen} />
+        </Stack.Navigator>
+      </NavigationContainer>
+      </ClerkLoaded>
+    </ClerkProvider>
   );
 };
 

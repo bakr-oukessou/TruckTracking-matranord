@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState } from 'react';
 import {
   Text,
   View,
@@ -7,66 +7,63 @@ import {
   TouchableOpacity,
   Alert
 } from 'react-native';
-import firebase from '../Api/firebaseConfig';
-// import firebase from 'react-native-firebase';
-
-interface State {
-  email: string;
-  pass: string;
-}
-
+// import firebase from '../Api/firebaseConfig';
+import 'firebase/compat/auth';
+import firebase from 'firebase/compat/app';
 interface Props {
   navigation: any;
 }
 
-export default class Login extends Component<Props, State> {
-  constructor(props: Props) {
-    super(props);
-    this.state = {
-      email: '',
-      pass: '',
+const SignIn: React.FC<Props> = ({ navigation }) => {
+  const [email, setEmail] = useState('');
+  const [pass, setPass] = useState('');
+
+  const logIn = () => {
+    try {
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(email, pass)
+        .then((user: any) => {
+          Alert.alert('Welcome');
+        })
+        .catch((error) => {
+          console.log('error');
+        });
+    } catch (error) {
+      console.log('error');
     }
-  }
+  };
 
-//   logIn = () => {
-//     const { email, pass } = this.state
-//     try {
-//       firebase
-//         .auth()
-//         .signInWithEmailAndPassword(email, pass)
-//         .then((user: any) => {
-//           Alert.alert('Welcome')
-//         })
-//     }
-//     catch (error) {
-//       console.log('error');
-//     }
-//   }
-
-  render() {
-    return (
-      <View style={styles.container}>
-        <Text style={styles.headerTxt}>WELCOME</Text>
-        <View style={styles.subView}>
-          <Text style={styles.subTxt}>Login</Text>
-          <TextInput style={styles.nameInput} placeholder="Email" onChangeText={(email) => { this.setState({ email }) }} />
-          <TextInput style={styles.nameInput} placeholder="Password" onChangeText={(pass) => { this.setState({ pass }) }} />
-          <TouchableOpacity style={styles.btn} >
-            <Text style={styles.btnTxt}>Login</Text>
+  return (
+    <View style={styles.container}>
+      <Text style={styles.headerTxt}>WELCOME</Text>
+      <View style={styles.subView}>
+        <Text style={styles.subTxt}>Login</Text>
+        <TextInput
+          style={styles.nameInput}
+          placeholder="Email"
+          onChangeText={(email) => setEmail(email)}
+        />
+        <TextInput
+          style={styles.nameInput}
+          placeholder="Password"
+          onChangeText={(pass) => setPass(pass)}
+        />
+        <TouchableOpacity style={styles.btn} onPress={logIn}>
+          <Text style={styles.btnTxt}>Login</Text>
+        </TouchableOpacity>
+        <View style={styles.endView}>
+          <Text style={styles.endTxt}>Create an account?</Text>
+          <TouchableOpacity
+            style={styles.endBtn}
+            onPress={() => navigation.navigate('signup')}>
+            <Text style={styles.loginTxt}>SignUp</Text>
           </TouchableOpacity>
-          <View style={styles.endView}>
-            <Text style={styles.endTxt}>Create an account?</Text>
-            <TouchableOpacity
-              style={styles.endBtn}
-              onPress={() => this.props.navigation.navigate('signup')}>
-              <Text style={styles.loginTxt}>SignUp</Text>
-            </TouchableOpacity>
-          </View>
         </View>
       </View>
-    );
-  }
-}
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
@@ -75,7 +72,7 @@ const styles = StyleSheet.create({
   },
   subView: {
     backgroundColor: 'white',
-    height: 430,
+    height: 530,
     marginTop: 240,
     borderTopRightRadius: 40,
     borderTopLeftRadius: 40,
@@ -137,3 +134,5 @@ const styles = StyleSheet.create({
     marginTop: 24,
   },
 });
+
+export default SignIn;

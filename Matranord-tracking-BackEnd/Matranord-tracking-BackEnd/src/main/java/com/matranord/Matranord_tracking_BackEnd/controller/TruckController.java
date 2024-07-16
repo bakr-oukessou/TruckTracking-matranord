@@ -56,13 +56,13 @@ public class TruckController {
     }
 
     //******************Firebase methods******************
-    @PutMapping("/{id}")
-    public void updateTruck(@PathVariable String id, @RequestBody Map<String, Object> updates) {
-        truckService.updateTruck(id, updates);
-    }
-
-    @DeleteMapping("/{id}")
-    public void deleteTruck(@PathVariable String id) {
-        truckService.deleteTruck(id);
-    }
+//    @PutMapping("/{id}")
+//    public void updateTruck(@PathVariable String id, @RequestBody Map<String, Object> updates) {
+//        truckService.updateTruck(id, updates);
+//    }
+//
+//    @DeleteMapping("/{id}")
+//    public void deleteTruck(@PathVariable String id) {
+//        truckService.deleteTruck(id);
+//    }
 }

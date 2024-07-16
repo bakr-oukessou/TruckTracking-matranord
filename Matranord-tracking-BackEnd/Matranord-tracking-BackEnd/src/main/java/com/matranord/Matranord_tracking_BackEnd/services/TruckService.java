@@ -16,7 +16,7 @@ import java.util.concurrent.CountDownLatch;
 public class TruckService {
     @Autowired
     private TruckRepository truckRepository;
-    private final DatabaseReference databaseReference;
+//    private final DatabaseReference databaseReference;
 
 
 
@@ -38,45 +38,45 @@ public class TruckService {
 
 
     // **************Firebase Methods**************
-    public TruckService() {
-        this.databaseReference = FirebaseDatabase.getInstance().getReference("trucks");
-    }
-
-    public void addTruck(Truck truck) {
-        databaseReference.push().setValueAsync(truck);
-    }
-
-    public List<Truck> getTrucks() throws InterruptedException {
-        List<Truck> trucks = new ArrayList<>();
-        CountDownLatch latch = new CountDownLatch(1);
-
-        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Truck truck = snapshot.getValue(Truck.class);
-                    trucks.add(truck);
-                }
-                latch.countDown();
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                latch.countDown();
-            }
-        });
-
-        latch.await();
-        return trucks;
-    }
-
-    public void updateTruck(String id, Map<String, Object> updates) {
-        databaseReference.child(id).updateChildrenAsync(updates);
-    }
-
-
-    public void deleteTruck(String id) {
-        databaseReference.child(id).removeValueAsync();
-    }
+//    public TruckService() {
+//        this.databaseReference = FirebaseDatabase.getInstance().getReference("trucks");
+//    }
+//
+//    public void addTruck(Truck truck) {
+//        databaseReference.push().setValueAsync(truck);
+//    }
+//
+//    public List<Truck> getTrucks() throws InterruptedException {
+//        List<Truck> trucks = new ArrayList<>();
+//        CountDownLatch latch = new CountDownLatch(1);
+//
+//        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+//                    Truck truck = snapshot.getValue(Truck.class);
+//                    trucks.add(truck);
+//                }
+//                latch.countDown();
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//                latch.countDown();
+//            }
+//        });
+//
+//        latch.await();
+//        return trucks;
+//    }
+//
+//    public void updateTruck(String id, Map<String, Object> updates) {
+//        databaseReference.child(id).updateChildrenAsync(updates);
+//    }
+//
+//
+//    public void deleteTruck(String id) {
+//        databaseReference.child(id).removeValueAsync();
+//    }
 
 }

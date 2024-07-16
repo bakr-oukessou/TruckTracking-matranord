@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Button, StyleSheet, Pressable, Image, Animated } from 'react-native';
+import { View, Text, Button, StyleSheet, Pressable, Image, Animated, ImageBackground } from 'react-native';
 import { NavigationContainer, useNavigation, useRoute } from '@react-navigation/native';
 import { createStackNavigator, StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
@@ -17,6 +17,7 @@ import axios from 'axios';
 import TruckDetails from './components/TruckDetails';
 import { RootStackParamList } from './types/types';
 import MapScreen from './components/Location';
+import Mainscreen from './components/auth/main';
 
 
 const Stack = createStackNavigator<RootStackParamList>();
@@ -60,19 +61,20 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
   
   return (
     <View style={styles}>
+      <ImageBackground source={require('./assets/pngwing.com.png')}/>
       {/* <Text style={textStyle}>Matran<MaterialIcons name="public" size={35} color="black" />
       rd</Text> */}
       <Image source={require('./assets/Logo-png-1.png')} style={imagestyles.image}/>
       <Pressable onPress={() => navigation.navigate('Tracking')} android_ripple={{color: 'gray',radius:175}} style={({pressed}) => [
         {
           backgroundColor: pressed ? '#EAD196' : 'white',
-        },
+        }, 
         buttonStyles,
       ]}>
         <MaterialIcons name="local-shipping" size={30} color="#AA3A3A" />
         <Text style={textStyle2}>TRACKING</Text>
       </Pressable>
-      <Pressable onPress={() => navigation.navigate('CMR')} android_ripple={{color: 'gray',radius:175}} style={({pressed}) => [
+      <Pressable onPress={() => navigation.navigate('MainScreen')} android_ripple={{color: 'gray',radius:175}} style={({pressed}) => [
           {
             backgroundColor: pressed ? '#EAD196' : 'white',
           },
@@ -176,7 +178,7 @@ const App: React.FC = () => {
           options={{ headerShown: false }}
         />
         <Stack.Screen name="Tracking" component={TrackingWrapper} options={{ title: 'Trucks' }}/>
-        <Stack.Screen name="CMR" component={CMR} />  
+        <Stack.Screen name="MainScreen" component={Mainscreen} />  
         <Stack.Screen name="PLOMOS" component={PLOMOS} />
         <Stack.Screen name="TruckDetails" component={TruckDetails} />
         <Stack.Screen name="MapScreen" component={MapScreen} />

@@ -8,6 +8,7 @@ export type RootStackParamList = {
     PLOMOS: undefined;
     TruckDetails: { truck: Truck };
     MapScreen:{ truck: Truck };
+    MainScreen:undefined;
   };
   
   export interface Truck {

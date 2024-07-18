@@ -15,7 +15,7 @@ import { useNavigation } from '@react-navigation/native';
 import { MyComponentProps, RootStackParamList, Truck } from '../types/types';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { MasonryFlashList } from "@shopify/flash-list";
-import { createTruck, getAllTrucks } from './Api/api';
+import { createTruck, getAllTrucks } from '../components/Api/api';
 import { AnimatedFAB, Button, Modal, PaperProvider, Portal, Searchbar, Snackbar, TextInput } from 'react-native-paper';
 import axios from 'axios';
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';

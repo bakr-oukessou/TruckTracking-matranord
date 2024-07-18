@@ -3,13 +3,16 @@ import {
   Text,
   View,
   StyleSheet,
-  TextInput,
   TouchableOpacity,
   Alert
 } from 'react-native';
 // import firebase from '../Api/firebaseConfig';
 import 'firebase/compat/auth';
 import firebase from 'firebase/compat/app';
+import { useSignIn } from "@clerk/clerk-expo";
+import { useRouter } from "expo-router";
+import Animated, { BounceIn, BounceInDown, BounceInUp } from 'react-native-reanimated';
+import { TextInput } from 'react-native-paper';
 interface Props {
   navigation: any;
 }
@@ -17,7 +20,11 @@ interface Props {
 const SignIn: React.FC<Props> = ({ navigation }) => {
   const [email, setEmail] = useState('');
   const [pass, setPass] = useState('');
+  const { signIn, setActive, isLoaded } = useSignIn();
+  const router = useRouter();
 
+  const [emailAddress, setEmailAddress] = React.useState("");
+  const [password, setPassword] = React.useState("");
   const logIn = () => {
     try {
       firebase
@@ -33,23 +40,52 @@ const SignIn: React.FC<Props> = ({ navigation }) => {
       console.log('error');
     }
   };
+  const onSignInPress = React.useCallback(async () => {
+    if (!isLoaded) {
+      return;
+    }
+
+    try {
+      const signInAttempt = await signIn.create({
+        identifier: emailAddress,
+        password,
+      });
+
+      if (signInAttempt.status === 'complete') {
+        await setActive({ session: signInAttempt.createdSessionId });
+        router.replace('/');
+      } else {
+        // See https://clerk.com/docs/custom-flows/error-handling
+        // for more info on error handling
+        console.error(JSON.stringify(signInAttempt, null, 2));
+      }
+    } catch (err: any) {
+      console.error(JSON.stringify(err, null, 2));
+    }
+  }, [isLoaded, emailAddress, password]);
 
   return (
     <View style={styles.container}>
       <Text style={styles.headerTxt}>WELCOME</Text>
-      <View style={styles.subView}>
+      <Animated.View style={styles.subView} entering={BounceInDown.delay(200).duration(1000)} exiting={BounceInUp.delay(200).duration(1000)}>
         <Text style={styles.subTxt}>Login</Text>
         <TextInput
+          autoCapitalize="none"
+          value={emailAddress}
           style={styles.nameInput}
-          placeholder="Email"
-          onChangeText={(email) => setEmail(email)}
+          label="Email"
+          activeUnderlineColor='#9c0327'
+          onChangeText={(email) => setEmailAddress(email)}
         />
         <TextInput
-          style={styles.nameInput}
-          placeholder="Password"
-          onChangeText={(pass) => setPass(pass)}
+           value={password}
+           style={styles.nameInput}
+           label="Password"
+           secureTextEntry={true}
+           activeUnderlineColor='#9c0327'
+           onChangeText={(pass) => setPassword(pass)}
         />
-        <TouchableOpacity style={styles.btn} onPress={logIn}>
+        <TouchableOpacity style={styles.btn} onPress={onSignInPress}>
           <Text style={styles.btnTxt}>Login</Text>
         </TouchableOpacity>
         <View style={styles.endView}>
@@ -60,7 +96,7 @@ const SignIn: React.FC<Props> = ({ navigation }) => {
             <Text style={styles.loginTxt}>SignUp</Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </Animated.View>
     </View>
   );
 };
@@ -73,69 +109,73 @@ const styles = StyleSheet.create({
   subView: {
     backgroundColor: 'white',
     height: 530,
+    width:340,
     marginTop: 240,
     borderTopRightRadius: 40,
     borderTopLeftRadius: 40,
-    alignSelf:'center'
-
+    // alignItems:'center',
+    alignSelf:'center',
+    fontFamily:'Poppins-Regular'
   },
   headerTxt: {
     fontSize: 40,
     marginLeft: 40,
-    fontWeight: 'bold',
     color: 'white',
     position: 'absolute',
-    fontFamily:'Poppins-Regular',
     marginTop: 140,
+    fontFamily:'Poppins_700Bold'
   },
   subTxt: {
     color: 'black',
     marginTop: 20,
     fontSize: 30,
-    fontFamily:'Poppins-Regular',
-    fontWeight: 'bold',
-    marginLeft: 40,
+    fontFamily:'Poppins-Bold',
+    textAlign:'center'
   },
   nameInput: {
-    height: 40,
+    height: 50,
     width: 270,
-    marginLeft: 40,
+    alignSelf:'center',
     borderBottomWidth: 1,
+    fontFamily:'Poppins-Regular',
     marginTop: 30,
   },
   btn: {
     height: 50,
     width: 200,
-    backgroundColor: '#952323',
+    backgroundColor: '#9c0327',
     borderRadius: 80,
     borderWidth: 2,
-    marginLeft: 70,
+    // marginLeft: 70,
     marginTop: 30,
     justifyContent: 'center',
     alignItems: 'center',
+    alignSelf:'center'
   },
   btnTxt: {
+    fontFamily:'Poppins-Bold',
     color: 'white',
-    fontWeight: 'bold',
     fontSize: 20,
   },
   endView: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'space-between',
   },
   endTxt: {
     fontSize: 15,
-    marginTop: 30,
-    marginLeft: 60,
-    fontWeight: 'bold',
+    marginTop: 20,
+    // marginLeft: 40,
+    fontFamily:'Poppins-Regular',
+    textAlign:'center'
   },
   endBtn: {
-    marginRight: 80,
+    marginTop: -10,
+    alignSelf:'center'
   },
   loginTxt: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    marginTop: 24,
+    fontSize: 17,
+    fontFamily:'Poppins-Bold',
+    marginTop: 17,
   },
 });
 

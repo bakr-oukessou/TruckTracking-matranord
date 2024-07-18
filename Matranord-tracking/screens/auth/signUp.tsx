@@ -84,12 +84,13 @@ const SignUp: React.FC<Props> = ({ navigation }) => {
       <Text style={styles.headerTxt}>WELCOME</Text>
       <Animated.View style={styles.subView} entering={BounceInDown.delay(200).duration(1000)} exiting={BounceInUp.delay(200).duration(1000)}>
         <Text style={styles.subTxt}>Signup</Text>
-        <TextInput style={styles.nameInput} label="Username" />
+        <TextInput style={styles.nameInput} label="Username" activeUnderlineColor='#9c0327' />
         <TextInput
           autoCapitalize="none"
           value={emailAddress}
           style={styles.nameInput}
           label="Email"
+          activeUnderlineColor='#9c0327'
           onChangeText={(email) => setEmailAddress(email)}
         />
         <TextInput
@@ -97,6 +98,7 @@ const SignUp: React.FC<Props> = ({ navigation }) => {
           style={styles.nameInput}
           label="Password"
           secureTextEntry={true}
+          activeUnderlineColor='#9c0327'
           onChangeText={(pass) => setPassword(pass)}
         />
         <TouchableOpacity style={styles.btn} onPress={onSignUpPress}>
@@ -116,11 +118,23 @@ const SignUp: React.FC<Props> = ({ navigation }) => {
       {pendingVerification && (
         <>
           <TextInput
+            style={{
+              height: 40,
+              borderColor: 'gray',
+              borderWidth: 1,
+              paddingHorizontal: 10,
+              paddingVertical: 10,
+              borderRadius: 5,
+              marginBottom: 10,
+            }}
             value={code}
             placeholder="Code..."
             onChangeText={(code) => setCode(code)}
           />
-          <Button title="Verify Email" onPress={onPressVerify} />
+          <Button 
+            title="Verify Email"
+            onPress={onPressVerify}
+             />
         </>
       )}
     </View>
@@ -135,6 +149,7 @@ const styles = StyleSheet.create({
   subView: {
     backgroundColor: 'white',
     height: 530,
+    width:340,
     marginTop: 240,
     borderTopRightRadius: 40,
     borderTopLeftRadius: 40,
@@ -145,7 +160,6 @@ const styles = StyleSheet.create({
   headerTxt: {
     fontSize: 40,
     marginLeft: 40,
-    fontWeight: 'bold',
     color: 'white',
     position: 'absolute',
     marginTop: 140,
@@ -155,15 +169,16 @@ const styles = StyleSheet.create({
     color: 'black',
     marginTop: 20,
     fontSize: 30,
-    fontWeight: 'bold',
-    marginLeft: 40,
-    fontFamily:'Poppins_700Bold'
+    fontFamily:'Poppins-Bold',
+    textAlign:'center'
   },
   nameInput: {
     height: 50,
     width: 270,
-    marginLeft: 40,
+    alignSelf:'center',
     borderBottomWidth: 1,
+    fontFamily:'Poppins-Regular',
+    backgroundColor:'#F3E0E4',
     marginTop: 30,
   },
   btn: {
@@ -172,33 +187,35 @@ const styles = StyleSheet.create({
     backgroundColor: '#9c0327',
     borderRadius: 80,
     borderWidth: 2,
-    marginLeft: 70,
+    // marginLeft: 70,
     marginTop: 30,
     justifyContent: 'center',
     alignItems: 'center',
+    alignSelf:'center'
   },
   btnTxt: {
+    fontFamily:'Poppins-Bold',
     color: 'white',
-    fontWeight: 'bold',
     fontSize: 20,
   },
   endView: {
-    flexDirection: 'row',
+    flexDirection: 'column',
     justifyContent: 'space-between',
   },
   endTxt: {
     fontSize: 15,
     marginTop: 20,
-    marginLeft: 40,
-    fontFamily:'Poppins-Bold',
-    fontWeight: 'bold',
+    // marginLeft: 40,
+    fontFamily:'Poppins-Regular',
+    textAlign:'center'
   },
   endBtn: {
-    marginRight: 80,
+    marginTop: -10,
+    alignSelf:'center'
   },
   loginTxt: {
-    fontSize: 20,
-    fontWeight: 'bold',
+    fontSize: 17,
+    fontFamily:'Poppins-Bold',
     marginTop: 17,
   },
 });

@@ -1,12 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet,TouchableOpacity, Button } from 'react-native';
 import {TextInput} from 'react-native-paper';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import { useSignUp } from "@clerk/clerk-expo";
 import { useRouter } from "expo-router";
-import { AnimatedMapView } from 'react-native-maps/lib/MapView';
-import Animated, { FadeIn } from 'react-native-reanimated';
+import Animated, { BounceIn, BounceInDown, BounceInUp } from 'react-native-reanimated';
+import loadFonts from '../LoadFonts';
 
 interface Props {
   navigation: any;
@@ -22,6 +22,10 @@ const SignUp: React.FC<Props> = ({ navigation }) => {
   const [password, setPassword] = React.useState("");
   const [pendingVerification, setPendingVerification] = React.useState(false);
   const [code, setCode] = React.useState("");
+
+  useEffect(() => {
+    loadFonts();
+    }, []);
 
   const onSignUpPress = async () => {
     if (!isLoaded) {
@@ -63,12 +67,11 @@ const SignUp: React.FC<Props> = ({ navigation }) => {
     }
   };
   return (
-    <Animated.View style={styles.container} entering={FadeIn}>
+    <View style={styles.container}>
       {!pendingVerification && (
         <>
-
       <Text style={styles.headerTxt}>WELCOME</Text>
-      <View style={styles.subView}>
+      <Animated.View style={styles.subView} entering={BounceInDown.delay(200).duration(1000)} exiting={BounceInUp.delay(200).duration(1000)}>
         <Text style={styles.subTxt}>Signup</Text>
         <TextInput style={styles.nameInput} label="Username" />
         <TextInput
@@ -96,7 +99,7 @@ const SignUp: React.FC<Props> = ({ navigation }) => {
             <Text style={styles.loginTxt}>Login</Text>
           </TouchableOpacity>
         </View>
-      </View>
+      </Animated.View>
       </>
       )}
       {pendingVerification && (
@@ -109,7 +112,7 @@ const SignUp: React.FC<Props> = ({ navigation }) => {
           <Button title="Verify Email" onPress={onPressVerify} />
         </>
       )}
-    </Animated.View>
+    </View>
   );
 };
 
@@ -135,7 +138,7 @@ const styles = StyleSheet.create({
     color: 'white',
     position: 'absolute',
     marginTop: 140,
-    fontFamily:'Poppins-Regular'
+    fontFamily:'Poppins-Bold'
   },
   subTxt: {
     color: 'black',
@@ -143,9 +146,10 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: 'bold',
     marginLeft: 40,
+    fontFamily:'Poppins-Bold'
   },
   nameInput: {
-    height: 40,
+    height: 50,
     width: 270,
     marginLeft: 40,
     borderBottomWidth: 1,
@@ -175,6 +179,7 @@ const styles = StyleSheet.create({
     fontSize: 15,
     marginTop: 20,
     marginLeft: 40,
+    fontFamily:'Poppins-Bold',
     fontWeight: 'bold',
   },
   endBtn: {

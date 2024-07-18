@@ -108,7 +108,7 @@ const styles = StyleSheet.create({
   },
   subView: {
     backgroundColor: 'white',
-    height: 530,
+    height: 630,
     width:340,
     marginTop: 240,
     borderTopRightRadius: 40,

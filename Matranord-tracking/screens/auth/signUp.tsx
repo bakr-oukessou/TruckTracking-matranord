@@ -1,12 +1,13 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet,TouchableOpacity, Button } from 'react-native';
-import {TextInput} from 'react-native-paper';
+import React, { useEffect, useRef, useState } from 'react';
+import { View, Text, StyleSheet,TouchableOpacity, Button, TextInput } from 'react-native';
+import { TextInput as PaperTextInput } from 'react-native-paper';
 import firebase from 'firebase/app';
 import 'firebase/auth';
 import { useSignUp } from "@clerk/clerk-expo";
 import { useRouter } from "expo-router";
 import Animated, { BounceIn, BounceInDown, BounceInUp } from 'react-native-reanimated';
 import loadFonts from '../../components/LoadFonts';
+import type { TextInput as RNPTextInput } from 'react-native-paper';
 import {
   useFonts,
   Poppins_400Regular,
@@ -26,6 +27,20 @@ const SignUp: React.FC<Props> = ({ navigation }) => {
   const [password, setPassword] = React.useState("");
   const [pendingVerification, setPendingVerification] = React.useState(false);
   const [code, setCode] = React.useState("");
+
+  const [verificationCode, setVerificationCode] = useState(['', '', '', '','','']);
+  const inputRefs = useRef<Array<TextInput | null>>([]);
+
+
+  const handleCodeChange = (text: string, index: number) => {
+    const newCode = [...verificationCode];
+    newCode[index] = text;
+    setVerificationCode(newCode);
+
+    if (text && index < 3) {
+      inputRefs.current[index + 1]?.focus();
+    }
+  };
 
   useEffect(() => {
     loadFonts();
@@ -63,8 +78,9 @@ const SignUp: React.FC<Props> = ({ navigation }) => {
     }
 
     try {
+      const fullCode = verificationCode.join('');
       const completeSignUp = await signUp.attemptEmailAddressVerification({
-        code,
+        code: fullCode,
       });
 
       if (completeSignUp.status === 'complete') {
@@ -84,8 +100,8 @@ const SignUp: React.FC<Props> = ({ navigation }) => {
       <Text style={styles.headerTxt}>WELCOME</Text>
       <Animated.View style={styles.subView} entering={BounceInDown.delay(200).duration(1000)} exiting={BounceInUp.delay(200).duration(1000)}>
         <Text style={styles.subTxt}>Signup</Text>
-        <TextInput style={styles.nameInput} label="Username" activeUnderlineColor='#9c0327' />
-        <TextInput
+        <PaperTextInput style={styles.nameInput} label="Username" activeUnderlineColor='#9c0327' />
+        <PaperTextInput
           autoCapitalize="none"
           value={emailAddress}
           style={styles.nameInput}
@@ -93,7 +109,7 @@ const SignUp: React.FC<Props> = ({ navigation }) => {
           activeUnderlineColor='#9c0327'
           onChangeText={(email) => setEmailAddress(email)}
         />
-        <TextInput
+        <PaperTextInput
           value={password}
           style={styles.nameInput}
           label="Password"
@@ -117,24 +133,37 @@ const SignUp: React.FC<Props> = ({ navigation }) => {
       )}
       {pendingVerification && (
         <>
-          <TextInput
-            style={{
-              height: 40,
-              borderColor: 'gray',
-              borderWidth: 1,
-              paddingHorizontal: 10,
-              paddingVertical: 10,
-              borderRadius: 5,
-              marginBottom: 10,
-            }}
-            value={code}
-            placeholder="Code..."
-            onChangeText={(code) => setCode(code)}
-          />
-          <Button 
-            title="Verify Email"
-            onPress={onPressVerify}
-             />
+          <View style={styles.verificationContainer}>
+          <Text style={styles.verificationTitle}>Verify Code</Text>
+          <Text style={styles.verificationSubtitle}>
+            Please check your Email and{'\n'}enter verification code we just send you
+          </Text>
+          <Text style={styles.phoneNumber}>{emailAddress}</Text>
+
+          <View style={styles.codeContainer}>
+            {verificationCode.map((digit, index) => (
+              <PaperTextInput
+                key={index}
+                ref={(ref: any) => {
+                  if (ref) {
+                    inputRefs.current[index] = ref;
+                  }
+                }}
+                style={[styles.codeInput, index === 0 && styles.activeCodeInput]}
+                value={digit}
+                onChangeText={(text) => handleCodeChange(text, index)}
+                keyboardType="number-pad"
+                maxLength={1}
+                mode="outlined"
+                dense
+              />
+            ))}
+          </View>
+
+          <TouchableOpacity style={styles.submitButton} onPress={onPressVerify}>
+            <Text style={styles.submitButtonText}>Submit</Text>
+          </TouchableOpacity>
+        </View>
         </>
       )}
     </View>
@@ -148,7 +177,7 @@ const styles = StyleSheet.create({
   },
   subView: {
     backgroundColor: 'white',
-    height: 530,
+    height: 630,
     width:340,
     marginTop: 240,
     borderTopRightRadius: 40,
@@ -217,6 +246,64 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontFamily:'Poppins-Bold',
     marginTop: 17,
+  },
+  verificationContainer: {
+    // flex: 0,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#FFFFFF',
+    padding: 20,
+    paddingTop:200
+  },
+  verificationTitle: {
+    fontSize: 24,
+    marginBottom: 10,
+    fontFamily: 'Poppins_700Bold',
+  },
+  verificationSubtitle: {
+    fontSize: 14,
+    textAlign: 'center',
+    marginBottom: 5,
+    color: '#666',
+    fontFamily: 'Poppins_400Regular',
+  },
+  phoneNumber: {
+    fontSize: 14,
+    marginBottom: 20,
+    fontFamily: 'Poppins_700Bold',
+  },
+  codeContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '80%',
+    marginBottom: 30,
+  },
+  codeInput: {
+    width: 50,
+    height: 50,
+    borderWidth: 1,
+    borderColor: '#DDD',
+    borderRadius: 10,
+    fontSize: 24,
+    textAlign: 'center',
+  },
+  activeCodeInput: {
+    borderColor: '#9c0327',
+    borderWidth: 2,
+  },
+  submitButton: {
+    backgroundColor: '#9c0327',
+    paddingVertical: 15,
+    paddingHorizontal: 30,
+    borderRadius: 25,
+    width: '80%',
+  },
+  submitButtonText: {
+    color: '#FFFFFF',
+    fontSize: 18,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    fontFamily: 'Poppins_700Bold',
   },
 });
 

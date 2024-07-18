@@ -3,9 +3,9 @@ import { View, Text, Button, StyleSheet, Pressable, Image, Animated, ImageBackgr
 import { NavigationContainer, useNavigation, useRoute } from '@react-navigation/native';
 import { createStackNavigator, StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
-import Tracking from './components/Tracking';
-import CMR from './components/CMR';
-import PLOMOS from './components/Plomos';
+import Tracking from './screens/Tracking';
+import CMR from './screens/CMR';
+import PLOMOS from './screens/Plomos';
 import { css } from '@emotion/native';
 import * as Font from 'expo-font';
 import { useFonts } from 'expo-font'; 
@@ -14,12 +14,12 @@ import * as SplashScreen from 'expo-splash-screen';
 import axios from 'axios';
 // import LinearGradient from 'react-native-linear-gradient';
 import * as SecureStore from 'expo-secure-store';
-import TruckDetails from './components/TruckDetails';
+import TruckDetails from './screens/TruckDetails';
 import { RootStackParamList } from './types/types';
 import MapScreen from './components/Location';
-import Mainscreen from './components/auth/main';
-import SignUp from './components/auth/signUp';
-import SignIn from './components/auth/signIn';
+import Mainscreen from './screens/auth/main';
+import SignUp from './screens/auth/signUp';
+import SignIn from './screens/auth/signIn';
 import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo"
 
 //***********token**************/
@@ -189,7 +189,7 @@ const textStyle2 = css`
   padding-top:5px;  
   font-family:'Poppins-Regular';
   text-align: center;
-  width:auto;
+  // width:auto;
   top:0;
 `;
 const TrackingWrapper: React.FC<StackScreenProps<RootStackParamList, 'Tracking'>> = ({ navigation, route }) => (

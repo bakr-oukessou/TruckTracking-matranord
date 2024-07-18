@@ -92,6 +92,7 @@ const styles = StyleSheet.create({
     color: 'black',
     marginTop: 20,
     fontSize: 30,
+    fontFamily:'Poppins-Regular',
     fontWeight: 'bold',
     marginLeft: 40,
   },

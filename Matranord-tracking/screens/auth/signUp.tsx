@@ -6,8 +6,12 @@ import 'firebase/auth';
 import { useSignUp } from "@clerk/clerk-expo";
 import { useRouter } from "expo-router";
 import Animated, { BounceIn, BounceInDown, BounceInUp } from 'react-native-reanimated';
-import loadFonts from '../LoadFonts';
-
+import loadFonts from '../../components/LoadFonts';
+import {
+  useFonts,
+  Poppins_400Regular,
+  Poppins_700Bold,
+} from "@expo-google-fonts/poppins";
 interface Props {
   navigation: any;
 }
@@ -27,6 +31,13 @@ const SignUp: React.FC<Props> = ({ navigation }) => {
     loadFonts();
     }, []);
 
+    const [loaded] = useFonts({
+      Poppins_400Regular,
+      Poppins_700Bold,
+    });
+    if (!loaded) {
+      return null;
+    }
   const onSignUpPress = async () => {
     if (!isLoaded) {
       return;
@@ -138,7 +149,7 @@ const styles = StyleSheet.create({
     color: 'white',
     position: 'absolute',
     marginTop: 140,
-    fontFamily:'Poppins-Bold'
+    fontFamily:'Poppins_700Bold'
   },
   subTxt: {
     color: 'black',
@@ -146,7 +157,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     fontWeight: 'bold',
     marginLeft: 40,
-    fontFamily:'Poppins-Bold'
+    fontFamily:'Poppins_700Bold'
   },
   nameInput: {
     height: 50,

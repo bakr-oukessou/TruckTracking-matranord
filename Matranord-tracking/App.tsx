@@ -8,7 +8,7 @@ import CMR from './screens/CMR';
 import PLOMOS from './screens/Plomos';
 import { css } from '@emotion/native';
 import * as Font from 'expo-font';
-import { useFonts } from 'expo-font'; 
+import { useFonts } from 'expo-font';
 import { MaterialIcons } from '@expo/vector-icons';
 import * as SplashScreen from 'expo-splash-screen';
 import axios from 'axios';

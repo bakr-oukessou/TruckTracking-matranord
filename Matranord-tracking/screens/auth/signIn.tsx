@@ -4,7 +4,8 @@ import {
   View,
   StyleSheet,
   TouchableOpacity,
-  Alert
+  Alert,
+  Image
 } from 'react-native';
 // import firebase from '../Api/firebaseConfig';
 import 'firebase/compat/auth';
@@ -55,8 +56,6 @@ const SignIn: React.FC<Props> = ({ navigation }) => {
         await setActive({ session: signInAttempt.createdSessionId });
         router.replace('/');
       } else {
-        // See https://clerk.com/docs/custom-flows/error-handling
-        // for more info on error handling
         console.error(JSON.stringify(signInAttempt, null, 2));
       }
     } catch (err: any) {
@@ -66,7 +65,8 @@ const SignIn: React.FC<Props> = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.headerTxt}>WELCOME</Text>
+      <Text style={styles.headerTxt}>WELCOME TO</Text>
+      <Image source={require('../../assets/Logo-png-1.png')} style={imagestyles.image}/>
       <Animated.View style={styles.subView} entering={BounceInDown.delay(200).duration(1000)} exiting={BounceInUp.delay(200).duration(1000)}>
         <Text style={styles.subTxt}>Login</Text>
         <TextInput
@@ -101,6 +101,14 @@ const SignIn: React.FC<Props> = ({ navigation }) => {
   );
 };
 
+const imagestyles = StyleSheet.create({
+  image:{
+    marginTop:130,
+    alignSelf:'center',
+    objectFit:'contain',
+    height:120,
+  }
+});
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#C80036',
@@ -110,7 +118,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     height: 630,
     width:340,
-    marginTop: 240,
+    marginTop: 70,
     borderTopRightRadius: 40,
     borderTopLeftRadius: 40,
     // alignItems:'center',
@@ -122,7 +130,7 @@ const styles = StyleSheet.create({
     marginLeft: 40,
     color: 'white',
     position: 'absolute',
-    marginTop: 140,
+    marginTop: 40,
     fontFamily:'Poppins_700Bold'
   },
   subTxt: {

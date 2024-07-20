@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, StyleSheet,TouchableOpacity, Button, TextInput } from 'react-native';
+import { View, Text, StyleSheet,TouchableOpacity, Button, TextInput, Image } from 'react-native';
 import { TextInput as PaperTextInput } from 'react-native-paper';
 import firebase from 'firebase/app';
 import 'firebase/auth';
@@ -97,10 +97,15 @@ const SignUp: React.FC<Props> = ({ navigation }) => {
     <View style={styles.container}>
       {!pendingVerification && (
         <>
-      <Text style={styles.headerTxt}>WELCOME</Text>
+      <Text style={styles.headerTxt}>WELCOME TO </Text>
+      <Image source={require('../../assets/Logo-png-1.png')} style={imagestyles.image}/>
       <Animated.View style={styles.subView} entering={BounceInDown.delay(200).duration(1000)} exiting={BounceInUp.delay(200).duration(1000)}>
         <Text style={styles.subTxt}>Signup</Text>
-        <PaperTextInput style={styles.nameInput} label="Username" activeUnderlineColor='#9c0327' />
+        <PaperTextInput
+         style={styles.nameInput}
+         label="Username" 
+         activeUnderlineColor='#9c0327'
+        />
         <PaperTextInput
           autoCapitalize="none"
           value={emailAddress}
@@ -170,6 +175,14 @@ const SignUp: React.FC<Props> = ({ navigation }) => {
   );
 };
 
+const imagestyles = StyleSheet.create({
+  image:{
+    marginTop:110,
+    alignSelf:'center',
+    objectFit:'contain',
+    height:120,
+  }
+});
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#C80036',
@@ -179,7 +192,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     height: 630,
     width:340,
-    marginTop: 240,
+    marginTop: 40,
     borderTopRightRadius: 40,
     borderTopLeftRadius: 40,
     // alignItems:'center',
@@ -191,7 +204,7 @@ const styles = StyleSheet.create({
     marginLeft: 40,
     color: 'white',
     position: 'absolute',
-    marginTop: 140,
+    marginTop: 40,
     fontFamily:'Poppins_700Bold'
   },
   subTxt: {

@@ -217,7 +217,7 @@ const App: React.FC = () => {
           />
           <Stack.Screen name="Tracking" component={TrackingWrapper} options={{ title: 'Trucks' }}/>
           <Stack.Screen name="CMR" component={CMR} />  
-          <Stack.Screen name="MainScreen" component={Mainscreen} />  
+          <Stack.Screen name="MainScreen" component={Mainscreen} options={{ headerShown: false }}/>  
           <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }}/>  
           <Stack.Screen name="SignIn" component={SignIn} options={{ headerShown: false }}/>  
           <Stack.Screen name="PLOMOS" component={PLOMOS} />

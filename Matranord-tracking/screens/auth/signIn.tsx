@@ -66,7 +66,7 @@ const SignIn: React.FC<Props> = ({ navigation }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.headerTxt}>WELCOME TO</Text>
-      <Image source={require('../../assets/Logo-png-1.png')} style={imagestyles.image}/>
+      <Image source={require('../../assets/Logo-png-3.png')} style={imagestyles.image}/>
       <Animated.View style={styles.subView} entering={BounceInDown.delay(200).duration(1000)} exiting={BounceInUp.delay(200).duration(1000)}>
         <Text style={styles.subTxt}>Login</Text>
         <TextInput
@@ -126,8 +126,9 @@ const styles = StyleSheet.create({
     fontFamily:'Poppins-Regular'
   },
   headerTxt: {
-    fontSize: 40,
-    marginLeft: 40,
+    fontSize: 30,
+    // marginLeft: 40,
+    alignSelf:'center',
     color: 'white',
     position: 'absolute',
     marginTop: 40,

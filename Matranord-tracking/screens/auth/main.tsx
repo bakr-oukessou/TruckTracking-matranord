@@ -2,18 +2,32 @@ import { Image, ImageBackground, StyleSheet, TouchableOpacity, View } from "reac
 import React from 'react';
 import { Props, Text } from "react-native-paper";
 import { css } from '@emotion/native';
+import { RouteProp } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
+import { RootStackParamList } from "../../types/types";
 
+type MainScreenRouteProp = RouteProp<RootStackParamList, 'MainScreen'>;
+type MainScreenNavigationProp = StackNavigationProp<RootStackParamList, 'MainScreen'>;
 
-const Mainscreen= () =>{
+type MainScreenProps = {
+  navigation: MainScreenNavigationProp;
+  route: MainScreenRouteProp;
+};
+
+const Mainscreen:React.FC<MainScreenProps> = ({ navigation }) =>{
     return(
-        <ImageBackground source={require('../../assets/background7.jpg')} style={imagestyles.bgimage}>
-            <View style={imagestyles.view}>
-                <Image source={require('../../assets/Logo-png-8.png')} style={imagestyles.image}/>
-                <View style={imagestyles.buttons}>
-                    <TouchableOpacity style={imagestyles.buttonStyle} onPress={() => navigation.navigate('SignUp')}>
+        <ImageBackground source={require('../../assets/background6.jpg')} style={styles.bgimage}>
+            <View style={styles.view}>
+                <Image source={require('../../assets/Logo-png-8.png')} style={styles.image}/>
+                <Text style={styles.text}>
+                    Welcome to
+                    your trusted partner in transit, Tracking and consulting services.
+                </Text>
+                <View style={styles.buttons}>
+                    <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('SignUp')}>
                         <Text style={textStyle}>SignUp</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity style={imagestyles.buttonStyle}>
+                    <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('SignIn')}>
                         <Text style={textStyle}>SignIn</Text>
                     </TouchableOpacity>
                 </View>
@@ -22,7 +36,7 @@ const Mainscreen= () =>{
     )
 };
 
-const imagestyles = StyleSheet.create({
+const styles = StyleSheet.create({
     image:{
       marginTop:100,
       alignSelf:'center',
@@ -41,7 +55,7 @@ const imagestyles = StyleSheet.create({
         backgroundColor: 'rgba(150, 10, 44, 0.4)',
     },
     buttons:{
-        top:350,
+        top:250,
     },
     buttonStyle:{
         marginHorizontal:20,
@@ -55,6 +69,14 @@ const imagestyles = StyleSheet.create({
         // backgroundColor: 'rgba(255, 98, 98, 0.3)',
         backgroundColor:'#FFCFCF'
     },
+    text:{
+        fontSize:20,
+        fontFamily:'Poppins-Regular',
+        color:'white',
+        textAlign:'center',
+        marginTop:20,
+        // width:300
+    }
   });
   const textStyle = css`
   font-size: 24px;

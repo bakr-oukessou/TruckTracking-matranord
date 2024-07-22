@@ -5,7 +5,8 @@ import {
   StyleSheet,
   TouchableOpacity,
   Alert,
-  Image
+  Image,
+  ImageBackground
 } from 'react-native';
 // import firebase from '../Api/firebaseConfig';
 import 'firebase/compat/auth';
@@ -64,9 +65,10 @@ const SignIn: React.FC<Props> = ({ navigation }) => {
   }, [isLoaded, emailAddress, password]);
 
   return (
+    <ImageBackground source={require('../../assets/background3.jpg')} style={styles.bgimage}>
     <View style={styles.container}>
       <Text style={styles.headerTxt}>WELCOME TO</Text>
-      <Image source={require('../../assets/Logo-png-8.png')} style={imagestyles.image}/>
+      <Image source={require('../../assets/Logo-png-1.png')} style={imagestyles.image}/>
       <Animated.View style={styles.subView} entering={BounceInDown.delay(200).duration(1000)} exiting={BounceInUp.delay(200).duration(1000)}>
         <Text style={styles.subTxt}>Login</Text>
         <TextInput
@@ -98,6 +100,7 @@ const SignIn: React.FC<Props> = ({ navigation }) => {
         </View>
       </Animated.View>
     </View>
+    </ImageBackground>
   );
 };
 
@@ -111,7 +114,8 @@ const imagestyles = StyleSheet.create({
 });
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#C80036',
+    backgroundColor: 'rgba(200, 0, 54, 0.3)',
+    // backgroundColor: '#C80036',
     height: 'auto',
   },
   subView: {
@@ -185,6 +189,12 @@ const styles = StyleSheet.create({
     fontSize: 17,
     fontFamily:'Poppins-Bold',
     marginTop: 17,
+  },  
+  bgimage:{
+    objectFit:'fill',
+    height:'100%',
+  //   borderRadius: 12,
+    overflow: 'hidden',
   },
 });
 

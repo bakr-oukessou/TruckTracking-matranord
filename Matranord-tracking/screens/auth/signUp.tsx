@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, StyleSheet,TouchableOpacity, Button, TextInput, Image } from 'react-native';
+import { View, Text, StyleSheet,TouchableOpacity, Button, TextInput, Image, ImageBackground } from 'react-native';
 import { TextInput as PaperTextInput } from 'react-native-paper';
 import firebase from 'firebase/app';
 import 'firebase/auth';
@@ -37,7 +37,7 @@ const SignUp: React.FC<Props> = ({ navigation }) => {
     newCode[index] = text;
     setVerificationCode(newCode);
 
-    if (text && index < 3) {
+    if (text && index < 5) {
       inputRefs.current[index + 1]?.focus();
     }
   };
@@ -94,11 +94,12 @@ const SignUp: React.FC<Props> = ({ navigation }) => {
     }
   };
   return (
+    <ImageBackground source={require('../../assets/background3.jpg')} style={styles.bgimage}>
     <View style={styles.container}>
       {!pendingVerification && (
         <>
       <Text style={styles.headerTxt}>WELCOME TO </Text>
-      <Image source={require('../../assets/Logo-png-8.png')} style={imagestyles.image}/>
+      <Image source={require('../../assets/Logo-png-1.png')} style={imagestyles.image}/>
       <Animated.View style={styles.subView} entering={BounceInDown.delay(200).duration(1000)} exiting={BounceInUp.delay(200).duration(1000)}>
         <Text style={styles.subTxt}>Signup</Text>
         <PaperTextInput
@@ -172,6 +173,7 @@ const SignUp: React.FC<Props> = ({ navigation }) => {
         </>
       )}
     </View>
+    </ImageBackground>
   );
 };
 
@@ -185,7 +187,7 @@ const imagestyles = StyleSheet.create({
 });
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#C80036',
+    backgroundColor: 'rgba(200, 0, 54, 0.3)',
     height: 'auto',
   },
   subView: {
@@ -318,6 +320,12 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     textAlign: 'center',
     fontFamily: 'Poppins_700Bold',
+  },  
+  bgimage:{
+    objectFit:'fill',
+    height:'100%',
+  //   borderRadius: 12,
+    overflow: 'hidden',
   },
 });
 

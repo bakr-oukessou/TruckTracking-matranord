@@ -209,7 +209,18 @@ const App: React.FC = () => {
     <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
       <ClerkLoaded>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Main">
+        <Stack.Navigator initialRouteName="Main" screenOptions={{
+          headerStyle: {
+            backgroundColor: '#AA304E',
+            borderBottomEndRadius:20,
+            borderBottomStartRadius:20,
+            // height:150
+          },
+          headerTintColor: '#fff',
+          headerTitleStyle: {
+            fontFamily: 'Poppins-Bold',
+          },
+        }}>
           <Stack.Screen
             name="Main"
             component={MainScreenWrapper}

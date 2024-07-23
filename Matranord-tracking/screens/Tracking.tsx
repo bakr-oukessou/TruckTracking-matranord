@@ -225,14 +225,16 @@ const Tracking: React.FC<MyComponentProps> = ({
 
   return (
     <PaperProvider>
+      <ImageBackground source={require('../assets/stack.png')} style={itemStyles.bgimage}>
+      </ImageBackground>
     <View style={styles}>
       {/* <Text style={itemStyles.title}>TRUCKS</Text> */}
       <Searchbar
       placeholder="Search by matricule"
       onChangeText={setSearchQuery}
       value={searchQuery}
-      // style={itemStyles.searchBar}
-    />
+      style={itemStyles.searchBar}
+      />
       <MasonryFlashList
         onScroll={onScroll}
         data={filteredTrucks}
@@ -390,13 +392,12 @@ const itemStyles = StyleSheet.create({
     textAlign:'right',
     color:'#000',
     padding:4,
-    borderWidth:2,
     borderRadius:8,
-    borderColor:'black',
-    fontWeight:'700'
+    fontWeight:'700',
+    backgroundColor:'#ffebb096'
   },
   statusData:{
-    color:'#FFB000',
+    color:'#ff080096',
   },
   fabStyle: {
     bottom: 16,
@@ -409,7 +410,23 @@ const itemStyles = StyleSheet.create({
     margin:10,
     borderColor:'#AF8260',
     borderWidth:1,
-  }
+  },
+  searchBar:{
+    flexDirection:'row',
+    alignItems:'center',
+    fontFamily:'Poppins-Regular',
+    // backgroundColor:'#fff', 
+  },
+  bgimage:{
+    objectFit:'cover',
+    height:70,
+    zIndex:-10,
+    borderBottomEndRadius:20,
+    borderBottomStartRadius:20,
+    backgroundColor:'rgba(150, 10, 44, 0.8)',
+    overflow: 'hidden',
+    position:'absolute'
+},
 });
 
 const styles = css`
@@ -420,7 +437,11 @@ const styles = css`
     flex-grow: 1;
     flex: 1;
     background-color: #FFF5E1;
-    padding: 20px;
+    // padding: 20px;
+    padding-top:13px;
+    padding-left:20px;
+    padding-right:20px;
+    z-index:100;
     & > * {
       color: black;
       font-size: 18px;

@@ -5,6 +5,8 @@ import { css } from '@emotion/native';
 import { RouteProp } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { RootStackParamList } from "../../types/types";
+import { AnimatedView } from "react-native-reanimated/lib/typescript/reanimated2/component/View";
+import Animated, { FadeInUp } from "react-native-reanimated";
 
 type MainScreenRouteProp = RouteProp<RootStackParamList, 'MainScreen'>;
 type MainScreenNavigationProp = StackNavigationProp<RootStackParamList, 'MainScreen'>;
@@ -23,14 +25,14 @@ const Mainscreen:React.FC<MainScreenProps> = ({ navigation }) =>{
                 <Text style={styles.text}>
                     to your trusted partner in Tracking, transit and consulting services.
                 </Text>
-                <View style={styles.buttons}>
+                <Animated.View style={styles.buttons} entering={FadeInUp.delay(200).duration(1000)}>
                     <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('SignUp')}>
                         <Text style={textStyle}>SignUp</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('SignIn')}>
                         <Text style={textStyle}>SignIn</Text>
                     </TouchableOpacity>
-                </View>
+                </Animated.View>
             </View>
         </ImageBackground>
     )

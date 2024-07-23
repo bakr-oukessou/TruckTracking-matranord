@@ -16,12 +16,12 @@ type MainScreenProps = {
 
 const Mainscreen:React.FC<MainScreenProps> = ({ navigation }) =>{
     return(
-        <ImageBackground source={require('../../assets/background6.jpg')} style={styles.bgimage}>
+        <ImageBackground source={require('../../assets/background9.jpg')} style={styles.bgimage}>
             <View style={styles.view}>
-                <Image source={require('../../assets/Logo-png-8.png')} style={styles.image}/>
+                <Image source={require('../../assets/Logo-png-1.png')} style={styles.image}/>
+                <Image source={require('../../assets/welcome_text.png')} style={styles.image2}/>
                 <Text style={styles.text}>
-                    Welcome to
-                    your trusted partner in transit, Tracking and consulting services.
+                    to your trusted partner in Tracking, transit and consulting services.
                 </Text>
                 <View style={styles.buttons}>
                     <TouchableOpacity style={styles.buttonStyle} onPress={() => navigation.navigate('SignUp')}>
@@ -42,12 +42,12 @@ const styles = StyleSheet.create({
       alignSelf:'center',
       objectFit:'contain',
       height:130,
-    },  
+    },
     bgimage:{
-      objectFit:'fill',
-      height:'100%',
-    //   borderRadius: 12,
-      overflow: 'hidden',
+        objectFit:'fill',
+        height:'100%',
+        //   borderRadius: 12,
+        overflow: 'hidden',
     },
     view:{
         flex:1,
@@ -55,7 +55,7 @@ const styles = StyleSheet.create({
         backgroundColor: 'rgba(150, 10, 44, 0.4)',
     },
     buttons:{
-        top:250,
+        top:50,
     },
     buttonStyle:{
         marginHorizontal:20,
@@ -69,15 +69,22 @@ const styles = StyleSheet.create({
         // backgroundColor: 'rgba(255, 98, 98, 0.3)',
         backgroundColor:'#FFCFCF'
     },
+    image2:{
+        marginTop:180,
+        alignSelf:'center',
+        objectFit:'cover',
+        height:100,
+        width:300,
+    },
     text:{
-        fontSize:20,
+        fontSize:17,
         fontFamily:'Poppins-Regular',
         color:'white',
         textAlign:'center',
-        marginTop:20,
+        // marginTop:20,
         // width:300
     }
-  });
+});
   const textStyle = css`
   font-size: 24px;
   padding-top:5px;  

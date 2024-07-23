@@ -27,7 +27,12 @@ const images = [
   require("../assets/background3.jpg"),
   require("../assets/background4.avif"),
   require("../assets/background5.webp"),
-  require("../assets/background6.jpg")
+  require("../assets/background6.jpg"),
+  require("../assets/background7.jpg"),
+  require("../assets/background8.jpg"),
+  require("../assets/background9.jpg"),
+  require("../assets/background10.jpg"),
+  require("../assets/background11.jpg")
 ];
 
 type TrackingScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Tracking'> & MyComponentProps;

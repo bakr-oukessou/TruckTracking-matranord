@@ -59,6 +59,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     // marginLeft: 5,
     borderColor: '#888888',
+    fontFamily:'Poppins-Regular',
     fontSize: 18,
     height: 50,
     // width:360

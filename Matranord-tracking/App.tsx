@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Button, StyleSheet, Pressable, Image, Animated, ImageBackground } from 'react-native';
+import { View, Text, Button, StyleSheet, Pressable, Image, Animated, ImageBackground, Platform } from 'react-native';
 import { NavigationContainer, useNavigation, useRoute } from '@react-navigation/native';
 import { createStackNavigator, StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
@@ -21,6 +21,7 @@ import Mainscreen from './screens/auth/main';
 import SignUp from './screens/auth/signUp';
 import SignIn from './screens/auth/signIn';
 import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo"
+import { Icon } from 'react-native-paper';
 
 //***********token**************/
 const tokenCache = {
@@ -212,10 +213,16 @@ const App: React.FC = () => {
         <Stack.Navigator initialRouteName="Main" screenOptions={{
           headerStyle: {
             backgroundColor: '#AA304E',
-            borderBottomEndRadius:20,
-            borderBottomStartRadius:20,
+            // borderBottomEndRadius:20,
+            // borderBottomStartRadius:20,
             // height:150
           },
+          headerRight: (props) =>(
+            <View style={styles.iconContainer}>
+              {/* <Icon type="ionicon" name={Platform.OS === "android" ? "ios-heart" : "md-heart"} />
+              <Icon type="ionicon" name={Platform.OS === "android" ? "ios-more" : "md-more"} /> */}
+            </View>
+          ),
           headerTintColor: '#fff',
           headerTitleStyle: {
             fontFamily: 'Poppins-Bold',

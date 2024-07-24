@@ -13,7 +13,7 @@ type TruckDetailsRouteProp = RouteProp<RootStackParamList, 'TruckDetails'>;
 type TruckDetailsScreenNavigationProp = StackNavigationProp<RootStackParamList, 'TruckDetails'>;
 
 const TruckDetails = ({ route }: { route: TruckDetailsRouteProp}) => {
-  const { truck } = route.params;
+  const { truck } = route.params;yghfcjh
   const navigation = useNavigation<TruckDetailsScreenNavigationProp>();
   return (
     <SafeAreaView style={styles2.container}>

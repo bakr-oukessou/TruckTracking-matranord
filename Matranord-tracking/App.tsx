@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, Button, StyleSheet, Pressable, Image, Animated, ImageBackground, Platform } from 'react-native';
+import { View, Text, Button, StyleSheet, Pressable, Image, Animated, ImageBackground, Platform, TouchableOpacity } from 'react-native';
 import { NavigationContainer, useNavigation, useRoute } from '@react-navigation/native';
 import { createStackNavigator, StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
@@ -21,7 +21,7 @@ import Mainscreen from './screens/auth/main';
 import SignUp from './screens/auth/signUp';
 import SignIn from './screens/auth/signIn';
 import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo"
-import { Icon } from 'react-native-paper';
+import { Icon, TouchableRipple } from 'react-native-paper';
 
 //***********token**************/
 const tokenCache = {
@@ -193,6 +193,10 @@ const textStyle2 = css`
   // width:auto;
   top:0;
 `;
+const ButtonStyle = css`
+  padding: 10px;
+  margin-right:10px;
+`
 const TrackingWrapper: React.FC<StackScreenProps<RootStackParamList, 'Tracking'>> = ({ navigation, route }) => (
   <Tracking
     navigation={navigation}
@@ -217,12 +221,6 @@ const App: React.FC = () => {
             // borderBottomStartRadius:20,
             // height:150
           },
-          headerRight: (props) =>(
-            <View style={styles.iconContainer}>
-              {/* <Icon type="ionicon" name={Platform.OS === "android" ? "ios-heart" : "md-heart"} />
-              <Icon type="ionicon" name={Platform.OS === "android" ? "ios-more" : "md-more"} /> */}
-            </View>
-          ),
           headerTintColor: '#fff',
           headerTitleStyle: {
             fontFamily: 'Poppins-Bold',
@@ -239,7 +237,23 @@ const App: React.FC = () => {
           <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }}/>  
           <Stack.Screen name="SignIn" component={SignIn} options={{ headerShown: false }}/>  
           <Stack.Screen name="PLOMOS" component={PLOMOS} />
-          <Stack.Screen name="TruckDetails" component={TruckDetails} />
+          <Stack.Screen name="TruckDetails" component={TruckDetails}
+            options={{
+              headerRight: (props) =>(
+                <View >
+                  <TouchableOpacity style={ButtonStyle}>
+                  <MaterialIcons name="delete" size={30} color="lightgrey" />
+                  </TouchableOpacity>
+                </View>
+              ),
+              headerStyle: {
+                backgroundColor: '#AA304E',
+                borderBottomEndRadius:20,
+                borderBottomStartRadius:20,
+                // height:150
+              }
+            }}
+           />
           <Stack.Screen name="MapScreen" component={MapScreen} />
         </Stack.Navigator>
       </NavigationContainer>

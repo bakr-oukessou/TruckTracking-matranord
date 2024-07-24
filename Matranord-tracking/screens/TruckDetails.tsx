@@ -20,7 +20,7 @@ const TruckDetails = ({ route }: { route: TruckDetailsRouteProp}) => {
     <ImageBackground source={require('../assets/phoneBackground.jpg')} style={styles.image}>
     <ScrollView contentContainerStyle={styles.container}>
         <View style={styles2.infoContainer}>
-          <Text style={styles2.truckName}>Truck Details</Text>
+          {/* <Text style={styles2.truckName}>Truck Details</Text> */}
           <View style={styles2.tabContainer}>
             <TouchableOpacity style={[styles2.tab, styles2.activeTab]}>
               <Text style={styles2.activeTabText}>Truck Info</Text>
@@ -124,7 +124,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: 'rgba(255, 245, 225, 0.7)',
     fontFamily: 'Poppins-Regular',
-    padding: 10,
+    padding: 5,
   },
   header: {
     fontSize: 24,
@@ -238,7 +238,9 @@ const styles2 = StyleSheet.create({
     borderTopRightRadius: 20,
   },
   infoContainer: {
-    padding: 16,
+    paddingLeft: 16,
+    paddingBottom: 16,
+    paddingRight: 16,
     width:'100%'
   },
   truckName: {

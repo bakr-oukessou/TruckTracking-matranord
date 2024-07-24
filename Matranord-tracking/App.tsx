@@ -20,6 +20,7 @@ import MapScreen from './components/Location';
 import Mainscreen from './screens/auth/main';
 import SignUp from './screens/auth/signUp';
 import SignIn from './screens/auth/signIn';
+import Driver from './screens/Driver';
 import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo"
 import { Icon, TouchableRipple } from 'react-native-paper';
 
@@ -237,6 +238,7 @@ const App: React.FC = () => {
           <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }}/>  
           <Stack.Screen name="SignIn" component={SignIn} options={{ headerShown: false }}/>  
           <Stack.Screen name="PLOMOS" component={PLOMOS} />
+          <Stack.Screen name="Driver" component={Driver} />
           <Stack.Screen name="TruckDetails" component={TruckDetails}
             options={{
               headerRight: (props) =>(

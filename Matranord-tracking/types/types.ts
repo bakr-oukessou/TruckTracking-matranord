@@ -11,6 +11,7 @@ export type RootStackParamList = {
     MainScreen:undefined;
     SignUp:undefined;
     SignIn:undefined;
+    Driver:undefined;
   };
   
   export interface Truck {

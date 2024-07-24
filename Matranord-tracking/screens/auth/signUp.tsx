@@ -100,7 +100,7 @@ const SignUp: React.FC<Props> = ({ navigation }) => {
         <>
       <Text style={styles.headerTxt}>WELCOME TO </Text>
       <Image source={require('../../assets/Logo-png-1.png')} style={imagestyles.image}/>
-      <Animated.View style={styles.subView} entering={BounceInDown.delay(200).duration(1000)} exiting={BounceInUp.delay(200).duration(1000)}>
+      <Animated.View style={styles.subView} entering={BounceInDown.delay(200).duration(1000)}>
         <Text style={styles.subTxt}>Signup</Text>
         <PaperTextInput
          style={styles.nameInput}

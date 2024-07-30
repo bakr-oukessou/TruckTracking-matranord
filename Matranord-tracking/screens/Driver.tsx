@@ -5,7 +5,6 @@ const Driver = () => {
   return (
     <View>
       <Text>Driver Page</Text>
-      {/* Add CMR functionality here */}
     </View>
   );
 };

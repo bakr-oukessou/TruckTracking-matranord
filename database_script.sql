@@ -13,6 +13,14 @@ create table Truck(
     latitude nvarchar(255),
     positionnement nvarchar(255)
 );
+create table User(
+    id int primary key auto_increment,
+    username varchar(100),
+    email email,
+    password password,
+    role varchar(100)
+);
+
 INSERT INTO Truck(
 	matricule,
 	date,

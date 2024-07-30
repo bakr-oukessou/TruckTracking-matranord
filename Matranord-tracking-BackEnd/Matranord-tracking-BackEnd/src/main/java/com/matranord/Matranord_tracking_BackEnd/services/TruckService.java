@@ -1,5 +1,5 @@
 package com.matranord.Matranord_tracking_BackEnd.services;
-import com.google.firebase.database.*;
+//import com.google.firebase.database.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
 import com.matranord.Matranord_tracking_BackEnd.model.Truck;

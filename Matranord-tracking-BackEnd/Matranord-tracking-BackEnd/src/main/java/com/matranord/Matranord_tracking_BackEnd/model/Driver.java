@@ -1,19 +1,35 @@
 package com.matranord.Matranord_tracking_BackEnd.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 
 @Entity
 @Table(name = "Chauffeur")
 public class Driver {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
+    @Column(name = "NomChauffeur",nullable = false)
     private String Nom;
+
+    @Column(name = "CIN",nullable = false)
     private String CIN;
+
+    @Column(name = "Tel1",nullable = false)
     private int MobileNumber;
+
+    @Column(name = "Email",nullable = false)
     private String email;
+
+    @Column(name = "Adresse",nullable = false)
     private String adresse;
+
+    @Column(name = "DateFinValidite",nullable = false)
     private String validitePermit;
+
+    @Column(name = "IdVehicule",nullable = false)
     private int IdVehicule;
+
     private String experience;
 
     public Driver() {

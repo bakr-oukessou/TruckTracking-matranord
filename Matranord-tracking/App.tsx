@@ -119,14 +119,14 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
         <MaterialIcons name="description" size={30} color="#365E32" />
         <Text style={textStyle2}>MainScreen</Text>
       </Pressable>
-      <Pressable onPress={() => navigation.navigate('SignUp')} android_ripple={{color: 'gray',radius:175}} style={({pressed}) => [
+      <Pressable onPress={() => navigation.navigate('Driver')} android_ripple={{color: 'gray',radius:175}} style={({pressed}) => [
           {
             backgroundColor: pressed ? '#EAD196' : 'white',
           },
           buttonStyles,
         ]}>
         <MaterialIcons name="attach-file" size={30} color="black" />
-        <Text style={textStyle2}>SignUp</Text>
+        <Text style={textStyle2}>Driver</Text>
       </Pressable>
     </View>
   );

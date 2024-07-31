@@ -12,7 +12,7 @@ import { View, Text, StatusBar, StyleSheet, Pressable, ImageBackground ,
 import { FlashList } from "@shopify/flash-list";
 import { css } from '@emotion/native';
 import { useNavigation } from '@react-navigation/native';
-import { Driver, MyComponentProps, RootStackParamList, Truck } from '../types/types';
+import { Driver, DriverProps, RootStackParamList, Truck } from '../types/types';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { MasonryFlashList } from "@shopify/flash-list";
 import { createTruck, getAllDrivers } from '../components/Api/api';
@@ -21,8 +21,8 @@ import axios from 'axios';
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 
-type TrackingScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Driver'> & MyComponentProps;
-const Driver : React.FC<MyComponentProps> = ({
+type TrackingScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Driver'> & DriverProps;
+const Driver : React.FC<DriverProps> = ({
   animatedValue,  
   visible,
   extended,

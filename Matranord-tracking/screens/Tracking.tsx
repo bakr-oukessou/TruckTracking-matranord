@@ -12,7 +12,7 @@ import { View, Text, StatusBar, StyleSheet, Pressable, ImageBackground ,
 import { FlashList } from "@shopify/flash-list";
 import { css } from '@emotion/native';
 import { useNavigation } from '@react-navigation/native';
-import { MyComponentProps, RootStackParamList, Truck } from '../types/types';
+import { RootStackParamList, TrackingProps, Truck } from '../types/types';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { MasonryFlashList } from "@shopify/flash-list";
 import { createTruck, getAllTrucks } from '../components/Api/api';
@@ -35,8 +35,8 @@ const images = [
   require("../assets/background11.jpg")
 ];
 
-type TrackingScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Tracking'> & MyComponentProps;
-const Tracking: React.FC<MyComponentProps> = ({
+type TrackingScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Tracking'> & TrackingProps;
+const Tracking: React.FC<TrackingProps> = ({
   animatedValue,  
   visible,
   extended,

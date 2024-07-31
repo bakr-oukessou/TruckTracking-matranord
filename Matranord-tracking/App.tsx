@@ -211,6 +211,18 @@ const TrackingWrapper: React.FC<StackScreenProps<RootStackParamList, 'Tracking'>
     iconMode="static"
   />
 );
+const DriverWrapper: React.FC<StackScreenProps<RootStackParamList, 'Driver'>> = ({ navigation, route }) => (
+  <Driver
+    navigation={navigation}
+    route={route}
+    animatedValue={new Animated.Value(0)}
+    visible={true}
+    extended={true}
+    label="Label"
+    animateFrom="right"
+    iconMode="static"
+  />
+);
 
 const App: React.FC = () => { 
   return (
@@ -240,7 +252,7 @@ const App: React.FC = () => {
           <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }}/>  
           <Stack.Screen name="SignIn" component={SignIn} options={{ headerShown: false }}/>  
           <Stack.Screen name="PLOMOS" component={PLOMOS} />
-          <Stack.Screen name="Driver" component={Driver} />
+          <Stack.Screen name="Driver" component={DriverWrapper} options={{ title: 'Drivers' }}/>
           <Stack.Screen name="TruckDetails" component={TruckDetails}
             options={{
               headerRight: (props) =>(

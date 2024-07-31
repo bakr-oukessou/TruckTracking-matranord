@@ -37,7 +37,7 @@ export type RootStackParamList = {
     experience:string;
   };
 
-  export interface MyComponentProps {
+  export interface BaseProps {
     animatedValue: Animated.Value;
     visible: boolean;
     extended: boolean;
@@ -46,16 +46,21 @@ export type RootStackParamList = {
     style?: StyleProp<ViewStyle>;
     iconMode: 'static' | 'dynamic';
   };
-  export interface MyComponentProps extends Partial<StackScreenProps<RootStackParamList, 'Tracking'>> {
-    animatedValue: Animated.Value;
-    visible: boolean;
-    extended: boolean;
-    label: string;
-    animateFrom: 'left' | 'right';
-    style?: StyleProp<ViewStyle>;
-    iconMode: 'static' | 'dynamic';
-  };
-  
+
+  export interface TrackingProps extends BaseProps, Partial<StackScreenProps<RootStackParamList, 'Tracking'>> {}
+
+  export interface DriverProps extends BaseProps, Partial<StackScreenProps<RootStackParamList, 'Driver'>> {}
+
+  // export interface MyComponentProps extends Partial<StackScreenProps<RootStackParamList, 'Tracking'>> {
+  //   animatedValue: Animated.Value;
+  //   visible: boolean;
+  //   extended: boolean;
+  //   label: string;
+  //   animateFrom: 'left' | 'right';
+  //   style?: StyleProp<ViewStyle>;
+  //   iconMode: 'static' | 'dynamic';
+  // };
+
   export interface TokenCache {
     getToken: (key: string) => Promise<string | undefined | null>;
     saveToken: (key: string, token: string) => Promise<void>;

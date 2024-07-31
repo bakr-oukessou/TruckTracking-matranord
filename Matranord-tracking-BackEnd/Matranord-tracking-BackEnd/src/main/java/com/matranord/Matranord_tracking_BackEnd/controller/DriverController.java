@@ -2,17 +2,22 @@ package com.matranord.Matranord_tracking_BackEnd.controller;
 
 import com.matranord.Matranord_tracking_BackEnd.model.Driver;
 import com.matranord.Matranord_tracking_BackEnd.services.DriverService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/drivers")
 public class DriverController {
     private final DriverService driverService;
+    private static final Logger logger = LoggerFactory.getLogger(TruckController.class);
+
 
     @Autowired
     public DriverController(DriverService driverService) {
@@ -30,6 +35,11 @@ public class DriverController {
         return driverService.getDriverByCIN(CIN)
                 .map(driver -> new ResponseEntity<>(driver, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+    }
+
+    @GetMapping("/{id}")
+    public Optional<Driver> getDriverById(@PathVariable int id) {
+        return driverService.getDriverById(id);
     }
 
     @PutMapping("/{id}")
@@ -50,8 +60,21 @@ public class DriverController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Driver>> getAllDrivers() {
+    public ResponseEntity<List<Driver>> getAllDrivers2() {
         List<Driver> drivers = driverService.getAllDrivers();
         return new ResponseEntity<>(drivers, HttpStatus.OK);
+    }
+    @GetMapping
+    public ResponseEntity<?> getAllDrivers() {
+        try {
+            logger.info("Fetching all Drivers");
+            List<Driver> drivers = driverService.getAllDrivers();
+            logger.info("Fetched {} Drivers", drivers.size());
+            return ResponseEntity.ok(drivers);
+        } catch (Exception e) {
+            logger.error("Error fetching Drivers", e);
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Error fetching Drivers: " + e.getMessage());
+        }
     }
 }

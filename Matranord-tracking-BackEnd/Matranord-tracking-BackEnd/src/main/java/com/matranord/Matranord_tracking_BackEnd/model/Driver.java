@@ -2,6 +2,8 @@ package com.matranord.Matranord_tracking_BackEnd.model;
 
 import jakarta.persistence.*;
 
+import java.sql.Date;
+
 @Entity
 @Table(name = "Chauffeur")
 public class Driver {
@@ -25,7 +27,7 @@ public class Driver {
     private String adresse;
 
     @Column(name = "DateFinValidite",nullable = false)
-    private String validitePermit;
+    private Date validitePermit;
 
     @Column(name = "IdVehicule",nullable = false)
     private int IdVehicule;
@@ -35,7 +37,7 @@ public class Driver {
     public Driver() {
     }
 
-    public Driver(String nom, String CIN, int mobileNumber, String email, String adresse, String validitePermit, int idVehicule, String experience) {
+    public Driver(String nom, String CIN, int mobileNumber, String email, String adresse, Date validitePermit, int idVehicule, String experience) {
         Nom = nom;
         this.CIN = CIN;
         MobileNumber = mobileNumber;
@@ -86,11 +88,11 @@ public class Driver {
         this.adresse = adresse;
     }
 
-    public String getValiditePermit() {
+    public Date getValiditePermit() {
         return validitePermit;
     }
 
-    public void setValiditePermit(String validitePermit) {
+    public void setValiditePermit(Date validitePermit) {
         this.validitePermit = validitePermit;
     }
 

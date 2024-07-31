@@ -31,3 +31,23 @@ export const createTruck = async (truckData: { matricule: string; date: string; 
     throw error;
   }
 };
+
+export const getAllDrivers = async () => {
+  try {
+    const response = await axios.get(`${API_BASE_URL}/drivers`);
+    return response.data;
+  } catch (error) {
+    console.error('Error fetching drivers:', error);
+    throw error;
+  }
+};
+
+export const getDriverById = async (id: any) => { 
+  try {
+    const response = await axios.get(`${API_BASE_URL}/drivers/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching truck with id ${id}:`, error);
+    throw error;
+  }
+};

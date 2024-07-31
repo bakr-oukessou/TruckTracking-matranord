@@ -23,6 +23,7 @@ import SignIn from './screens/auth/signIn';
 import Driver from './screens/Driver';
 import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo"
 import { Icon, TouchableRipple } from 'react-native-paper';
+import DriverDetails from './screens/DriverDetails';
 
 //***********token**************/
 const tokenCache = {
@@ -210,6 +211,7 @@ const TrackingWrapper: React.FC<StackScreenProps<RootStackParamList, 'Tracking'>
     iconMode="static"
   />
 );
+
 const App: React.FC = () => { 
   return (
     <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
@@ -240,6 +242,23 @@ const App: React.FC = () => {
           <Stack.Screen name="PLOMOS" component={PLOMOS} />
           <Stack.Screen name="Driver" component={Driver} />
           <Stack.Screen name="TruckDetails" component={TruckDetails}
+            options={{
+              headerRight: (props) =>(
+                <View >
+                  <TouchableOpacity style={ButtonStyle}>
+                  <MaterialIcons name="delete" size={30} color="lightgrey" />
+                  </TouchableOpacity>
+                </View>
+              ),
+              headerStyle: {
+                backgroundColor: '#AA304E',
+                borderBottomEndRadius:20,
+                borderBottomStartRadius:20,
+                // height:150
+              }
+            }}
+           />
+           <Stack.Screen name="DriverDetails" component={DriverDetails}
             options={{
               headerRight: (props) =>(
                 <View >

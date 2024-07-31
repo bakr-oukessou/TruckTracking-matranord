@@ -7,6 +7,7 @@ export type RootStackParamList = {
     CMR: undefined;
     PLOMOS: undefined;
     TruckDetails: { truck: Truck };
+    DriverDetails: { driver: Driver };
     MapScreen:{ truck: Truck };
     MainScreen:undefined;
     SignUp:undefined;
@@ -22,7 +23,20 @@ export type RootStackParamList = {
     chargement: string;
     dechargement: string;
     status: string;
-  }
+  };
+
+  export interface Driver {
+    id: string;
+    CIN:string;
+    nom: string;
+    email: string;
+    telephone: string;
+    adresse: string;
+    validitePermit: string;
+    idvehicule: string;
+    experience:string;
+  };
+
   export interface MyComponentProps {
     animatedValue: Animated.Value;
     visible: boolean;
@@ -31,7 +45,7 @@ export type RootStackParamList = {
     animateFrom: 'left' | 'right';
     style?: StyleProp<ViewStyle>;
     iconMode: 'static' | 'dynamic';
-  }
+  };
   export interface MyComponentProps extends Partial<StackScreenProps<RootStackParamList, 'Tracking'>> {
     animatedValue: Animated.Value;
     visible: boolean;
@@ -40,9 +54,10 @@ export type RootStackParamList = {
     animateFrom: 'left' | 'right';
     style?: StyleProp<ViewStyle>;
     iconMode: 'static' | 'dynamic';
-  }
+  };
+  
   export interface TokenCache {
     getToken: (key: string) => Promise<string | undefined | null>;
     saveToken: (key: string, token: string) => Promise<void>;
     clearToken?: (key: string) => void;
-  }
+  };

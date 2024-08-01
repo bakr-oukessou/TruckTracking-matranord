@@ -172,6 +172,7 @@ CREATE TABLE `Chauffeur`(
 	`IdUtilisateurModification` int NULL,
 	`DateHeureModification` datetime NULL,
 	`IdDepot` int NULL,
+	`Experience` varchar(50)
  CONSTRAINT `PK_Chauffeur` PRIMARY KEY 
 	(
 		`IdChauffeur` ASC

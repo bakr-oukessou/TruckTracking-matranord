@@ -26,7 +26,6 @@ export type RootStackParamList = {
   };
 
   export interface Driver {
-    id: string;
     CIN:string;
     nom: string;
     email: string;

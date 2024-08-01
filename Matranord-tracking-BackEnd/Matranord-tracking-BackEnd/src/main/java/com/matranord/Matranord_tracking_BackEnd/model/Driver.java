@@ -8,17 +8,17 @@ import java.sql.Date;
 @Table(name = "Chauffeur")
 public class Driver {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "Idchauffeur",nullable = false)
     private int id;
 
-    @Column(name = "NomChauffeur",nullable = false)
+    @Column(name = "Nomchauffeur",nullable = false)
     private String Nom;
 
     @Column(name = "CIN",nullable = false)
     private String CIN;
 
     @Column(name = "Tel1",nullable = false)
-    private int MobileNumber;
+    private String MobileNumber;
 
     @Column(name = "Email",nullable = false)
     private String email;
@@ -26,10 +26,10 @@ public class Driver {
     @Column(name = "Adresse",nullable = false)
     private String adresse;
 
-    @Column(name = "DateFinValidite",nullable = false)
+    @Column(name = "Datefinvalidite",nullable = false)
     private Date validitePermit;
 
-    @Column(name = "IdVehicule",nullable = false)
+    @Column(name = "Idvehicule",nullable = false)
     private int IdVehicule;
 
     private String experience;
@@ -37,7 +37,7 @@ public class Driver {
     public Driver() {
     }
 
-    public Driver(String nom, String CIN, int mobileNumber, String email, String adresse, Date validitePermit, int idVehicule, String experience) {
+    public Driver(String nom, String CIN, String mobileNumber, String email, String adresse, Date validitePermit, int idVehicule, String experience) {
         Nom = nom;
         this.CIN = CIN;
         MobileNumber = mobileNumber;
@@ -64,11 +64,11 @@ public class Driver {
         this.CIN = CIN;
     }
 
-    public int getMobileNumber() {
+    public String getMobileNumber() {
         return MobileNumber;
     }
 
-    public void setMobileNumber(int mobileNumber) {
+    public void setMobileNumber(String mobileNumber) {
         MobileNumber = mobileNumber;
     }
 

@@ -21,8 +21,9 @@ import axios from 'axios';
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 
-type TrackingScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Driver'> & DriverProps;
-const Driver : React.FC<DriverProps> = ({
+type DriverScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Driver'> & DriverProps;
+
+const DriverScreen: React.FC<DriverProps> = ({
   animatedValue,  
   visible,
   extended,
@@ -31,6 +32,7 @@ const Driver : React.FC<DriverProps> = ({
   style,
   iconMode,
 }) => {
+
     //////////////////// API Call//////////////////
     const [drivers, setDrivers] = useState<Driver[]>([]);
     const [filteredDrivers, setFilteredDrivers] = useState<Driver[]>([]);
@@ -64,9 +66,10 @@ const Driver : React.FC<DriverProps> = ({
         setIsLoading(false);
       }
     };
+
     const filterDrivers = () => {
       const filtered = drivers.filter(driver => 
-        driver.id.toLowerCase().includes(searchQuery.toLowerCase())
+        driver && (driver.CIN ? driver.CIN.toLowerCase().includes(searchQuery.toLowerCase()) : false)
       );
       setFilteredDrivers(filtered);
     };
@@ -135,41 +138,63 @@ const Driver : React.FC<DriverProps> = ({
       
       setSnackbar({
         visible: true,
-        message: 'Truck added successfully!',
+        message: 'Driver added successfully!',
         type: 'success',
       });
       // getAllTrucks();
 
     } catch (error) {
-      console.error('Error adding truck:', error);
+      console.error('Error adding driver:', error);
       setSnackbar({
         visible: true,
-        message: 'Error adding truck. Please try again.',
+        message: 'Error adding driver. Please try again.',
         type: 'error',
       }); 
     }
   };
   /////////////////////////////////////////////////
+ /////////// random background images//////////////////
+ 
+const images = [
+  require("../assets/background.jpg"),
+  require("../assets/background2.jpg"),
+  require("../assets/background3.jpg"),
+  require("../assets/background4.avif"),
+  require("../assets/background5.webp"),
+  require("../assets/background6.jpg"),
+  require("../assets/background7.jpg"),
+  require("../assets/background8.jpg"),
+  require("../assets/background9.jpg"),
+  require("../assets/background10.jpg"),
+  require("../assets/background11.jpg")
+];
 
-  const navigation = useNavigation<TrackingScreenNavigationProp>();
+ const getRandomImage = () => {
+  return images[Math.floor(Math.random() * images.length)];
+};
+/////////////////////////////////////////////////////
+
+  const navigation = useNavigation<DriverScreenNavigationProp>();
   const renderItem = ({ item }: { item: Driver }) => (
     <View style={itemStyles.container}>
-      
+      <ImageBackground source={getRandomImage()} style={itemStyles.imageBackground}>
       <Pressable onPress={() => navigation.navigate('DriverDetails', { driver: item })}android_ripple={{color: 'grey'}} style={({pressed}) => [
         {
           backgroundColor: pressed ? '#EAD196' : 'white',
         },
         itemStyles.item,
       ]}> 
-        <Text style={itemStyles.text}><Text style={itemStyles.bold}>Date:</Text> {item.CIN}</Text>
+        <Text style={itemStyles.text}><Text style={itemStyles.bold}>CIN:</Text> {item.CIN}</Text>
+        <Text style={itemStyles.text}><Text style={itemStyles.bold}>Nom chauffeur:</Text> {item.nom}</Text>
         <Text style={itemStyles.text}><Text style={itemStyles.bold}>Matricule:</Text> {item.idvehicule}</Text>
-        <Text style={itemStyles.text}><Text style={itemStyles.bold}>Numero de Dossier:</Text> {item.nom}</Text>
-        <Text style={itemStyles.text}><Text style={itemStyles.bold}>Trajet:</Text> {item.email}</Text>
-        <Text style={itemStyles.text}><Text style={itemStyles.bold}>Chargement:</Text> {item.telephone}</Text>
-        <Text style={itemStyles.text}><Text style={itemStyles.bold}>Dechargement:</Text> {item.adresse}</Text>
-        <Text style={itemStyles.text}><Text style={itemStyles.bold}>Dechargement:</Text> {item.experience}</Text>
-        <Text style={[itemStyles.text, itemStyles.status]}><Text style={[itemStyles.bold, itemStyles.statusData]}>Status:</Text> {item.validitePermit}</Text>
+        <Text style={itemStyles.text}><Text style={itemStyles.bold}>Email:</Text> {item.email}</Text>
+        <Text style={itemStyles.text}><Text style={itemStyles.bold}>Telephone:</Text> {item.telephone}</Text>
+        <Text style={itemStyles.text}><Text style={itemStyles.bold}>Adresse:</Text> {item.adresse}</Text>
+        <Text style={itemStyles.text}><Text style={itemStyles.bold}>Experience:</Text> {item.experience}</Text>
+        <Text style={[itemStyles.text, itemStyles.status]}><Text style={[itemStyles.bold, itemStyles.statusData]}>Validite:</Text> {item.validitePermit}</Text>
       </Pressable>
+      </ImageBackground>
+
     </View>
   );
 
@@ -200,7 +225,7 @@ const Driver : React.FC<DriverProps> = ({
     <PaperProvider>
       <ImageBackground source={require('../assets/stack.png')} style={itemStyles.bgimage}>
       <Searchbar
-      placeholder="Search by matricule"
+      placeholder="Search by CIN"
       onChangeText={setSearchQuery}
       value={searchQuery}
       style={itemStyles.searchBar}
@@ -360,7 +385,7 @@ const styles = css`
     }
   `;
 
-export default Driver;
+export default DriverScreen;
 
 
 

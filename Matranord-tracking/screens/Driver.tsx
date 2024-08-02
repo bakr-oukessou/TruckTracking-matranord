@@ -16,7 +16,7 @@ import { Driver, DriverProps, RootStackParamList, Truck } from '../types/types';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { MasonryFlashList } from "@shopify/flash-list";
 import { createTruck, getAllDrivers } from '../components/Api/api';
-import { AnimatedFAB, Button, Modal, PaperProvider, Portal, Searchbar, Snackbar, TextInput } from 'react-native-paper';
+import { ActivityIndicator, AnimatedFAB, Button, Modal, PaperProvider, Portal, Searchbar, Snackbar, TextInput } from 'react-native-paper';
 import axios from 'axios';
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import DateTimePicker from 'react-native-modal-datetime-picker';
@@ -40,13 +40,21 @@ const DriverScreen: React.FC<DriverProps> = ({
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
   
-    useEffect(() => {
-      filterDrivers();
-    }, [searchQuery, drivers]);
+    // useEffect(() => {
+    //   filterDrivers();
+    // }, [searchQuery, drivers]);
   
     useEffect(() => {
       fetchDrivers();
     }, []);
+    
+    useEffect(() => {
+      console.log("Drivers state updated:", drivers);
+    }, [drivers]);
+    
+    useEffect(() => {
+      console.log("Filtered drivers state updated:", filteredDrivers);
+    }, [filteredDrivers]);
   
     const fetchDrivers = async () => {
       try {
@@ -235,6 +243,9 @@ const images = [
       />
       </ImageBackground>
     <View style={styles}>
+    {isLoading ? (
+  <ActivityIndicator size="large" color="#0000ff" />
+  ) : (
       <MasonryFlashList
         onScroll={onScroll}
         data={filteredDrivers}
@@ -242,7 +253,7 @@ const images = [
         renderItem={renderItem}
         estimatedItemSize={100}
         refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
-      />
+      />)}
       <AnimatedFAB
         icon={'plus'}
         label={'NEW'}

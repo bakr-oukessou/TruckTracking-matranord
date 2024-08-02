@@ -52,8 +52,11 @@ const DriverScreen: React.FC<DriverProps> = ({
       try {
         setIsLoading(true); 
         const data = await getAllDrivers();
+        console.log("Fetched trucks:", data);
         setDrivers(data);
+        console.log("Drivers state:", drivers);
         setFilteredDrivers(data);
+        console.log("Filtered drivers state:", filteredDrivers);
         setIsLoading(false);
       } catch (err) {
         console.error("Error fetching drivers:", err);
@@ -255,17 +258,7 @@ const images = [
   );
 };
 
-const containerStyle = StyleSheet.create({
-  containerStyle: {
-  backgroundColor: '#FFF5E1',
-  padding: 40,
-  bottom:10,
-  width:350,
-  alignSelf:'center',
-  justifyContent:'center',
-  // flexWrap:'nowrap'
-  }
-});
+
 
 const itemStyles = StyleSheet.create({
   container: {

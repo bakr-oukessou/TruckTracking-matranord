@@ -15,27 +15,30 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/drivers")
 public class DriverController {
-    private final DriverService driverService;
-    private static final Logger logger = LoggerFactory.getLogger(TruckController.class);
-
-    @GetMapping
-    public ResponseEntity<?> getAllDrivers() {
-        try {
-            logger.info("Fetching all Drivers");
-            List<Driver> drivers = driverService.getAllDrivers();
-            logger.info("Fetched {} Drivers", drivers.size());
-            return ResponseEntity.ok(drivers);
-        } catch (Exception e) {
-            logger.error("Error fetching Drivers", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error fetching Drivers: " + e.getMessage());
-        }
-    }
 
     @Autowired
-    public DriverController(DriverService driverService) {
-        this.driverService = driverService;
-    }
+    private DriverService driverService;
+
+    private static final Logger logger = LoggerFactory.getLogger(TruckController.class);
+
+//    @GetMapping
+//    public ResponseEntity<?> getAllDrivers() {
+//        try {
+//            logger.info("Fetching all Drivers");
+//            List<Driver> drivers = driverService.getAllDrivers();
+//            logger.info("Fetched {} Drivers", drivers.size());
+//            return ResponseEntity.ok(drivers);
+//        } catch (Exception e) {
+//            logger.error("Error fetching Drivers", e);
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                    .body("Error fetching Drivers: " + e.getMessage());
+//        }
+//    }
+
+//    @Autowired
+//    public DriverController(DriverService driverService) {
+//        this.driverService = driverService;
+//    }
 
     @PostMapping
     public ResponseEntity<Driver> createDriver(@RequestBody Driver driver) {
@@ -72,10 +75,10 @@ public class DriverController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
-//    @GetMapping
-//    public ResponseEntity<List<Driver>> getAllDrivers2() {
-//        List<Driver> drivers = driverService.getAllDrivers();
-//        return new ResponseEntity<>(drivers, HttpStatus.OK);
-//    }
+    @GetMapping
+    public ResponseEntity<List<Driver>> getAllDrivers() {
+        List<Driver> drivers = driverService.getAllDrivers();
+        return new ResponseEntity<>(drivers, HttpStatus.OK);
+    }
 
 }

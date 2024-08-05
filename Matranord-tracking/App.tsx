@@ -252,7 +252,10 @@ const App: React.FC = () => {
           <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }}/>  
           <Stack.Screen name="SignIn" component={SignIn} options={{ headerShown: false }}/>  
           <Stack.Screen name="PLOMOS" component={PLOMOS} />
-          <Stack.Screen name="Driver" component={DriverWrapper} options={{ title: 'Drivers' }}/>
+          <Stack.Screen name="Driver" component={DriverWrapper} 
+            options={{ title: 'Drivers', 
+              // headerRight:(props)=>()
+            }}/>
           <Stack.Screen name="TruckDetails" component={TruckDetails}
             options={{
               headerRight: (props) =>(

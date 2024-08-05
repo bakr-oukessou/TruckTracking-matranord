@@ -26,13 +26,13 @@ export type RootStackParamList = {
   };
 
   export interface Driver {
-    CIN:string;
+    cin:string;
     nom: string;
     email: string;
-    telephone: string;
+    mobileNumber: string;
     adresse: string;
     validitePermit: string;
-    idvehicule: string;
+    idVehicule: string;
     experience:string;
   };
 

@@ -30,11 +30,11 @@ const DriverDetails = ({ route }: { route: DriverDetailsRouteProp}) => {
             </TouchableOpacity>
           </View>
             <View style={styles2.detailsContainer}>
-              <DetailItem title="CIN" value={driver.CIN} />
-              <DetailItem title="Idvehicule" value={driver.idvehicule} />
+              <DetailItem title="CIN" value={driver.cin} />
+              <DetailItem title="Idvehicule" value={driver.idVehicule} />
               <DetailItem title="Nom" value={driver.nom} />
               <DetailItem title="Email" value={driver.email} />
-              <DetailItem title="Telephone" value={driver.telephone} />
+              <DetailItem title="Telephone" value={driver.mobileNumber} />
               <DetailItem title="Adresse" value={driver.adresse} />
               <DetailItem title="Experience" value={driver.experience} />
               <DetailItem title="ValiditePermit" value={driver.validitePermit} />

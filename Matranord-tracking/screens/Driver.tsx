@@ -40,31 +40,31 @@ const DriverScreen: React.FC<DriverProps> = ({
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
   
-    // useEffect(() => {
-    //   filterDrivers();
-    // }, [searchQuery, drivers]);
+    useEffect(() => {
+      filterDrivers();
+    }, [searchQuery, drivers]);
   
     useEffect(() => {
       fetchDrivers();
     }, []);
     
     useEffect(() => {
-      console.log("Drivers state updated:", drivers);
+      // console.log("Drivers state updated:", drivers);
     }, [drivers]);
     
     useEffect(() => {
-      console.log("Filtered drivers state updated:", filteredDrivers);
+      // console.log("Filtered drivers state updated:", filteredDrivers);
     }, [filteredDrivers]);
   
     const fetchDrivers = async () => {
       try {
         setIsLoading(true); 
         const data = await getAllDrivers();
-        console.log("Fetched trucks:", data);
+        // console.log("Fetched trucks:", data);
         setDrivers(data);
-        console.log("Drivers state:", drivers);
+        // console.log("Drivers state:", drivers);
         setFilteredDrivers(data);
-        console.log("Filtered drivers state:", filteredDrivers);
+        // console.log("Filtered drivers state:", filteredDrivers);
         setIsLoading(false);
       } catch (err) {
         console.error("Error fetching drivers:", err);
@@ -80,7 +80,7 @@ const DriverScreen: React.FC<DriverProps> = ({
 
     const filterDrivers = () => {
       const filtered = drivers.filter(driver => 
-        driver && (driver.CIN ? driver.CIN.toLowerCase().includes(searchQuery.toLowerCase()) : false)
+        driver && (driver.cin ? driver.cin.toLowerCase().includes(searchQuery.toLowerCase()) : false)
       );
       setFilteredDrivers(filtered);
     };
@@ -195,11 +195,11 @@ const images = [
         },
         itemStyles.item,
       ]}> 
-        <Text style={itemStyles.text}><Text style={itemStyles.bold}>CIN:</Text> {item.CIN}</Text>
+        <Text style={itemStyles.text}><Text style={itemStyles.bold}>CIN:</Text> {item.cin}</Text>
         <Text style={itemStyles.text}><Text style={itemStyles.bold}>Nom chauffeur:</Text> {item.nom}</Text>
-        <Text style={itemStyles.text}><Text style={itemStyles.bold}>Matricule:</Text> {item.idvehicule}</Text>
+        <Text style={itemStyles.text}><Text style={itemStyles.bold}>Matricule:</Text> {item.idVehicule}</Text>
         <Text style={itemStyles.text}><Text style={itemStyles.bold}>Email:</Text> {item.email}</Text>
-        <Text style={itemStyles.text}><Text style={itemStyles.bold}>Telephone:</Text> {item.telephone}</Text>
+        <Text style={itemStyles.text}><Text style={itemStyles.bold}>Telephone:</Text> {item.mobileNumber}</Text>
         <Text style={itemStyles.text}><Text style={itemStyles.bold}>Adresse:</Text> {item.adresse}</Text>
         <Text style={itemStyles.text}><Text style={itemStyles.bold}>Experience:</Text> {item.experience}</Text>
         <Text style={[itemStyles.text, itemStyles.status]}><Text style={[itemStyles.bold, itemStyles.statusData]}>Validite:</Text> {item.validitePermit}</Text>
@@ -234,14 +234,14 @@ const images = [
 
   return (
     <PaperProvider>
-      <ImageBackground source={require('../assets/stack.png')} style={itemStyles.bgimage}>
+      {/* <ImageBackground source={require('../assets/stack.png')} style={itemStyles.bgimage}> */}
       <Searchbar
       placeholder="Search by CIN"
       onChangeText={setSearchQuery}
       value={searchQuery}
       style={itemStyles.searchBar}
       />
-      </ImageBackground>
+      {/* </ImageBackground> */}
     <View style={styles}>
     {isLoading ? (
   <ActivityIndicator size="large" color="#0000ff" />
@@ -345,11 +345,14 @@ const itemStyles = StyleSheet.create({
     borderWidth:1,
   },
   searchBar:{
+    width:350,
+    height:60,
     flexDirection:'row',
     alignItems:'center',
+    alignSelf:'center',
     zIndex: 99,
     fontFamily:'Poppins-Regular',
-    // backgroundColor:'#fff', 
+    backgroundColor:'rgba(208, 58, 95,0.4)', 
   },
   bgimage:{
     objectFit:'cover',

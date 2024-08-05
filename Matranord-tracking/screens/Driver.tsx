@@ -8,7 +8,8 @@ import { View, Text, StatusBar, StyleSheet, Pressable, ImageBackground ,
   I18nManager,
   NativeSyntheticEvent,
   NativeScrollEvent,
-  RefreshControl, } from 'react-native';
+  RefreshControl,
+  Image, } from 'react-native';
 import { FlashList } from "@shopify/flash-list";
 import { css } from '@emotion/native';
 import { useNavigation } from '@react-navigation/native';
@@ -195,13 +196,17 @@ const images = [
         },
         itemStyles.item,
       ]}> 
+        <Image
+          style={itemStyles.img}
+          source={require('../assets/person3.jpg')}
+        />
         <Text style={itemStyles.text}><Text style={itemStyles.bold}>CIN:</Text> {item.cin}</Text>
         <Text style={itemStyles.text}><Text style={itemStyles.bold}>Nom chauffeur:</Text> {item.nom}</Text>
-        <Text style={itemStyles.text}><Text style={itemStyles.bold}>Matricule:</Text> {item.idVehicule}</Text>
+        {/* <Text style={itemStyles.text}><Text style={itemStyles.bold}>Matricule:</Text> {item.idVehicule}</Text> */}
         <Text style={itemStyles.text}><Text style={itemStyles.bold}>Email:</Text> {item.email}</Text>
-        <Text style={itemStyles.text}><Text style={itemStyles.bold}>Telephone:</Text> {item.mobileNumber}</Text>
-        <Text style={itemStyles.text}><Text style={itemStyles.bold}>Adresse:</Text> {item.adresse}</Text>
-        <Text style={itemStyles.text}><Text style={itemStyles.bold}>Experience:</Text> {item.experience}</Text>
+        <Text style={itemStyles.text}><Text style={itemStyles.bold}>Telephone:</Text> (+212){item.mobileNumber}</Text>
+        {/* <Text style={itemStyles.text}><Text style={itemStyles.bold}>Adresse:</Text> {item.adresse}</Text> */}
+        <Text style={itemStyles.text}><Text style={itemStyles.bold}>Experience:</Text> {item.experience} Years</Text>
         <Text style={[itemStyles.text, itemStyles.status]}><Text style={[itemStyles.bold, itemStyles.statusData]}>Validite:</Text> {item.validitePermit}</Text>
       </Pressable>
       </ImageBackground>
@@ -369,7 +374,14 @@ const itemStyles = StyleSheet.create({
     // width:360,
     // marginLeft: 5,
     // marginBottom:20
-},
+  },
+  img:{
+    width: 70,
+    height: 70,
+    objectFit:'cover',
+    alignSelf:'baseline'
+  }
+
 });
 
 const styles = css`

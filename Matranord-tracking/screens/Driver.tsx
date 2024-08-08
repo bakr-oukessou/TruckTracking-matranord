@@ -393,7 +393,7 @@ const itemStyles = StyleSheet.create({
     // marginLeft:10,
     right:0,
     // left:20,
-    top:20,
+    // top:20,
     alignSelf:'flex-end',
     // alignItems:'center',
     textAlign:'right',

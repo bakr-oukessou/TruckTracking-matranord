@@ -15,16 +15,16 @@ public class TasksService {
         this.tasksRepository = tasksRepository;
     }
 
-    public Tasks createTasks(Tasks driver) {
-        return tasksRepository.save(driver);
+    public Tasks createTasks(Tasks task) {
+        return tasksRepository.save(task);
     }
 
     public Optional<Tasks> getTasksByCIN(String id) {
         return tasksRepository.findById(Long.valueOf(id));
     }
 
-    public Tasks updateTasks(Tasks driver) {
-        return tasksRepository.save(driver);
+    public Tasks updateTasks(Tasks task) {
+        return tasksRepository.save(task);
     }
 
     public void deleteTasks(String id) {

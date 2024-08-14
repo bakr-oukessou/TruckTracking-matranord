@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/tasks")
@@ -32,8 +33,8 @@ public class TasksController {
     }
 
     @GetMapping("/{id}")
-    public Tasks getTasksById(@PathVariable String id) {
-        return tasksService.getTasksByCIN(Long.valueOf(id));
+    public Optional<Tasks> getTasksById(@PathVariable String id) {
+        return tasksService.getTasksByCIN(id);
     }
 
     @PostMapping()
@@ -42,14 +43,14 @@ public class TasksController {
     }
 
     @PutMapping("/{id}")
-    public Tasks updateTasks(@PathVariable Long id, @RequestBody Tasks tasksDetails) {
-        Tasks tasks = tasksService.getTasksByCIN(Long.valueOf(id));
+    public Tasks updateTasks(@PathVariable String id, @RequestBody Tasks tasksDetails) {
+        Optional<Tasks> tasks = tasksService.getTasksByCIN(id);
         // Update tasks properties
-        return tasksService.createTasks(tasks);
+        return tasksService.createTasks(tasks.orElse(null));
     }
 
     @DeleteMapping("/{id}")
-    public void deleteTasks(@PathVariable Long id) {
+    public void deleteTasks(@PathVariable String id) {
         tasksService.deleteTasks(id);
     }
 }

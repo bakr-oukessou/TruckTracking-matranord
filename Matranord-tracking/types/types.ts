@@ -13,6 +13,7 @@ export type RootStackParamList = {
     SignUp:undefined;
     SignIn:undefined;
     Driver:undefined;
+    Tasks:undefined;
   };
   
   export interface Truck {

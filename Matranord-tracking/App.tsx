@@ -24,6 +24,7 @@ import Driver from './screens/Driver';
 import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo"
 import { Icon, TouchableRipple } from 'react-native-paper';
 import DriverDetails from './screens/DriverDetails';
+import Tasks from './screens/Tasks';
 
 //***********token**************/
 const tokenCache = {
@@ -252,6 +253,7 @@ const App: React.FC = () => {
           <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }}/>  
           <Stack.Screen name="SignIn" component={SignIn} options={{ headerShown: false }}/>  
           <Stack.Screen name="PLOMOS" component={PLOMOS} />
+          <Stack.Screen name="Tasks" component={Tasks} />
           <Stack.Screen name="Driver" component={DriverWrapper} 
             options={{ title: 'Drivers', 
               // headerRight:(props)=>()

@@ -32,6 +32,23 @@ export const createTruck = async (truckData: { matricule: string; date: string; 
   }
 };
 
+export const createDriver = async (driverData: { cin:string;
+  nom: string;
+  email: string;
+  mobileNumber: string;
+  adresse: string;
+  validitePermit: string;
+  idVehicule: string;
+  experience:string;}) => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/drivers`, driverData);
+    return response.data;
+  } catch (error) {
+    console.error('Error creating driver:', error);
+    throw error;
+  }
+};
+
 export const getAllDrivers = async () => {
   try {
     const response = await axios.get(`${API_BASE_URL}/drivers`);

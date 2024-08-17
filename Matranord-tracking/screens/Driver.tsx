@@ -16,7 +16,7 @@ import { useNavigation } from '@react-navigation/native';
 import { Driver, DriverProps, RootStackParamList, Truck } from '../types/types';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { MasonryFlashList } from "@shopify/flash-list";
-import { createTruck, getAllDrivers } from '../components/Api/api';
+import { createDriver, createTruck, getAllDrivers } from '../components/Api/api';
 import { ActivityIndicator, AnimatedFAB, Button, Modal, PaperProvider, Portal, Searchbar, Snackbar, TextInput } from 'react-native-paper';
 import axios from 'axios';
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
@@ -100,13 +100,16 @@ const DriverScreen: React.FC<DriverProps> = ({
 
   const [refreshing, setRefreshing] = useState(false);
 
-  const [matricule, setMatricule] = useState('');
-  const [date, setDate] = useState('');
-  const [numeroDossier, setNumeroDossier] = useState('');
-  const [trajet, setTrajet] = useState('');
-  const [chargement, setChargement] = useState('');
-  const [dechargement, setDechargement] = useState('');
-  const [status, setStatus] = useState('');
+  const [cin, setCin] = useState('');
+  const [nom, setNom] = useState('');
+  const [email,setEmail] = useState('');
+  const [mobileNumber, setMobileNumber] = useState('');
+  const [adresse, setAdresse] = useState('');
+  const [validitePermit, setValiditePermit] = useState('');
+  const [idVehicule, setIdVehicule] = useState('');
+  const [experience, setExperience] = useState('');
+
+  
 
   // const [snackbarVisible, setSnackbarVisible] = useState(false);
 
@@ -125,25 +128,28 @@ const DriverScreen: React.FC<DriverProps> = ({
   const handleSubmit = async () => {
     try {
       const newDriver = {
-        matricule,
-        date,
-        numeroDossier,
-        trajet,
-        chargement,
-        dechargement,
-        status,
+        cin,
+        nom,
+        email,
+        mobileNumber,
+        adresse,
+        validitePermit,
+        idVehicule,
+        experience,
       };
   
-      const createdDriver = await createTruck(newDriver);
+      const createdDriver = await createDriver(newDriver);
       console.log('Driver added successfully:', createdDriver);
     
-      setMatricule('');
-      setDate('');
-      setNumeroDossier('');
-      setTrajet('');
-      setChargement('');
-      setDechargement('');
-      setStatus('');
+      setCin('');
+      setNom('');
+      setEmail('');
+      setMobileNumber('');
+      setAdresse('');
+      setValiditePermit('');
+      setIdVehicule('');
+      setExperience('');
+      
 
       hideModal();
 
@@ -234,11 +240,11 @@ const images = [
     setDatePickerVisibility(false);
   };
 
-  const handleConfirm = (selectedDate: Date) => {
-    const formattedDate = selectedDate.toISOString().split('T')[0]; // Format: YYYY-MM-DD
-    setDate(formattedDate);
-    hideDatePicker();
-  };
+  // const handleConfirm = (selectedDate: Date) => {
+  //   const formattedDate = selectedDate.toISOString().split('T')[0]; // Format: YYYY-MM-DD
+  //   // setDate(formattedDate);
+  //   hideDatePicker();
+  // };
 
   return (
     <PaperProvider>

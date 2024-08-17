@@ -3,6 +3,8 @@ package com.matranord.Matranord_tracking_BackEnd.model;
 import jakarta.persistence.*;
 
 import java.sql.Date;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "Chauffeur")
@@ -33,6 +35,9 @@ public class Driver {
     private int IdVehicule;
 
     private String experience;
+
+    @OneToMany(mappedBy = "driver", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Tasks> tasks = new ArrayList<>();
 
     public Driver() {
     }
@@ -118,5 +123,23 @@ public class Driver {
 
     public void setId(int id) {
         this.id = id;
+    }
+    //////////////////////////////////
+    public List<Tasks> getTasks() {
+        return tasks;
+    }
+
+    public void setTasks(List<Tasks> tasks) {
+        this.tasks = tasks;
+    }
+
+    public void addTask(Tasks task) {
+        tasks.add(task);
+        task.setDriver(this);
+    }
+
+    public void removeTask(Tasks task) {
+        tasks.remove(task);
+        task.setDriver(null);
     }
 }

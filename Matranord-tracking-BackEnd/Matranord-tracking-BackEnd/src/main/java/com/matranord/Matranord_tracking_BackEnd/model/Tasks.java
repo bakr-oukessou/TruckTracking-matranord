@@ -1,25 +1,45 @@
 package com.matranord.Matranord_tracking_BackEnd.model;
 
+import jakarta.persistence.*;
+
+import java.time.LocalDateTime;
+
 public class Tasks {
     private String id;
     private String details;
     private String provider;
     private String Observation;
     private String Commentaire;
-    private String Cloture;
+    @Column(nullable = false)
+    private LocalDateTime Cloture;
     private String DateHeureCreation;
 
+    @Enumerated(EnumType.STRING)
+    private TaskStatus status;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "driver_id")
+    private Driver driver;
+
+    public enum TaskStatus {
+        PENDING, IN_PROGRESS, COMPLETED
+    }
     public Tasks(){
 
     }
 
-    public Tasks(String details, String provider, String observation, String commentaire, String cloture, String dateHeureCreation, String id) {
+    public Tasks(String details, String provider, String observation, String commentaire, LocalDateTime cloture, String dateHeureCreation, TaskStatus status, Driver driver) {
         this.details = details;
         this.provider = provider;
         Observation = observation;
         Commentaire = commentaire;
         Cloture = cloture;
         DateHeureCreation = dateHeureCreation;
+        this.status = status;
+        this.driver = driver;
+    }
+
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -59,11 +79,11 @@ public class Tasks {
         Commentaire = commentaire;
     }
 
-    public String getCloture() {
+    public LocalDateTime getCloture() {
         return Cloture;
     }
 
-    public void setCloture(String cloture) {
+    public void setCloture(LocalDateTime cloture) {
         Cloture = cloture;
     }
 
@@ -73,5 +93,21 @@ public class Tasks {
 
     public void setDateHeureCreation(String dateHeureCreation) {
         DateHeureCreation = dateHeureCreation;
+    }
+
+    public TaskStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(TaskStatus status) {
+        this.status = status;
+    }
+
+    public Driver getDriver() {
+        return driver;
+    }
+
+    public void setDriver(Driver driver) {
+        this.driver = driver;
     }
 }

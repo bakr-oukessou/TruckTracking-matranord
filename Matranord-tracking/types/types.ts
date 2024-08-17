@@ -37,6 +37,18 @@ export type RootStackParamList = {
     experience:string;
   };
 
+  export interface Tasks{
+    id:string;
+    details:string;
+    provider:string;
+    Observation:string;
+    Commentaire:string;
+    Cloture:Date;
+    DateHeureCreation:string;
+    status:string;
+    driver:Driver; 
+  }
+
   export interface BaseProps {
     animatedValue: Animated.Value;
     visible: boolean;

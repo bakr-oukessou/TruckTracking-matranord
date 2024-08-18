@@ -11,4 +11,5 @@ import java.util.List;
 public interface TasksRepository extends JpaRepository<Tasks, Long> {
     List<Tasks> findByDriver(Driver driver);
     List<Tasks> findByDriverCIN(String driverCIN);
+    List<Tasks> findByStatus(Tasks.TaskStatus status);
 }

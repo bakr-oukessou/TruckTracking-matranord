@@ -23,14 +23,14 @@ public class TasksController {
     @GetMapping
     public ResponseEntity<?> getAllTasks() {
         try {
-            logger.info("Fetching all trucks");
+            logger.info("Fetching all tasks");
             List<Tasks> tasks = tasksService.getAllTasks();
-            logger.info("Fetched {} taskss", tasks.size());
+            logger.info("Fetched {} tasks", tasks.size());
             return ResponseEntity.ok(tasks);
         } catch (Exception e) {
-            logger.error("Error fetching taskss", e);
+            logger.error("Error fetching tasks", e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error fetching taskss: " + e.getMessage());
+                    .body("Error fetching tasks: " + e.getMessage());
         }
     }
 
@@ -85,5 +85,34 @@ public class TasksController {
     public ResponseEntity<Void> deleteTask(@PathVariable String id) {
         tasksService.deleteTasks(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+    @GetMapping("/available")
+    public ResponseEntity<List<Tasks>> getAvailableTasks() {
+        List<Tasks> tasks = tasksService.getAvailableTasks();
+        return new ResponseEntity<>(tasks, HttpStatus.OK);
+    }
+
+    @PostMapping("/{taskId}/assign")
+    public ResponseEntity<Tasks> assignTaskToDriver(@PathVariable Long taskId, @RequestParam String driverCIN) {
+        Tasks assignedTask = tasksService.assignTaskToDriver(taskId, driverCIN);
+        return new ResponseEntity<>(assignedTask, HttpStatus.OK);
+    }
+
+    @PostMapping("/{taskId}/complete")
+    public ResponseEntity<Tasks> completeTask(@PathVariable Long taskId) {
+        Tasks completedTask = tasksService.completeTask(taskId);
+        return new ResponseEntity<>(completedTask, HttpStatus.OK);
+    }
+
+    @GetMapping("/in-progress")
+    public ResponseEntity<List<Tasks>> getTasksInProgress() {
+        List<Tasks> tasks = tasksService.getTasksInProgress();
+        return new ResponseEntity<>(tasks, HttpStatus.OK);
+    }
+
+    @GetMapping("/completed")
+    public ResponseEntity<List<Tasks>> getCompletedTasks() {
+        List<Tasks> tasks = tasksService.getCompletedTasks();
+        return new ResponseEntity<>(tasks, HttpStatus.OK);
     }
 }

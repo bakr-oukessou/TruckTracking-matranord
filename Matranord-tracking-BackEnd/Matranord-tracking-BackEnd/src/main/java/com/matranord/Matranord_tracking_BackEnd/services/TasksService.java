@@ -23,6 +23,50 @@ public class TasksService {
         }
         throw new RuntimeException("Driver not found");
     }
+    public List<Tasks> getAvailableTasks() {
+        return tasksRepository.findByStatus(Tasks.TaskStatus.AVAILABLE);
+    }
+
+    public Tasks assignTaskToDriver(Long taskId, String driverCIN) {
+        Optional<Tasks> taskOpt = tasksRepository.findById(taskId);
+        Optional<Driver> driverOpt = driverRepository.findByCIN(driverCIN);
+
+        if (taskOpt.isPresent() && driverOpt.isPresent()) {
+            Tasks task = taskOpt.get();
+            Driver driver = driverOpt.get();
+
+            if (task.getStatus() == Tasks.TaskStatus.AVAILABLE) {
+                task.startTask(driver);
+                return tasksRepository.save(task);
+            } else {
+                throw new RuntimeException("Tasks is not available");
+            }
+        }
+        throw new RuntimeException("Task or Driver not found");
+    }
+
+    public Tasks completeTask(Long taskId) {
+        Optional<Tasks> taskOpt = tasksRepository.findById(taskId);
+
+        if (taskOpt.isPresent()) {
+            Tasks task = taskOpt.get();
+            if (task.getStatus() == Tasks.TaskStatus.IN_PROGRESS) {
+                task.completeTask();
+                return tasksRepository.save(task);
+            } else {
+                throw new RuntimeException("Task is not in progress");
+            }
+        }
+        throw new RuntimeException("Task not found");
+    }
+
+    public List<Tasks> getTasksInProgress() {
+        return tasksRepository.findByStatus(Tasks.TaskStatus.IN_PROGRESS);
+    }
+
+    public List<Tasks> getCompletedTasks() {
+        return tasksRepository.findByStatus(Tasks.TaskStatus.COMPLETED);
+    }
 
     @Autowired
     public TasksService(TasksRepository tasksRepository, DriverRepository driverRepository) {

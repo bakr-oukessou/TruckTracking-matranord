@@ -4,7 +4,11 @@ import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "tasks")
 public class Tasks {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
     private String details;
     private String provider;
@@ -14,6 +18,12 @@ public class Tasks {
     private LocalDateTime Cloture;
     private String DateHeureCreation;
 
+    @Column(nullable = true)
+    private LocalDateTime startedAt;
+
+    @Column(nullable = true)
+    private LocalDateTime completedAt;
+
     @Enumerated(EnumType.STRING)
     private TaskStatus status;
 
@@ -22,8 +32,20 @@ public class Tasks {
     private Driver driver;
 
     public enum TaskStatus {
-        PENDING, IN_PROGRESS, COMPLETED
+        AVAILABLE, IN_PROGRESS, COMPLETED
     }
+
+    public void startTask(Driver driver) {
+        this.driver = driver;
+        this.status = TaskStatus.IN_PROGRESS;
+        this.startedAt = LocalDateTime.now();
+    }
+
+    public void completeTask() {
+        this.status = TaskStatus.COMPLETED;
+        this.completedAt = LocalDateTime.now();
+    }
+
     public Tasks(){
 
     }

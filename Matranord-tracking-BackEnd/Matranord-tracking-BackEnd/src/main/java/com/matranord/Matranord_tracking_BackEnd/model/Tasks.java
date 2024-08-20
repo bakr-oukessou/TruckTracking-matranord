@@ -10,12 +10,23 @@ public class Tasks {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
+
+    @Column(nullable = true)
     private String details;
+
+    @Column(nullable = true)
     private String provider;
+
+    @Column(nullable = true)
     private String Observation;
+
+    @Column(nullable = true)
     private String Commentaire;
-    @Column(nullable = false)
+
+    @Column(nullable = true)
     private LocalDateTime Cloture;
+
+    @Column(nullable = true)
     private String DateHeureCreation;
 
     @Column(nullable = true)
@@ -50,13 +61,15 @@ public class Tasks {
 
     }
 
-    public Tasks(String details, String provider, String observation, String commentaire, LocalDateTime cloture, String dateHeureCreation, TaskStatus status, Driver driver) {
+    public Tasks(String details, String provider, String observation, String commentaire, LocalDateTime cloture, String dateHeureCreation, LocalDateTime startedAt, LocalDateTime completedAt, TaskStatus status, Driver driver) {
         this.details = details;
         this.provider = provider;
         Observation = observation;
         Commentaire = commentaire;
         Cloture = cloture;
         DateHeureCreation = dateHeureCreation;
+        this.startedAt = startedAt;
+        this.completedAt = completedAt;
         this.status = status;
         this.driver = driver;
     }
@@ -131,5 +144,21 @@ public class Tasks {
 
     public void setDriver(Driver driver) {
         this.driver = driver;
+    }
+
+    public LocalDateTime getCompletedAt() {
+        return completedAt;
+    }
+
+    public void setCompletedAt(LocalDateTime completedAt) {
+        this.completedAt = completedAt;
+    }
+
+    public LocalDateTime getStartedAt() {
+        return startedAt;
+    }
+
+    public void setStartedAt(LocalDateTime startedAt) {
+        this.startedAt = startedAt;
     }
 }

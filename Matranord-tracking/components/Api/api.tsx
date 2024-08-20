@@ -68,6 +68,7 @@ export const getDriverById = async (id: any) => {
     throw error;
   }
 };
+
 export const getAllTasks = async () => {
   try {
     const response = await axios.get(`${API_BASE_URL}/tasks`);
@@ -87,3 +88,52 @@ export const getTaskById = async (id: any) => {
     throw error;
   }
 };
+
+export const getTaskByDriverCIN = async (driverCIN:any)=>{
+  try{
+    const response = await axios.get(`${API_BASE_URL}/tasks/driver/${driverCIN}`);
+    return response.data;
+  }catch(error){
+    console.error(`Error fetching driver task with id ${driverCIN}:`,error);
+    throw error;
+  }
+}
+
+export const getAvailableTasks = async()=>{
+  try {
+    const response = await axios.get(`${API_BASE_URL}/tasks/available`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error fetching available tasks:`,error);
+    throw error;
+  }
+}
+
+export const CompletedTasks = async(taskId:any)=>{
+  try {
+    await axios.post(`${API_BASE_URL}/tasks/${taskId}/complete`);
+  } catch (error) {
+    console.error(`Error completing tasks:`,error);
+    throw error;
+  }
+}
+
+export const AssignTask = async(taskId:any)=>{
+  try {
+    await axios.post(`${API_BASE_URL}/tasks/${taskId}/assign`);
+    getAvailableTasks();
+  } catch (error) {
+    console.error(`Error assigning available tasks:`,error);
+    throw error;
+  }
+}
+
+export const DeleteTask = async(taskId:any)=>{
+  try {
+    const response = await axios.delete(`${API_BASE_URL}/tasks/${taskId}`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error deleting tasks:`,error);
+    throw error;
+  }
+}

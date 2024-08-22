@@ -1,10 +1,14 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { View, Text, TouchableOpacity, SafeAreaView, ScrollView, ImageBackground, StyleSheet, Pressable, RefreshControl } from 'react-native';
 import { getAllTasks } from '../components/Api/api';
-import { Tasks } from '../types/types';
+import { RootStackParamList, Tasks, TasksProps } from '../types/types';
 import axios from 'axios';
 import { ActivityIndicator } from 'react-native-paper';
 import { MasonryFlashList } from '@shopify/flash-list';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { useNavigation } from 'expo-router';
+
+type TasksScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Tasks'> & TasksProps;
 
 const Tasks = () => {
 
@@ -66,9 +70,12 @@ const Tasks = () => {
     fetchTasks().then(() => setRefreshing(false));
   }, []);
   /////////////////////////////////////////
+
+  const navigation = useNavigation<TasksScreenNavigationProp>();
+  
   const renderItem = ({ item }: { item: Tasks }) => (
     <View style={itemStyles.container}>
-      <Pressable onPress={() => navigation.navigate('DriverDetails', { driver: item })}android_ripple={{color: 'grey'}} style={({pressed}) => [
+      <Pressable onPress={() => navigation.navigate('TasksDetails', { task: item })}android_ripple={{color: 'grey'}} style={({pressed}) => [
         {
           backgroundColor: pressed ? '#EAD196' : 'white',
         },
@@ -79,11 +86,11 @@ const Tasks = () => {
             <Text style={itemStyles.text}><Text style={itemStyles.bold}>Provider:</Text> {item.provider}</Text>
             <Text style={itemStyles.text}><Text style={itemStyles.bold}>{item.Observation}</Text> </Text>
             {/* <Text style={itemStyles.text}><Text style={itemStyles.bold}>Matricule:</Text> {item.idVehicule}</Text> */}
-            <Text style={itemStyles.text}><Text style={itemStyles.bold}>{item.driver}</Text> </Text>
+            <Text style={itemStyles.text}><Text style={itemStyles.bold}>{item.driver.nom}</Text> </Text>
             <Text style={itemStyles.text}><Text style={itemStyles.bold}>{item.DateHeureCreation}</Text> </Text>
             {/* <Text style={itemStyles.text}><Text style={itemStyles.bold}>Adresse:</Text> {item.adresse}</Text> */}
             <Text style={itemStyles.text}><Text style={itemStyles.bold}>Status:</Text> {item.status}</Text>
-            <Text style={[itemStyles.text, itemStyles.status]}><Text style={[itemStyles.bold, itemStyles.statusData]}>Validite:</Text> {item.Cloture}</Text>
+            <Text style={[itemStyles.text, itemStyles.status]}><Text style={[itemStyles.bold, itemStyles.statusData]}>Validite:</Text> {item.Cloture.toISOString()}</Text>
           </View>
         </View>
       </Pressable>

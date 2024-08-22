@@ -42,10 +42,11 @@ export type RootStackParamList = {
     details:string;
     provider:string;
     Observation:string;
-    Commentaire:string;
     Cloture:Date;
     DateHeureCreation:string;
     status:string;
+    startedAt:string;
+    completedAt:string;
     driver:Driver; 
   }
 

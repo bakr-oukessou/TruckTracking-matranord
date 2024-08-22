@@ -21,9 +21,6 @@ public class Tasks {
     private String Observation;
 
     @Column(nullable = true)
-    private String Commentaire;
-
-    @Column(nullable = true)
     private LocalDateTime Cloture;
 
     @Column(nullable = true)
@@ -61,11 +58,10 @@ public class Tasks {
 
     }
 
-    public Tasks(String details, String provider, String observation, String commentaire, LocalDateTime cloture, String dateHeureCreation, LocalDateTime startedAt, LocalDateTime completedAt, TaskStatus status, Driver driver) {
+    public Tasks(String details, String provider, String observation, LocalDateTime cloture, String dateHeureCreation, LocalDateTime startedAt, LocalDateTime completedAt, TaskStatus status, Driver driver) {
         this.details = details;
         this.provider = provider;
         Observation = observation;
-        Commentaire = commentaire;
         Cloture = cloture;
         DateHeureCreation = dateHeureCreation;
         this.startedAt = startedAt;
@@ -104,14 +100,6 @@ public class Tasks {
 
     public void setObservation(String observation) {
         Observation = observation;
-    }
-
-    public String getCommentaire() {
-        return Commentaire;
-    }
-
-    public void setCommentaire(String commentaire) {
-        Commentaire = commentaire;
     }
 
     public LocalDateTime getCloture() {

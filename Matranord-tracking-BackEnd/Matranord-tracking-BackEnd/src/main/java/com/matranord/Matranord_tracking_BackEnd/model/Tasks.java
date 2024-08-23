@@ -24,12 +24,15 @@ public class Tasks {
     private LocalDateTime Cloture;
 
     @Column(nullable = true)
-    private String DateHeureCreation;
+    private String Dateheurecreation;
 
-    @Column(nullable = true)
+    @Column(name = "assigned_at",nullable = false)
+    private String assignedAt;
+
+    @Column(name = "started_at",nullable = false)
     private LocalDateTime startedAt;
 
-    @Column(nullable = true)
+    @Column(name = "completed_at",nullable = false)
     private LocalDateTime completedAt;
 
     @Enumerated(EnumType.STRING)
@@ -63,7 +66,7 @@ public class Tasks {
         this.provider = provider;
         Observation = observation;
         Cloture = cloture;
-        DateHeureCreation = dateHeureCreation;
+        Dateheurecreation = dateHeureCreation;
         this.startedAt = startedAt;
         this.completedAt = completedAt;
         this.status = status;
@@ -111,11 +114,11 @@ public class Tasks {
     }
 
     public String getDateHeureCreation() {
-        return DateHeureCreation;
+        return Dateheurecreation;
     }
 
     public void setDateHeureCreation(String dateHeureCreation) {
-        DateHeureCreation = dateHeureCreation;
+        Dateheurecreation = dateHeureCreation;
     }
 
     public TaskStatus getStatus() {

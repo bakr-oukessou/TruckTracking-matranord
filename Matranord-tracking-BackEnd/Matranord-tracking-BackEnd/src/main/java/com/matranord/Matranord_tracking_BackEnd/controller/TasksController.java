@@ -34,10 +34,10 @@ public class TasksController {
         }
     }
 
-    @GetMapping("/{id}")
-    public Optional<Tasks> getTasksById(@PathVariable String id) {
-        return tasksService.getTasksById(id);
-    }
+//    @GetMapping("/{id}")
+//    public Optional<Tasks> getTasksById(@PathVariable String id) {
+//        return tasksService.getTasksById(id);
+//    }
 
 //    @PostMapping()
 //    public Tasks createTasks(@RequestBody Tasks tasks) {

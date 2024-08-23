@@ -14,6 +14,7 @@ export type RootStackParamList = {
     SignIn:undefined;
     Driver:undefined;
     Tasks:undefined;
+    TaskDetails:{task:Tasks};
   };
   
   export interface Truck {
@@ -63,6 +64,7 @@ export type RootStackParamList = {
   export interface TrackingProps extends BaseProps, Partial<StackScreenProps<RootStackParamList, 'Tracking'>> {}
 
   export interface DriverProps extends BaseProps, Partial<StackScreenProps<RootStackParamList, 'Driver'>> {}
+
   export interface TasksProps extends BaseProps, Partial<StackScreenProps<RootStackParamList, 'Tasks'>> {}
 
   // export interface MyComponentProps extends Partial<StackScreenProps<RootStackParamList, 'Tracking'>> {

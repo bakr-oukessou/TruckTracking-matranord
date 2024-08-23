@@ -10,8 +10,15 @@ import { useNavigation } from 'expo-router';
 
 type TasksScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Tasks'> & TasksProps;
 
-const Tasks = () => {
-
+const TaskScreen: React.FC<TasksProps> = ({
+  animatedValue,  
+  visible,
+  extended,
+  label,
+  animateFrom,
+  style,
+  iconMode,
+}) => {
   //////////////////// API Call//////////////////
   const [tasks, setTasks] = useState<Tasks[]>([]);
   const [filteredTasks, setFilteredTasks] = useState<Tasks[]>([]);
@@ -21,7 +28,7 @@ const Tasks = () => {
   const [refreshing, setRefreshing] = useState(false);
 
   useEffect(() => {
-    filterDrivers();
+    filterTasks();
   }, [searchQuery, tasks]);
 
   useEffect(() => {
@@ -58,7 +65,7 @@ const Tasks = () => {
     }
   };
 
-  const filterDrivers = () => {
+  const filterTasks = () => {
     const filtered = tasks.filter(task => 
       task && (task.status ? task.status.toLowerCase().includes(searchQuery.toLowerCase()) : false)
     );
@@ -75,7 +82,7 @@ const Tasks = () => {
   
   const renderItem = ({ item }: { item: Tasks }) => (
     <View style={itemStyles.container}>
-      <Pressable onPress={() => navigation.navigate('TasksDetails', { task: item })}android_ripple={{color: 'grey'}} style={({pressed}) => [
+      <Pressable onPress={() => navigation.navigate('TaskDetails', { task: item })}android_ripple={{color: 'grey'}} style={({pressed}) => [
         {
           backgroundColor: pressed ? '#EAD196' : 'white',
         },
@@ -148,6 +155,7 @@ const DetailItem: React.FC<{ title: string; value: string }> = ({ title, value }
     <Text style={styles2.detailValue}>{value}</Text>
   </View>
 );
+
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
@@ -454,4 +462,4 @@ const itemStyles = StyleSheet.create({
   }
 
 });
-export default Tasks;
+export default TaskScreen;

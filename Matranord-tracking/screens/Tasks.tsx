@@ -26,10 +26,11 @@ const TaskScreen: React.FC<TasksProps> = ({
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [refreshing, setRefreshing] = useState(false);
+  const [activeTab, setActiveTab] = useState<'available' | 'inProgress' | 'completed'>('available');
 
-  useEffect(() => {
-    filterTasks();
-  }, [searchQuery, tasks]);
+  // useEffect(() => {
+  //   filterTasks();
+  // }, [searchQuery, tasks]);
 
   useEffect(() => {
     fetchTasks();
@@ -38,6 +39,10 @@ const TaskScreen: React.FC<TasksProps> = ({
   useEffect(() => {
     // console.log("Drivers state updated:", drivers);
   }, [tasks]);
+
+  useEffect(() => {
+    filterTasks();
+  }, [searchQuery, tasks, activeTab]);
   
   useEffect(() => {
     // console.log("Filtered drivers state updated:", filteredDrivers);
@@ -65,10 +70,23 @@ const TaskScreen: React.FC<TasksProps> = ({
     }
   };
 
+  // const filterTasks = () => {
+  //   const filtered = tasks.filter(task => 
+  //     task && (task.status ? task.status.toLowerCase().includes(searchQuery.toLowerCase()) : false)
+  //   );
+  //   setFilteredTasks(filtered);
+  // };
+
   const filterTasks = () => {
-    const filtered = tasks.filter(task => 
-      task && (task.status ? task.status.toLowerCase().includes(searchQuery.toLowerCase()) : false)
-    );
+    const filtered = tasks.filter(task => {
+      if (activeTab === 'available') {
+        return task.status.toLowerCase() === 'available';
+      } else if (activeTab === 'inProgress') {
+        return task.status.toLowerCase() === 'in progress';
+      } else {
+        return task.status.toLowerCase() === 'completed';
+      }
+    });
     setFilteredTasks(filtered);
   };
 
@@ -111,14 +129,20 @@ const TaskScreen: React.FC<TasksProps> = ({
         <View style={styles2.infoContainer}>
           {/* <Text style={styles2.driverName}>Driver Details</Text> */}
           <View style={styles2.tabContainer}>
-            <TouchableOpacity style={[styles2.tab, styles2.activeTab]}>
-              <Text style={styles2.activeTabText}>AVAILABLE TASKS</Text>
+            <TouchableOpacity 
+              style={[styles2.tab, activeTab === 'available' && styles2.activeTab]}
+              onPress={() => setActiveTab('available')}>
+              <Text style={activeTab === 'available' ? styles2.activeTabText : styles2.tabText}>AVAILABLE TASKS</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles2.tab}>
-              <Text style={styles2.tabText}>TASKS IN PROGRESS</Text>
+            <TouchableOpacity 
+              style={[styles2.tab, activeTab === 'inProgress' && styles2.activeTab]}
+              onPress={() => setActiveTab('inProgress')}>
+              <Text style={activeTab === 'inProgress' ? styles2.activeTabText : styles2.tabText}>TASKS IN PROGRESS</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles2.tab}>
-              <Text style={styles2.tabText}>TASKS COMPLETED</Text>
+            <TouchableOpacity 
+              style={[styles2.tab, activeTab === 'completed' && styles2.activeTab]}
+              onPress={() => setActiveTab('completed')}>
+              <Text style={activeTab === 'completed' ? styles2.activeTabText : styles2.tabText}>TASKS COMPLETED</Text>
             </TouchableOpacity>
           </View>
             <View style={styles2.detailsContainer}>

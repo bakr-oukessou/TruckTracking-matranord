@@ -11,19 +11,19 @@ public class Tasks {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
 
-    @Column(nullable = true)
+    @Column(name = "details",nullable = false)
     private String details;
 
-    @Column(nullable = true)
+    @Column(name = "provider",nullable = false)
     private String provider;
 
-    @Column(nullable = true)
+    @Column(name = "Observation",nullable = false)
     private String Observation;
 
-    @Column(nullable = true)
+    @Column(name = "Cloture",nullable = false)
     private LocalDateTime Cloture;
 
-    @Column(nullable = true)
+    @Column(name = "DateHeureCreation",nullable = false)
     private String Dateheurecreation;
 
     @Column(name = "assigned_at",nullable = false)

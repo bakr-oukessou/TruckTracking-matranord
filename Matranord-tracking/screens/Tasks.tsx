@@ -149,7 +149,7 @@ const TaskScreen: React.FC<TasksProps> = ({
             {isLoading ? (
                 <ActivityIndicator size="large" color="#0000ff" />
                 ) : (
-                <MasonryFlashList
+                  <MasonryFlashList
                   data={filteredTasks}
                   numColumns={1}
                   renderItem={renderItem}

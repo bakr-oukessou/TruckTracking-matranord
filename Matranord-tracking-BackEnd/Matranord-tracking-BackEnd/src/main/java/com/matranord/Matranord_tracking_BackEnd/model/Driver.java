@@ -39,15 +39,15 @@ public class Driver {
     private String experience;
 
     @Lob
-    @Column(name = "profile_picture", columnDefinition="LONGBLOB")
-    private byte[] profilePicture;
+    @Column(name = "profilepicture", columnDefinition="LONGBLOB")
+    private byte[] profilepicture;
 
     public byte[] getProfilePicture() {
-        return profilePicture;
+        return profilepicture;
     }
 
     public void setProfilePicture(byte[] profilePicture) {
-        this.profilePicture = profilePicture;
+        this.profilepicture = profilePicture;
     }
 
     @JsonManagedReference

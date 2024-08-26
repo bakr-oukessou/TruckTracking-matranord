@@ -56,10 +56,10 @@ public class DriverController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @GetMapping("/{id}")
-    public Optional<Driver> getDriverById(@PathVariable int id) {
-        return driverService.getDriverById(id);
-    }
+//    @GetMapping("/{id}")
+//    public Optional<Driver> getDriverById(@PathVariable int id) {
+//        return driverService.getDriverById(id);
+//    }
 
     @PutMapping("/{id}")
     public ResponseEntity<Driver> updateDriver(@PathVariable int id, @RequestBody Driver driver) {

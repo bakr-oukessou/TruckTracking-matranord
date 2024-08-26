@@ -28,6 +28,7 @@ export type RootStackParamList = {
   };
 
   export interface Driver {
+    id:string;
     cin:string;
     nom: string;
     email: string;
@@ -36,6 +37,7 @@ export type RootStackParamList = {
     validitePermit: string;
     idVehicule: string;
     experience:string;
+    profilePicture:string | null;
   };
 
   export interface Tasks{

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Pressable, ScrollView, Animated, ImageBackground } from 'react-native';
+import { View, Text, StyleSheet, Pressable, ScrollView, Animated, ImageBackground, Alert } from 'react-native';
 
 import { RouteProp, useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../types/types';
@@ -8,22 +8,75 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { Image, SafeAreaView,TouchableOpacity } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Driver } from '../types/types';
+import * as ImagePicker from 'expo-image-picker';
+import axios from 'axios';
 
 type DriverDetailsRouteProp = RouteProp<RootStackParamList, 'DriverDetails'>;
 type DriverDetailsScreenNavigationProp = StackNavigationProp<RootStackParamList, 'DriverDetails'>;
 
 const DriverDetails = ({ route }: { route: DriverDetailsRouteProp}) => {
-  const { driver } = route.params;
-  const navigation = useNavigation<DriverDetailsScreenNavigationProp>();
   
-  // const { driverId } = route.params;
-  // const [driver, setDriver] = useState(null);
-  const [profilePicture, setProfilePicture] = useState(null);
+  const { driver: initialDriver } = route.params;
+  const navigation = useNavigation<DriverDetailsScreenNavigationProp>();
+  const [driver, setDriver] = useState<Driver>(initialDriver);
+  
+  const uploadProfilePicture = async () => {
+    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    
+    if (permissionResult.granted === false) {
+      Alert.alert("Permission Required", "You need to grant camera roll permissions to upload a profile picture.");
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 1,
+    });
+
+    if (!result.canceled) {
+      const formData = new FormData();
+      formData.append('profilePicture', {
+        uri: result.assets[0].uri,
+        type: 'image/jpeg',
+        name: 'profile.jpg',
+      } as any);
+
+      try {
+        const response = await axios.post(`http://10.0.2.2:8080/api/drivers/${driver.id}/profile-picture`, formData, {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+
+        if (response.status === 200) {
+          setDriver({ ...driver, profilePicture: result.assets[0].uri });
+          Alert.alert("Success", "Profile picture uploaded successfully");
+        }
+      } catch (error) {
+        console.error('Error uploading profile picture:', error);
+        Alert.alert("Error", "Failed to upload profile picture");
+      }
+    }
+  };
+  
   return (
     <SafeAreaView style={styles2.container}>
     <ImageBackground source={require('../assets/phoneBackground.jpg')} style={styles.image}>
     <ScrollView contentContainerStyle={styles.container}>
         <View style={styles2.infoContainer}>
+        <TouchableOpacity onPress={uploadProfilePicture} style={styles.profileImageContainer}>
+              {driver.profilePicture ? (
+                <Image source={{ uri: driver.profilePicture }} style={styles.profileImage} />
+              ) : (
+                <View style={styles.placeholderImage}>
+                  <Text style={styles.placeholderText}>{driver.nom.charAt(0)}</Text>
+                </View>
+              )}
+              <Text style={styles.uploadText}>Tap to upload photo</Text>
+            </TouchableOpacity> 
+            <Text style={styles.driverName}>{driver.nom}</Text>
           {/* <Text style={styles2.driverName}>Driver Details</Text> */}
           <View style={styles2.tabContainer}>
             <TouchableOpacity style={[styles2.tab, styles2.activeTab]}>
@@ -45,65 +98,6 @@ const DriverDetails = ({ route }: { route: DriverDetailsRouteProp}) => {
             </View>
         </View>
     <View style={styles.buttons}>
-        
-      {/* <Pressable 
-       style={styles.button}
-       android_ripple={{color: 'grey'}}
-       onPress={() => navigation.navigate('MapScreen', { driver })}>
-      <MaterialIcons name="location-on" size={30} color="black" />
-        <Text style={styles.detail}>Positionnement</Text>
-      </Pressable>
-      
-      <Pressable style={styles.button} android_ripple={{color: 'grey'}}>
-      <MaterialIcons name="local-shipping" size={30} color="black" />
-        <Text style={styles.detail}>Chargement</Text>
-      </Pressable>
-      
-      <Pressable style={styles.button} android_ripple={{color: 'grey'}}>
-      <MaterialIcons name="moving" size={30} color="black" />
-        <Text style={styles.detail}>En Route</Text>
-      </Pressable>
-      
-      <Pressable style={styles.button} android_ripple={{color: 'grey'}}>
-      <View style={{flexDirection:'row'}}>
-        <MaterialIcons name="east" size={25} color="black" />
-        <MaterialIcons name="maps-home-work" size={30} color="black" />
-      </View>
-        <Text style={styles.detail}>Entree Douane</Text>
-      </Pressable>
-      
-      <Pressable style={styles.button} android_ripple={{color: 'grey'}}>
-      <View style={{flexDirection:'row'}}>
-        <MaterialIcons name="maps-home-work" size={30} color="black" />
-        <MaterialIcons name="east" size={25} color="black" />
-      </View>
-        <Text style={styles.detail}>Sortie Douane</Text>
-      </Pressable>
-      
-      <Pressable style={styles.button} android_ripple={{color: 'grey'}}>
-      <MaterialIcons name="how-to-reg" size={30} color="black" />
-        <Text style={styles.detail}>Arriver Client</Text>
-      </Pressable>
-      
-      <Pressable style={styles.button} android_ripple={{color: 'grey'}}>
-      <MaterialIcons name="cancel" size={30} color="black" />
-        <Text style={styles.detail}>Cloturer</Text>
-      </Pressable>
-      
-      <Pressable style={styles.button} android_ripple={{color: 'grey'}}>
-      <MaterialIcons name="report" size={30} color="black" />
-        <Text style={styles.detail}>Rien a Charger</Text>
-      </Pressable> */}
-
-      {/* <Pressable style={styles.button2} android_ripple={{color: 'grey',radius:58}}>
-      <MaterialIcons name="verified" size={30} color="green" />
-        <Text style={styles.detail}>Valider</Text>
-      </Pressable>
-
-      <Pressable style={styles.button2} android_ripple={{color: 'grey',radius:58}}>
-      <MaterialIcons name="delete" size={30} color="red" />
-        <Text style={styles.detail}>Supprimer</Text>
-      </Pressable> */}
       <TouchableOpacity style={styles2.updateButton}>
         <Text style={styles2.updateButtonText}>Update Driver Info</Text>
       </TouchableOpacity>
@@ -133,6 +127,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 245, 225, 0.7)',
     fontFamily: 'Poppins-Regular',
     padding: 5,
+    height:'100%',
   },
   header: {
     fontSize: 24,
@@ -204,13 +199,47 @@ const styles = StyleSheet.create({
     // borderRadius: 12,
     overflow: 'hidden',
     
-  }
+  },
+  profileImageContainer: {
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  profileImage: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+  },
+  placeholderImage: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    backgroundColor: '#E5114D',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  placeholderText: {
+    fontSize: 48,
+    color: 'white',
+  },
+  uploadText: {
+    marginTop: 8,
+    color: '#E5114D',
+    fontSize: 14,
+  },
+  driverName: {
+    fontSize: 24,
+    // fontWeight: 'bold',
+    textAlign: 'center',
+    fontFamily: 'Poppins-Bold',
+    marginBottom: 16,
+  },
 });
 
 
 const styles2 = StyleSheet.create({
   container: {
     flex: 1,
+    height:'100%',
     backgroundColor: '#E5114D',
   },
   header: {
@@ -226,6 +255,7 @@ const styles2 = StyleSheet.create({
   },
   headerTitle: {
     color: 'white',
+    fontFamily: 'Poppins-Bold',
     fontSize: 18,
     fontWeight: 'bold',
   },
@@ -297,12 +327,14 @@ const styles2 = StyleSheet.create({
     backgroundColor: '#AA304E',
     padding: 16,
     alignItems: 'center',
-    width:'100%'
+    width:'100%',
+    marginTop:10,
   },
   updateButtonText: {
     color: 'white',
     fontWeight: 'bold',
     fontSize: 16,
+    fontFamily:'Poppins-Regular',
   },
 });
 

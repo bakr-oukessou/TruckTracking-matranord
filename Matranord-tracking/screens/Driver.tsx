@@ -203,20 +203,21 @@ const images = [
         itemStyles.item,
       ]}>
         <View style={itemStyles.info2}>
-        <Image
-          style={itemStyles.img}
-          source={require('../assets/person3.jpg')}
-        />
-        <View style={itemStyles.info}>
-          <Text style={itemStyles.text}><Text style={itemStyles.bold}>CIN:</Text> {item.cin}</Text>
-          <Text style={itemStyles.text}><Text style={itemStyles.bold}>{item.nom}</Text> </Text>
-          {/* <Text style={itemStyles.text}><Text style={itemStyles.bold}>Matricule:</Text> {item.idVehicule}</Text> */}
-          <Text style={itemStyles.text}><Text style={itemStyles.bold}>{item.email}</Text> </Text>
-          <Text style={itemStyles.text}><Text style={itemStyles.bold}>(+212){item.mobileNumber}</Text> </Text>
-          {/* <Text style={itemStyles.text}><Text style={itemStyles.bold}>Adresse:</Text> {item.adresse}</Text> */}
-          <Text style={itemStyles.text}><Text style={itemStyles.bold}>Experience:</Text> {item.experience} Years</Text>
-          <Text style={[itemStyles.text, itemStyles.status]}><Text style={[itemStyles.bold, itemStyles.statusData]}>Validite:</Text> {item.validitePermit}</Text>
-        </View>
+          <View style={itemStyles.img2}>
+          <Image
+            style={itemStyles.img}
+            source={require('../assets/person3.jpg')}
+          /></View>
+          <View style={itemStyles.info}>
+            <Text style={itemStyles.text}><Text style={itemStyles.bold}>CIN:</Text> {item.cin}</Text>
+            <Text style={itemStyles.text}><Text style={itemStyles.bold}>{item.nom}</Text> </Text>
+            {/* <Text style={itemStyles.text}><Text style={itemStyles.bold}>Matricule:</Text> {item.idVehicule}</Text> */}
+            <Text style={itemStyles.text}><Text style={itemStyles.bold}>{item.email}</Text> </Text>
+            <Text style={itemStyles.text}><Text style={itemStyles.bold}>(+212){item.mobileNumber}</Text> </Text>
+            {/* <Text style={itemStyles.text}><Text style={itemStyles.bold}>Adresse:</Text> {item.adresse}</Text> */}
+            <Text style={itemStyles.text}><Text style={itemStyles.bold}>Experience:</Text> {item.experience} Years</Text>
+            <Text style={[itemStyles.text, itemStyles.status]}><Text style={[itemStyles.bold, itemStyles.statusData]}>Validite:</Text> {item.validitePermit}</Text>
+          </View>
         </View>
       </Pressable>
       </ImageBackground>
@@ -337,9 +338,16 @@ const itemStyles = StyleSheet.create({
     alignSelf:'flex-end',
     alignItems:'center',
     textAlign:'right',
+    // position:'absolute',
     color:'#000',
+    // right:0,
     padding:4,
+    // height:40,
+    // top:130,
+    // marginTop:20,
+    // bottom:-10,
     borderRadius:8,
+
     fontWeight:'700',
     backgroundColor:'#ffebb096'
   },
@@ -364,6 +372,7 @@ const itemStyles = StyleSheet.create({
     flexDirection:'row',
     alignItems:'center',
     alignSelf:'center',
+    marginTop:6,
     zIndex: 99,
     fontFamily:'Poppins-Regular',
     backgroundColor:'rgba(208, 58, 95,0.4)', 
@@ -388,14 +397,15 @@ const itemStyles = StyleSheet.create({
     width: 70,
     height: 70,
     objectFit:'cover',
-    alignSelf:'baseline',
+    // alignSelf:'baseline',
     borderRadius:20,
+    // position:'absolute',
     // margin:20
   },
   info:{
     display:'flex',
     flexDirection:'column',
-    // justifyContent: 'flex-end',
+    justifyContent: 'flex-end',
     // marginLeft:10,
     right:0,
     // left:20,
@@ -408,6 +418,13 @@ const itemStyles = StyleSheet.create({
     display:'flex',
     flexDirection:'row',
     
+  },
+  img2:{
+    alignItems:'flex-end',
+    // justifyContent:'center',
+    position:'absolute',
+    // backgroundColor:'red',
+    width:'100%',
   }
 
 });

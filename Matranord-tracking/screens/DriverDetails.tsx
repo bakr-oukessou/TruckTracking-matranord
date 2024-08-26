@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, StyleSheet, Pressable, ScrollView, Animated, ImageBackground } from 'react-native';
 
 import { RouteProp, useNavigation } from '@react-navigation/native';
@@ -15,6 +15,10 @@ type DriverDetailsScreenNavigationProp = StackNavigationProp<RootStackParamList,
 const DriverDetails = ({ route }: { route: DriverDetailsRouteProp}) => {
   const { driver } = route.params;
   const navigation = useNavigation<DriverDetailsScreenNavigationProp>();
+  
+  // const { driverId } = route.params;
+  // const [driver, setDriver] = useState(null);
+  const [profilePicture, setProfilePicture] = useState(null);
   return (
     <SafeAreaView style={styles2.container}>
     <ImageBackground source={require('../assets/phoneBackground.jpg')} style={styles.image}>

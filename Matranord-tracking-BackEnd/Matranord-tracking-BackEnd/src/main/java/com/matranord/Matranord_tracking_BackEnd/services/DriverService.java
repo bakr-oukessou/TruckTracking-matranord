@@ -1,10 +1,14 @@
 package com.matranord.Matranord_tracking_BackEnd.services;
 
+import com.matranord.Matranord_tracking_BackEnd.model.DTO.DriverDTO;
 import com.matranord.Matranord_tracking_BackEnd.model.Driver;
 import com.matranord.Matranord_tracking_BackEnd.repository.DriverRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.util.Base64;
 import java.util.List;
 import java.util.Optional;
 
@@ -39,5 +43,24 @@ public class DriverService {
 
     public List<Driver> getAllDrivers() {
         return driverRepository.findAll();
+    }
+
+    public void uploadProfilePicture(int driverId, MultipartFile file) throws IOException {
+        Driver driver = driverRepository.findById(driverId)
+                .orElseThrow(() -> new RuntimeException("Driver not found"));
+
+        driver.setProfilePicture(file.getBytes());
+        driverRepository.save(driver);
+    }
+
+    public DriverDTO getDriverWithProfilePicture(int driverId) {
+        Driver driver = driverRepository.findById(driverId)
+                .orElseThrow(() -> new RuntimeException("Driver not found"));
+
+        DriverDTO driverDTO = null; // map driver to DriverDTO
+        if (driver.getProfilePicture() != null) {
+            driverDTO.setProfilePictureBase64(Base64.getEncoder().encodeToString(driver.getProfilePicture()));
+        }
+        return driverDTO;
     }
 }

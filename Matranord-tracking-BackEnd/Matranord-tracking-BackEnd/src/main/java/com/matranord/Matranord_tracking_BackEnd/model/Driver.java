@@ -1,5 +1,6 @@
 package com.matranord.Matranord_tracking_BackEnd.model;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 
 import java.sql.Date;
@@ -34,8 +35,22 @@ public class Driver {
     @Column(name = "Idvehicule",nullable = false)
     private int IdVehicule;
 
+    @Column(name="experience",nullable = true)
     private String experience;
 
+    @Lob
+    @Column(name = "profile_picture", columnDefinition="LONGBLOB")
+    private byte[] profilePicture;
+
+    public byte[] getProfilePicture() {
+        return profilePicture;
+    }
+
+    public void setProfilePicture(byte[] profilePicture) {
+        this.profilePicture = profilePicture;
+    }
+
+    @JsonManagedReference
     @OneToMany(mappedBy = "driver", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Tasks> tasks = new ArrayList<>();
 

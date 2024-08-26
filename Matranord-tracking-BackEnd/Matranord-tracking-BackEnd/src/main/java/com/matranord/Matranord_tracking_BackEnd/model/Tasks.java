@@ -1,5 +1,6 @@
 package com.matranord.Matranord_tracking_BackEnd.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
@@ -23,7 +24,7 @@ public class Tasks {
     @Column(name = "Cloture",nullable = false)
     private LocalDateTime Cloture;
 
-    @Column(name = "DateHeureCreation",nullable = false)
+    @Column(name = "Dateheurecreation",nullable = false)
     private String Dateheurecreation;
 
     @Column(name = "assigned_at",nullable = false)
@@ -40,6 +41,7 @@ public class Tasks {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "driver_id")
+    @JsonBackReference
     private Driver driver;
 
     public enum TaskStatus {

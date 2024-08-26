@@ -1,5 +1,6 @@
 package com.matranord.Matranord_tracking_BackEnd.controller;
 
+import com.matranord.Matranord_tracking_BackEnd.model.DTO.DriverDTO;
 import com.matranord.Matranord_tracking_BackEnd.model.Driver;
 import com.matranord.Matranord_tracking_BackEnd.services.DriverService;
 import org.slf4j.Logger;
@@ -8,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -81,4 +84,19 @@ public class DriverController {
         return new ResponseEntity<>(drivers, HttpStatus.OK);
     }
 
+    @PostMapping("/{id}/profile-picture")
+    public ResponseEntity<String> uploadProfilePicture(@PathVariable int id, @RequestParam("file") MultipartFile file) {
+        try {
+            driverService.uploadProfilePicture(id, file);
+            return ResponseEntity.ok("Profile picture uploaded successfully");
+        } catch (IOException e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Failed to upload profile picture");
+        }
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<DriverDTO> getDriver(@PathVariable int id) {
+        DriverDTO driver = driverService.getDriverWithProfilePicture(id);
+        return ResponseEntity.ok(driver);
+    }
 }

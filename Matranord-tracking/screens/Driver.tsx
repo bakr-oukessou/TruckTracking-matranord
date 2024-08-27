@@ -206,13 +206,13 @@ const images = [
           <View style={itemStyles.img2}>
           <Image
             style={itemStyles.img}
-            source={require('../assets/person3.jpg')}
+            source={{uri: `data:image/jpeg;base64,${item.profilePicture}`}}
           /></View>
           <View style={itemStyles.info}>
             <Text style={itemStyles.text}><Text style={itemStyles.bold}>CIN:</Text> {item.cin}</Text>
             <Text style={itemStyles.text}><Text style={itemStyles.bold}>{item.nom}</Text> </Text>
-            {/* <Text style={itemStyles.text}><Text style={itemStyles.bold}>Matricule:</Text> {item.idVehicule}</Text> */}
-            <Text style={itemStyles.text}><Text style={itemStyles.bold}>{item.email}</Text> </Text>
+            <Text style={itemStyles.text}><Text style={itemStyles.bold}>IdVehicule:</Text> {item.idVehicule}</Text>
+            {/* <Text style={itemStyles.text}><Text style={itemStyles.bold}>{item.email}</Text> </Text> */}
             <Text style={itemStyles.text}><Text style={itemStyles.bold}>(+212){item.mobileNumber}</Text> </Text>
             {/* <Text style={itemStyles.text}><Text style={itemStyles.bold}>Adresse:</Text> {item.adresse}</Text> */}
             <Text style={itemStyles.text}><Text style={itemStyles.bold}>Experience:</Text> {item.experience} Years</Text>

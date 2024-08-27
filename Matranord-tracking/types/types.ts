@@ -37,7 +37,7 @@ export type RootStackParamList = {
     validitePermit: string;
     idVehicule: string;
     experience:string;
-    profilePicture:string | null;
+    profilePicture:string | undefined ;
   };
 
   export interface Tasks{

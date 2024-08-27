@@ -39,7 +39,7 @@ const DriverDetails = ({ route }: { route: DriverDetailsRouteProp}) => {
       const formData = new FormData();
       formData.append('profilePicture', {
         uri: result.assets[0].uri,
-        type: 'image/jpeg',
+        type: 'image/jpg',
         name: 'profile.jpg',
       } as any);
 
@@ -68,7 +68,7 @@ const DriverDetails = ({ route }: { route: DriverDetailsRouteProp}) => {
         <View style={styles2.infoContainer}>
         <TouchableOpacity onPress={uploadProfilePicture} style={styles.profileImageContainer}>
               {driver.profilePicture ? (
-                <Image source={{ uri: driver.profilePicture }} style={styles.profileImage} />
+                <Image source={{uri: `data:image/jpeg;base64,${driver.profilePicture}`}} style={styles.profileImage} />
               ) : (
                 <View style={styles.placeholderImage}>
                   <Text style={styles.placeholderText}>{driver.nom.charAt(0)}</Text>
@@ -206,6 +206,7 @@ const styles = StyleSheet.create({
   },
   profileImage: {
     width: 120,
+    objectFit:'cover',
     height: 120,
     borderRadius: 60,
   },

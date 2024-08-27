@@ -128,7 +128,16 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
           buttonStyles,
         ]}>
         <MaterialIcons name="attach-file" size={30} color="black" />
-        <Text style={textStyle2}>Driver</Text>
+        <Text style={textStyle2}>Drivers</Text>
+      </Pressable>
+      <Pressable onPress={() => navigation.navigate('Tasks')} android_ripple={{color: 'gray',radius:175}} style={({pressed}) => [
+          {
+            backgroundColor: pressed ? '#EAD196' : 'white',
+          },
+          buttonStyles,
+        ]}>
+        <MaterialIcons name="attach-file" size={30} color="black" />
+        <Text style={textStyle2}>Tasks</Text>
       </Pressable>
     </View>
   );

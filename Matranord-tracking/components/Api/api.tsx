@@ -52,7 +52,10 @@ export const createDriver = async (driverData: { cin:string;
 export const getAllDrivers = async () => {
   try {
     const response = await axios.get(`${API_BASE_URL}/drivers`);
-    return response.data;
+    return response.data.map((driver: any) => ({
+      ...driver,
+      profilePicture: driver.profilePicture, // Make sure this field is included
+    }));
   } catch (error) {
     console.error('Error fetching drivers:', error);
     throw error;

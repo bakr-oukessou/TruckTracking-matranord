@@ -8,9 +8,10 @@ import { MasonryFlashList } from '@shopify/flash-list';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from 'expo-router';
 
-type TasksScreenNavigationProp = StackNavigationProp<RootStackParamList, 'TaskScreen'> & TasksProps;
 
-const TaskScreen: React.FC<TasksProps> = ({
+type TasksScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Tasks'> & TasksProps;
+
+const TasksScreen: React.FC<TasksProps> = ({
   animatedValue,  
   visible,
   extended,
@@ -28,9 +29,9 @@ const TaskScreen: React.FC<TasksProps> = ({
   const [refreshing, setRefreshing] = useState(false);
   const [activeTab, setActiveTab] = useState<'available' | 'inProgress' | 'completed'>('available');
 
-  // useEffect(() => {
-  //   filterTasks();
-  // }, [searchQuery, tasks]);
+  useEffect(() => {
+    filterTasks();
+  }, [searchQuery, tasks]);
 
   useEffect(() => {
     fetchTasks();
@@ -45,7 +46,7 @@ const TaskScreen: React.FC<TasksProps> = ({
   }, [searchQuery, tasks, activeTab]);
   
   useEffect(() => {
-    // console.log("Filtered drivers state updated:", filteredDrivers);
+    console.log("Filtered drivers state updated:", filteredTasks);
   }, [filteredTasks]);
 
   const fetchTasks = async () => {
@@ -110,10 +111,8 @@ const TaskScreen: React.FC<TasksProps> = ({
           <View style={itemStyles.info}>
             <Text style={itemStyles.text}><Text style={itemStyles.bold}>Provider:</Text> {item.provider}</Text>
             <Text style={itemStyles.text}><Text style={itemStyles.bold}>{item.Observation}</Text> </Text>
-            {/* <Text style={itemStyles.text}><Text style={itemStyles.bold}>Matricule:</Text> {item.idVehicule}</Text> */}
             <Text style={itemStyles.text}><Text style={itemStyles.bold}>{item.driver.nom}</Text> </Text>
             <Text style={itemStyles.text}><Text style={itemStyles.bold}>{item.DateHeureCreation}</Text> </Text>
-            {/* <Text style={itemStyles.text}><Text style={itemStyles.bold}>Adresse:</Text> {item.adresse}</Text> */}
             <Text style={itemStyles.text}><Text style={itemStyles.bold}>Status:</Text> {item.status}</Text>
             <Text style={[itemStyles.text, itemStyles.status]}><Text style={[itemStyles.bold, itemStyles.statusData]}>Validite:</Text> {item.Cloture.toISOString()}</Text>
           </View>
@@ -486,4 +485,5 @@ const itemStyles = StyleSheet.create({
   }
 
 });
-export default TaskScreen;
+export default TasksScreen;
+

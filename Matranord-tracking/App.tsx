@@ -24,7 +24,7 @@ import Driver from './screens/Driver';
 import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo"
 import { Icon, TouchableRipple } from 'react-native-paper';
 import DriverDetails from './screens/DriverDetails';
-import TaskScreen from './screens/Tasks';
+import Task from './screens/Tasks';
 
 //***********token**************/
 const tokenCache = {
@@ -130,7 +130,7 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
         <MaterialIcons name="attach-file" size={30} color="black" />
         <Text style={textStyle2}>Drivers</Text>
       </Pressable>
-      <Pressable onPress={() => navigation.navigate('TaskScreen')} android_ripple={{color: 'gray',radius:175}} style={({pressed}) => [
+      <Pressable onPress={() => navigation.navigate('Tasks')} android_ripple={{color: 'gray',radius:175}} style={({pressed}) => [
           {
             backgroundColor: pressed ? '#EAD196' : 'white',
           },
@@ -233,8 +233,8 @@ const DriverWrapper: React.FC<StackScreenProps<RootStackParamList, 'Driver'>> = 
     iconMode="static"
   />
 );
-const TasksWrapper: React.FC<StackScreenProps<RootStackParamList, 'TaskScreen'>> = ({ navigation, route }) => (
-  <TaskScreen
+const TasksWrapper: React.FC<StackScreenProps<RootStackParamList, 'Tasks'>> = ({ navigation, route }) => (
+  <Task
     navigation={navigation}
     route={route}
     animatedValue={new Animated.Value(0)}
@@ -273,7 +273,7 @@ const App: React.FC = () => {
           <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }}/>  
           <Stack.Screen name="SignIn" component={SignIn} options={{ headerShown: false }}/>  
           <Stack.Screen name="PLOMOS" component={PLOMOS} />
-          <Stack.Screen name="TaskScreen" component={TasksWrapper} />
+          <Stack.Screen name="Tasks" component={TasksWrapper} />
           <Stack.Screen name="Driver" component={DriverWrapper} 
             options={{ title: 'Drivers', 
               // headerRight:(props)=>()

@@ -8,7 +8,7 @@ import { MasonryFlashList } from '@shopify/flash-list';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from 'expo-router';
 
-type TasksScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Tasks'> & TasksProps;
+type TasksScreenNavigationProp = StackNavigationProp<RootStackParamList, 'TaskScreen'> & TasksProps;
 
 const TaskScreen: React.FC<TasksProps> = ({
   animatedValue,  
@@ -173,12 +173,12 @@ const TaskScreen: React.FC<TasksProps> = ({
   );
 };
 
-const DetailItem: React.FC<{ title: string; value: string }> = ({ title, value }) => (
-  <View style={styles2.detailItem}>
-    <Text style={styles2.detailTitle}>{title}:</Text>
-    <Text style={styles2.detailValue}>{value}</Text>
-  </View>
-);
+// const DetailItem: React.FC<{ title: string; value: string }> = ({ title, value }) => (
+//   <View style={styles2.detailItem}>
+//     <Text style={styles2.detailTitle}>{title}:</Text>
+//     <Text style={styles2.detailValue}>{value}</Text>
+//   </View>
+// );
 
 const styles = StyleSheet.create({
   container: {

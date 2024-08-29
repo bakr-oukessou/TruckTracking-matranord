@@ -7,9 +7,10 @@ import { ActivityIndicator, PaperProvider } from 'react-native-paper';
 import { MasonryFlashList } from '@shopify/flash-list';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from 'expo-router';
+import { css } from '@emotion/react';
 
 
-type TaskScreenNavigationProp = StackNavigationProp<RootStackParamList, 'TaskScreen'> & TasksProps;
+// type TaskScreenNavigationProp = StackNavigationProp<RootStackParamList, 'TaskScreen'> & TasksProps;
 
 const TaskScreen: React.FC<TasksProps> = ({
   animatedValue,  
@@ -46,7 +47,7 @@ const TaskScreen: React.FC<TasksProps> = ({
   }, [searchQuery, tasks, activeTab]);
   
   useEffect(() => {
-    console.log("Filtered tasks state updated:", filteredTasks);
+    // console.log("Filtered tasks state updated:", filteredTasks);
   }, [filteredTasks]);
 
   const fetchTasks = async () => {
@@ -72,12 +73,6 @@ const TaskScreen: React.FC<TasksProps> = ({
     }
   };
 
-  // const filterTasks = () => {
-  //   const filtered = tasks.filter(task => 
-  //     task && (task.status ? task.status.toLowerCase().includes(searchQuery.toLowerCase()) : false)
-  //   );
-  //   setFilteredTasks(filtered);
-  // };
 
   const filterTasks = () => {
     const filtered = tasks.filter(task => {
@@ -274,6 +269,26 @@ const TaskScreen: React.FC<TasksProps> = ({
 //   </View>
 // );
 
+const styles3 = css`
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-content: space-evenly;
+    flex-grow: 1;
+    flex: 1;
+    background-color: #FFF5E1;
+    // padding: 20px;
+    // padding-top:13px;
+    padding-left:20px;
+    padding-right:20px;
+    z-index:100;
+    & > * {
+      color: black;
+      font-size: 18px;
+      font-family: 'Poppins-Regular';
+    }
+  `;
+
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
@@ -460,12 +475,14 @@ const styles2 = StyleSheet.create({
 });
 const itemStyles = StyleSheet.create({
   container: {
-    // backgroundColor: '#000',
+    backgroundColor: '#f7e9cb',
     padding: 3,
     marginVertical: 8,
     borderRadius: 13,
     marginHorizontal: 12,
-    position:'relative'
+    position:'relative',
+    borderWidth:1,
+    borderColor:'black',
 
   },
   text: {

@@ -2,101 +2,50 @@ import React, { useState } from 'react';
 import { View, Text, StyleSheet, Pressable, ScrollView, Animated, ImageBackground, Alert } from 'react-native';
 
 import { RouteProp, useNavigation } from '@react-navigation/native';
-import { RootStackParamList } from '../types/types';
+import { RootStackParamList, Tasks } from '../types/types';
 import { MaterialIcons } from '@expo/vector-icons';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { Image, SafeAreaView,TouchableOpacity } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
-import { Driver } from '../types/types';
 import * as ImagePicker from 'expo-image-picker';
-import axios from 'axios';
 
-type DriverDetailsRouteProp = RouteProp<RootStackParamList, 'DriverDetails'>;
-type DriverDetailsScreenNavigationProp = StackNavigationProp<RootStackParamList, 'DriverDetails'>;
+type TaskDetailsRouteProp = RouteProp<RootStackParamList, 'TaskDetails'>;
+type TaskDetailsScreenNavigationProp = StackNavigationProp<RootStackParamList, 'TaskDetails'>;
 
-const DriverDetails = ({ route }: { route: DriverDetailsRouteProp}) => {
+const TaskDetails = ({ route }: { route: TaskDetailsRouteProp}) => {
   
-  const { driver: initialDriver } = route.params;
-  const navigation = useNavigation<DriverDetailsScreenNavigationProp>();
-  const [driver, setDriver] = useState<Driver>(initialDriver);
+  const { task: initialTask } = route.params;
+  const navigation = useNavigation<TaskDetailsScreenNavigationProp>();
+  const [task, setTask] = useState<Tasks>(initialTask);
   
-  const uploadProfilePicture = async () => {
-    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    
-    if (permissionResult.granted === false) {
-      Alert.alert("Permission Required", "You need to grant camera roll permissions to upload a profile picture.");
-      return;
-    }
-
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [1, 1],
-      quality: 1,
-    });
-
-    if (!result.canceled) {
-      const formData = new FormData();
-      formData.append('profilePicture', {
-        uri: result.assets[0].uri,
-        type: 'image/jpg',
-        name: 'profile.jpg',
-      } as any);
-
-      try {
-        const response = await axios.post(`http://10.0.2.2:8080/api/drivers/${driver.id}/profile-picture`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-
-        if (response.status === 200) {
-          setDriver({ ...driver, profilePicture: result.assets[0].uri });
-          Alert.alert("Success", "Profile picture uploaded successfully");
-        }
-      } catch (error) {
-        console.error('Error uploading profile picture:', error);
-        Alert.alert("Error", "Failed to upload profile picture");
-      }
-    }
-  };
+  
   
   return (
     <SafeAreaView style={styles2.container}>
     <ImageBackground source={require('../assets/phoneBackground.jpg')} style={styles.image}>
     <ScrollView contentContainerStyle={styles.container}>
-        <View style={styles2.infoContainer}>
-        <TouchableOpacity onPress={uploadProfilePicture} style={styles.profileImageContainer}>
-              {driver.profilePicture ? (
-                <Image source={{uri: `data:image/jpeg;base64,${driver.profilePicture}`}} style={styles.profileImage} />
-              ) : (
-                <View style={styles.placeholderImage}>
-                  <Text style={styles.placeholderText}>{driver.nom.charAt(0)}</Text>
-                </View>
-              )}
-              <Text style={styles.uploadText}>Tap to upload photo</Text>
-            </TouchableOpacity> 
-            <Text style={styles.driverName}>{driver.nom}</Text>
-          {/* <Text style={styles2.driverName}>Driver Details</Text> */}
+        {/* <View style={styles2.infoContainer}>
+            <Text style={styles.driverName}>{task.details}</Text>
+          <Text style={styles2.taskName}>task Details</Text>
           <View style={styles2.tabContainer}>
             <TouchableOpacity style={[styles2.tab, styles2.activeTab]}>
-              <Text style={styles2.activeTabText}>Driver Info</Text>
+              <Text style={styles2.activeTabText}>task Info</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles2.tab}>
               <Text style={styles2.tabText}>Related Tasks</Text>
             </TouchableOpacity>
           </View>
             <View style={styles2.detailsContainer}>
-              <DetailItem title="CIN" value={driver.cin} />
-              <DetailItem title="Idvehicule" value={driver.idVehicule} />
-              <DetailItem title="Nom" value={driver.nom} />
-              <DetailItem title="Email" value={driver.email} />
-              <DetailItem title="Telephone" value={driver.mobileNumber} />
-              <DetailItem title="Adresse" value={driver.adresse} />
-              <DetailItem title="Experience" value={driver.experience} />
-              <DetailItem title="ValiditePermit" value={driver.validitePermit} />
+              <DetailItem title="CIN" value={task.cin} />
+              <DetailItem title="Idvehicule" value={task.idVehicule} />
+              <DetailItem title="Nom" value={task.nom} />
+              <DetailItem title="Email" value={task.email} />
+              <DetailItem title="Telephone" value={task.mobileNumber} />
+              <DetailItem title="Adresse" value={task.adresse} />
+              <DetailItem title="Experience" value={task.experience} />
+              <DetailItem title="ValiditePermit" value={task.validitePermit} />
             </View>
-        </View>
+        </View> */}
     <View style={styles.buttons}>
       <TouchableOpacity style={styles2.updateButton}>
         <Text style={styles2.updateButtonText}>Update Driver Info</Text>
@@ -339,4 +288,4 @@ const styles2 = StyleSheet.create({
   },
 });
 
-export default DriverDetails;
+export default TaskDetails;

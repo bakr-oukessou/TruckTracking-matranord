@@ -1,4 +1,5 @@
 import axios from "axios";
+import { Driver } from "../../types/types";
 
 const API_BASE_URL = 'http://10.0.2.2:8080/api';
 
@@ -140,3 +141,22 @@ export const DeleteTask = async(taskId:any)=>{
     throw error;
   }
 }
+export const createTask = async (taskData: {
+    details:string;
+    provider:string;
+    Observation:string;
+    Cloture:Date;
+    DateHeureCreation:string;
+    status:string;
+    startedAt:string;
+    completedAt:string;
+    driverCin:string;
+  }) => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/tasks`, taskData);
+    return response.data;
+  } catch (error) {
+    console.error('Error creating task:', error);
+    throw error;
+  }
+};

@@ -273,7 +273,15 @@ const App: React.FC = () => {
           <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }}/>  
           <Stack.Screen name="SignIn" component={SignIn} options={{ headerShown: false }}/>  
           <Stack.Screen name="PLOMOS" component={PLOMOS} />
-          <Stack.Screen name="TaskScreen" component={TasksWrapper} />
+          <Stack.Screen name="TaskScreen" component={TasksWrapper} 
+            options={{ title: 'Tasks', 
+              // headerRight:(props)=>()
+              headerStyle:{
+                backgroundColor: '#AA304E',
+                borderBottomEndRadius:20,
+                borderBottomStartRadius:20,
+              }
+            }}/>
           <Stack.Screen name="Driver" component={DriverWrapper} 
             options={{ title: 'Drivers', 
               // headerRight:(props)=>()

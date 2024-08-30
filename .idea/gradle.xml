@@ -21,6 +21,8 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/Matranord-tracking/node_modules/@react-native/gradle-plugin" />
+            <option value="$PROJECT_DIR$/Matranord-tracking/node_modules/@react-native/gradle-plugin/react-native-gradle-plugin" />
+            <option value="$PROJECT_DIR$/Matranord-tracking/node_modules/@react-native/gradle-plugin/settings-plugin" />
           </set>
         </option>
         <option name="resolveExternalAnnotations" value="false" />

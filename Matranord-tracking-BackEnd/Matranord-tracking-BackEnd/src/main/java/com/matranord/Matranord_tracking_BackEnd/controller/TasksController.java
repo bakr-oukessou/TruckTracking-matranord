@@ -34,22 +34,6 @@ public class TasksController {
         }
     }
 
-//    @GetMapping("/{id}")
-//    public Optional<Tasks> getTasksById(@PathVariable String id) {
-//        return tasksService.getTasksById(id);
-//    }
-
-//    @PostMapping()
-//    public Tasks createTasks(@RequestBody Tasks tasks) {
-//        return tasksService.createTasks(tasks);
-//    }
-
-//    @PutMapping("/{id}")
-//    public Tasks updateTasks(@PathVariable String id, @RequestBody Tasks tasksDetails) {
-//        Optional<Tasks> tasks = tasksService.getTasksById(id);
-//        // Update tasks properties
-//        return tasksService.createTasks(tasks.orElse(null));
-//    }
 
     @PostMapping
     public ResponseEntity<Tasks> createTask(@RequestBody Tasks task, @RequestParam String driverCIN) {

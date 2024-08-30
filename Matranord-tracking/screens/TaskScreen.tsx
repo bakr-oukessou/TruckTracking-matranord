@@ -54,12 +54,12 @@ const TaskScreen: React.FC<TasksProps> = ({
     try {
       setIsLoading(true); 
       const data = await getAllTasks();
-      // console.log("Fetched trucks:", data);
+      console.log("Fetched Tasks:", data);
       setTasks(data);
     //   console.log(Date.now());
       // console.log("Drivers state:", drivers);
       setFilteredTasks(data);
-      // console.log("Filtered drivers state:", filteredDrivers);
+      console.log("Filtered drivers state:", filteredTasks);
       setIsLoading(false);
     } catch (err) {
       console.error("Error fetching Tasks:", err);
@@ -79,7 +79,7 @@ const TaskScreen: React.FC<TasksProps> = ({
       if (activeTab === 'available') {
         return task.status.toLowerCase() === 'available';
       } else if (activeTab === 'inProgress') {
-        return task.status.toLowerCase() === 'in progress';
+        return task.status.toLowerCase() === 'in_progress';
       } else {
         return task.status.toLowerCase() === 'completed';
       }
@@ -117,7 +117,7 @@ const TaskScreen: React.FC<TasksProps> = ({
     const [status,setStatus]=useState('');
     const [startedAt,setStartedAt] = useState('');
     const [completedAt,setCompletedAt] = useState('');
-    const [driverCin, setDriverCin] = useState({});
+    const [driverCin, setDriverCin] = useState('');
 
     const [Visible, setVisible] = React.useState(false);
 
@@ -137,59 +137,62 @@ const TaskScreen: React.FC<TasksProps> = ({
     };
     
 
-//   const handleSubmit = async () => {
-//     try {
-//       const newTask = {
-//         details,
-//         provider,
-//         Observation,
-//         Cloture:new Date(Cloture),
-//         DateHeureCreation,
-//         status,
-//         startedAt,
-//         completedAt,
-//         driverCin
-//       };
+  const handleSubmit = async () => {
+    try {
+      const newTask = {
+        details,
+        provider,
+        Observation,
+        Cloture:new Date(Cloture),
+        DateHeureCreation,
+        status,
+        startedAt,
+        completedAt,
+        driverCin
+      };
   
-//       const createdDriver = await createTask(newTask);
-//       console.log('Driver added successfully:', createdDriver);
+      const createdDriver = await createTask(newTask);
+      console.log('Driver added successfully:', createdDriver);
     
-//       setDetails('');
-//       setProvider('');
-//       setObservation('');
-//       setCloture('');
-//       setDateHeureCreation('');
-//       setStatus('');
-//       setStartedAt('');
-//       setCompletedAt('');
-//       setDriverCin('');
+      setDetails('');
+      setProvider('');
+      setObservation('');
+      setCloture('');
+      setDateHeureCreation('');
+      setStatus('');
+      setStartedAt('');
+      setCompletedAt('');
+      setDriverCin('');
       
 
-//       hideModal();
+      hideModal();
 
       
-//       setSnackbar({
-//         visible: true,
-//         message: 'Driver added successfully!',
-//         type: 'success',
-//       });
-//       // getAllTrucks();
+      setSnackbar({
+        visible: true,
+        message: 'Driver added successfully!',
+        type: 'success',
+      });
+      // getAllTrucks();
 
-//     } catch (error) {
-//       console.error('Error adding driver:', error);
-//       setSnackbar({
-//         visible: true,
-//         message: 'Error adding driver. Please try again.',
-//         type: 'error',
-//       }); 
-//     }
-//   };
+    } catch (error) {
+      console.error('Error adding driver:', error);
+      setSnackbar({
+        visible: true,
+        message: 'Error adding driver. Please try again.',
+        type: 'error',
+      }); 
+    }
+  };
   /////////////////////////////////////////
 
 //   const navigation = useNavigation<TaskScreenNavigationProp>();
-  
-  const renderItem = ({ item }: { item: Tasks }) => (
+
+const renderItem = ({ item }: { item: Tasks }) => (
+    
+    
     <View style={itemStyles.container}>
+      
       {/* <Pressable onPress={() => navigation.navigate('TaskDetails', { task: item })}android_ripple={{color: 'grey'}} style={({pressed}) => [
         {
           backgroundColor: pressed ? '#EAD196' : 'white',
@@ -197,13 +200,15 @@ const TaskScreen: React.FC<TasksProps> = ({
         itemStyles.item,
       ]}> */}
         <View style={itemStyles.info2}>
+
           <View style={itemStyles.info}>
+            
             <Text style={itemStyles.text}><Text style={itemStyles.bold}>Provider:</Text> {item.provider}</Text>
             <Text style={itemStyles.text}><Text style={itemStyles.bold}>{item.observation}</Text> </Text>
             <Text style={itemStyles.text}><Text style={itemStyles.bold}>{item.driverCin}</Text> </Text>
-            <Text style={itemStyles.text}><Text style={itemStyles.bold}>{item.dateHeureCreation}</Text> </Text>
+            <Text style={itemStyles.text}><Text style={itemStyles.bold}>Date Creation: </Text>{item.dateHeureCreation}</Text>
             <Text style={itemStyles.text}><Text style={itemStyles.bold}>Status:</Text> {item.status}</Text>
-            {/* <Text style={[itemStyles.text, itemStyles.status]}><Text style={[itemStyles.bold, itemStyles.statusData]}>Validite:</Text>{item.cloture ? item.cloture.toLocaleDateString() : 'N/A'}</Text> */}
+            <Text style={[itemStyles.text, itemStyles.status]}><Text style={[itemStyles.bold, itemStyles.statusData]}>Validite: </Text> {item.cloture ? item.cloture.toString().split('T')[0] : 'N/A'}</Text>
           </View>
         </View>
       {/* </Pressable> */}
@@ -247,14 +252,6 @@ const TaskScreen: React.FC<TasksProps> = ({
                 </PaperProvider>
             </View>
         </View>
-        {/* <View style={styles.buttons}>
-            <TouchableOpacity style={styles2.updateButton}>
-                <Text style={styles2.updateButtonText}>Update Driver Info</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles2.updateButton}>
-                <Text style={styles2.updateButtonText}>Assign Task</Text>
-            </TouchableOpacity>
-        </View> */}
     
     </ScrollView>
     </ImageBackground>
@@ -445,10 +442,11 @@ const styles2 = StyleSheet.create({
     fontWeight: 'bold',
   },
   detailsContainer: {
-    backgroundColor: '#F0F0F0',
+    // backgroundColor: '#F0F0F0',
     borderRadius: 8,
-    padding: 16,
-    height:'100%'
+    padding: 2,
+    height:'95%',
+    marginBottom:20
   },
   detailItem: {
     flexDirection: 'row',

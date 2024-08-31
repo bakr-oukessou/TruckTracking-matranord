@@ -25,6 +25,7 @@ import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo"
 import { Icon, TouchableRipple } from 'react-native-paper';
 import DriverDetails from './screens/DriverDetails';
 import TaskScreen from './screens/TaskScreen';
+import TaskDetails from './screens/TaskDetails';
 
 //***********token**************/
 const tokenCache = {
@@ -293,7 +294,7 @@ const App: React.FC = () => {
             }}/>
           <Stack.Screen name="TruckDetails" component={TruckDetails}
             options={{
-              headerRight: (props) =>(
+              headerRight: () =>(
                 <View >
                   <TouchableOpacity style={ButtonStyle}>
                   <MaterialIcons name="delete" size={30} color="lightgrey" />
@@ -310,7 +311,24 @@ const App: React.FC = () => {
            />
            <Stack.Screen name="DriverDetails" component={DriverDetails}
             options={{
-              headerRight: (props) =>(
+              headerRight: () =>(
+                <View >
+                  <TouchableOpacity style={ButtonStyle}>
+                  <MaterialIcons name="delete" size={30} color="lightgrey" />
+                  </TouchableOpacity>
+                </View>
+              ),
+              headerStyle: {
+                backgroundColor: '#AA304E',
+                borderBottomEndRadius:20,
+                borderBottomStartRadius:20,
+                // height:150
+              }
+            }}
+           />
+           <Stack.Screen name="TaskDetails" component={TaskDetails}
+            options={{
+              headerRight: () =>(
                 <View >
                   <TouchableOpacity style={ButtonStyle}>
                   <MaterialIcons name="delete" size={30} color="lightgrey" />

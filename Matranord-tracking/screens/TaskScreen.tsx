@@ -6,11 +6,12 @@ import axios from 'axios';
 import { ActivityIndicator, PaperProvider } from 'react-native-paper';
 import { MasonryFlashList } from '@shopify/flash-list';
 import { StackNavigationProp } from '@react-navigation/stack';
-import { useNavigation } from 'expo-router';
+import { useNavigation } from '@react-navigation/native';
 import { css } from '@emotion/react';
+import { MaterialIcons } from '@expo/vector-icons';
 
 
-// type TaskScreenNavigationProp = StackNavigationProp<RootStackParamList, 'TaskScreen'> & TasksProps;
+type TaskScreenNavigationProp = StackNavigationProp<RootStackParamList, 'TaskScreen'> & TasksProps;
 
 const TaskScreen: React.FC<TasksProps> = ({
   animatedValue,  
@@ -54,12 +55,12 @@ const TaskScreen: React.FC<TasksProps> = ({
     try {
       setIsLoading(true); 
       const data = await getAllTasks();
-      console.log("Fetched Tasks:", data);
+      // console.log("Fetched Tasks:", data);
       setTasks(data);
     //   console.log(Date.now());
       // console.log("Drivers state:", drivers);
       setFilteredTasks(data);
-      console.log("Filtered drivers state:", filteredTasks);
+      // console.log("Filtered drivers state:", filteredTasks);
       setIsLoading(false);
     } catch (err) {
       console.error("Error fetching Tasks:", err);
@@ -186,32 +187,33 @@ const TaskScreen: React.FC<TasksProps> = ({
   };
   /////////////////////////////////////////
 
-//   const navigation = useNavigation<TaskScreenNavigationProp>();
+  const navigation = useNavigation<TaskScreenNavigationProp>();
 
 const renderItem = ({ item }: { item: Tasks }) => (
     
     
     <View style={itemStyles.container}>
       
-      {/* <Pressable onPress={() => navigation.navigate('TaskDetails', { task: item })}android_ripple={{color: 'grey'}} style={({pressed}) => [
+      <Pressable onPress={() => navigation.navigate('TaskDetails', { task: item })}android_ripple={{color: 'grey'}} style={({pressed}) => [
         {
           backgroundColor: pressed ? '#EAD196' : 'white',
         },
         itemStyles.item,
-      ]}> */}
+      ]}>
         <View style={itemStyles.info2}>
-
+          <View style={styles.icon}>
+            <MaterialIcons name="task-alt" size={40} color="grey" />
+          </View>
           <View style={itemStyles.info}>
-            
             <Text style={itemStyles.text}><Text style={itemStyles.bold}>Provider:</Text> {item.provider}</Text>
             <Text style={itemStyles.text}><Text style={itemStyles.bold}>{item.observation}</Text> </Text>
-            <Text style={itemStyles.text}><Text style={itemStyles.bold}>{item.driverCin}</Text> </Text>
+            <Text style={itemStyles.text}><Text style={itemStyles.bold}>Driver: </Text>{item.driver ? item.driver.nom : 'Not assigned'} </Text>
             <Text style={itemStyles.text}><Text style={itemStyles.bold}>Date Creation: </Text>{item.dateHeureCreation}</Text>
             <Text style={itemStyles.text}><Text style={itemStyles.bold}>Status:</Text> {item.status}</Text>
             <Text style={[itemStyles.text, itemStyles.status]}><Text style={[itemStyles.bold, itemStyles.statusData]}>Validite: </Text> {item.cloture ? item.cloture.toString().split('T')[0] : 'N/A'}</Text>
           </View>
         </View>
-      {/* </Pressable> */}
+      </Pressable>
     </View>
   );
 
@@ -366,6 +368,12 @@ const styles = StyleSheet.create({
     // borderRadius: 12,
     overflow: 'hidden',
     
+  },
+  icon:{
+    alignItems:'flex-end',
+    position:'absolute',
+    width:'100%',
+    marginTop:4,
   }
 });
 
@@ -492,7 +500,9 @@ const itemStyles = StyleSheet.create({
     padding: 20,
     // marginVertical: 8,
     // marginHorizontal: 16,
-    backgroundColor: 'rgba(222, 143, 95, 0.6)',
+    // backgroundColor: 'rgba(222, 143, 95, 0.6)',
+    backgroundColor: '#f7e9cb',
+
     // backgroundColor: 'rgba(173, 216, 230, 0.7)',
     borderRadius: 10,
     elevation: 5, 

@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 public class Tasks {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private String id;
+    private int id;
 
     @Column(name = "details",nullable = false)
     private String details;
@@ -75,7 +75,7 @@ public class Tasks {
         this.driver = driver;
     }
 
-    public void setId(String id) {
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -91,11 +91,27 @@ public class Tasks {
         return provider;
     }
 
+    public String getAssignedAt() {
+        return assignedAt;
+    }
+
+    public void setAssignedAt(String assignedAt) {
+        this.assignedAt = assignedAt;
+    }
+
+    public String getDateheurecreation() {
+        return Dateheurecreation;
+    }
+
+    public void setDateheurecreation(String dateheurecreation) {
+        Dateheurecreation = dateheurecreation;
+    }
+
     public void setProvider(String provider) {
         this.provider = provider;
     }
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 

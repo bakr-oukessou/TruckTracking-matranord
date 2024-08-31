@@ -204,10 +204,11 @@ const images = [
       ]}>
         <View style={itemStyles.info2}>
           <View style={itemStyles.img2}>
-          <Image
-            style={itemStyles.img}
-            source={{uri: `data:image/jpeg;base64,${item.profilePicture}`}}
-          /></View>
+            <Image
+              style={itemStyles.img}
+              source={{uri: `data:image/jpeg;base64,${item.profilePicture}`}}
+            />
+          </View>
           <View style={itemStyles.info}>
             <Text style={itemStyles.text}><Text style={itemStyles.bold}>CIN:</Text> {item.cin}</Text>
             <Text style={itemStyles.text}><Text style={itemStyles.bold}>{item.nom}</Text> </Text>

@@ -1,5 +1,7 @@
 package com.matranord.Matranord_tracking_BackEnd.services;
 
+import com.matranord.Matranord_tracking_BackEnd.model.DTO.DriverDTO;
+import com.matranord.Matranord_tracking_BackEnd.model.DTO.TaskDTO;
 import com.matranord.Matranord_tracking_BackEnd.model.Driver;
 import com.matranord.Matranord_tracking_BackEnd.model.Tasks;
 import com.matranord.Matranord_tracking_BackEnd.repository.DriverRepository;
@@ -82,7 +84,7 @@ public class TasksService {
         return tasksRepository.save(task);
     }
 
-    public Optional<Tasks> getTasksById(String id) {
+    public Optional<Tasks> getTasksById(int id) {
         return tasksRepository.findById(Long.valueOf(id));
     }
 
@@ -96,5 +98,34 @@ public class TasksService {
 
     public List<Tasks> getAllTasks() {
         return tasksRepository.findAll();
+    }
+    public TaskDTO convertToDTO(Tasks task) {
+        TaskDTO dto = new TaskDTO();
+        dto.setId(Long.valueOf(task.getId()));
+        dto.setDetails(task.getDetails());
+        dto.setProvider(task.getProvider());
+        dto.setObservation(task.getObservation());
+        dto.setCloture(task.getCloture());
+        dto.setDateheurecreation(task.getDateHeureCreation());
+        dto.setAssignedAt(task.getAssignedAt());
+        dto.setStartedAt(task.getStartedAt());
+        dto.setCompletedAt(task.getCompletedAt());
+        dto.setStatus(task.getStatus());
+
+        if (task.getDriver() != null) {
+            DriverDTO driverDTO = new DriverDTO();
+            driverDTO.setId(task.getDriver().getId());
+            driverDTO.setNom(task.getDriver().getNom());
+            driverDTO.setCIN(task.getDriver().getCIN());
+            driverDTO.setEmail(task.getDriver().getEmail());
+            driverDTO.setMobileNumber(task.getDriver().getMobileNumber());
+            driverDTO.setAdresse(task.getDriver().getAdresse());
+            driverDTO.setValiditePermit(task.getDriver().getValiditePermit());
+            driverDTO.setIdVehicule(task.getDriver().getIdVehicule());
+            driverDTO.setExperience(task.getDriver().getExperience());
+            dto.setDriver(driverDTO);
+        }
+
+        return dto;
     }
 }

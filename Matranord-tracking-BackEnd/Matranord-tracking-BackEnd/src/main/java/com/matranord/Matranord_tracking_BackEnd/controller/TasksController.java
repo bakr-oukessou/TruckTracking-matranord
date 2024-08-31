@@ -1,6 +1,8 @@
 package com.matranord.Matranord_tracking_BackEnd.controller;
 
+import com.matranord.Matranord_tracking_BackEnd.model.DTO.TaskDTO;
 import com.matranord.Matranord_tracking_BackEnd.model.Tasks;
+import com.matranord.Matranord_tracking_BackEnd.repository.TasksRepository;
 import com.matranord.Matranord_tracking_BackEnd.services.TasksService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,27 +13,39 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/api/tasks")
 public class TasksController {
     @Autowired
     private TasksService tasksService;
+    @Autowired
+    private TasksRepository tasksRepository;
 
     private static final Logger logger = LoggerFactory.getLogger(TruckController.class);
 
+//    @GetMapping
+//    public ResponseEntity<?> getAllTasks() {
+//        try {
+//            logger.info("Fetching all tasks");
+//            List<Tasks> tasks = tasksService.getAllTasks();
+//            logger.info("Fetched {} tasks", tasks.size());
+//            return ResponseEntity.ok(tasks);
+//        } catch (Exception e) {
+//            logger.error("Error fetching tasks", e);
+//            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+//                    .body("Error fetching tasks: " + e.getMessage());
+//        }
+//    }
+
     @GetMapping
-    public ResponseEntity<?> getAllTasks() {
-        try {
-            logger.info("Fetching all tasks");
-            List<Tasks> tasks = tasksService.getAllTasks();
+    public List<TaskDTO> getAllTasks() {
+        List<Tasks> tasks = tasksRepository.findAll();
             logger.info("Fetched {} tasks", tasks.size());
-            return ResponseEntity.ok(tasks);
-        } catch (Exception e) {
-            logger.error("Error fetching tasks", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body("Error fetching tasks: " + e.getMessage());
-        }
+        return tasks.stream()
+                .map(tasksService::convertToDTO)
+                .collect(Collectors.toList());
     }
 
 
@@ -42,7 +56,7 @@ public class TasksController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Tasks> getTask(@PathVariable String id) {
+    public ResponseEntity<Tasks> getTask(@PathVariable int id) {
         return tasksService.getTasksById(id)
                 .map(task -> new ResponseEntity<>(task, HttpStatus.OK))
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
@@ -55,7 +69,7 @@ public class TasksController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Tasks> updateTask(@PathVariable String id, @RequestBody Tasks task) {
+    public ResponseEntity<Tasks> updateTask(@PathVariable int id, @RequestBody Tasks task) {
         return tasksService.getTasksById(id)
                 .map(existingTask -> {
                     task.setId(id);

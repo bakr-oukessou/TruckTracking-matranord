@@ -18,40 +18,38 @@ const TaskDetails = ({ route }: { route: TaskDetailsRouteProp}) => {
   const navigation = useNavigation<TaskDetailsScreenNavigationProp>();
   const [task, setTask] = useState<Tasks>(initialTask);
   
-  
-  
+
   return (
     <SafeAreaView style={styles2.container}>
     <ImageBackground source={require('../assets/phoneBackground.jpg')} style={styles.image}>
     <ScrollView contentContainerStyle={styles.container}>
-        {/* <View style={styles2.infoContainer}>
-            <Text style={styles.driverName}>{task.details}</Text>
-          <Text style={styles2.taskName}>task Details</Text>
+        <View style={styles2.infoContainer}>
+            {/* <Text style={styles.taskName}>{task.details}</Text> */}
+          {/* <Text style={styles2.taskName}>task Details</Text> */}
           <View style={styles2.tabContainer}>
             <TouchableOpacity style={[styles2.tab, styles2.activeTab]}>
               <Text style={styles2.activeTabText}>task Info</Text>
             </TouchableOpacity>
             <TouchableOpacity style={styles2.tab}>
-              <Text style={styles2.tabText}>Related Tasks</Text>
+              <Text style={styles2.tabText}>Related Driver</Text>
             </TouchableOpacity>
           </View>
             <View style={styles2.detailsContainer}>
-              <DetailItem title="CIN" value={task.cin} />
-              <DetailItem title="Idvehicule" value={task.idVehicule} />
-              <DetailItem title="Nom" value={task.nom} />
-              <DetailItem title="Email" value={task.email} />
-              <DetailItem title="Telephone" value={task.mobileNumber} />
-              <DetailItem title="Adresse" value={task.adresse} />
-              <DetailItem title="Experience" value={task.experience} />
-              <DetailItem title="ValiditePermit" value={task.validitePermit} />
+              <DetailItem title="id" value={task.id} />
+              <DetailItem title="details" value={task.details} />
+              <DetailItem title="provider" value={task.provider} />
+              <DetailItem title="observation" value={task.observation} />
+              <DetailItem title="dateHeureCreation" value={task.dateHeureCreation} />
+              <DetailItem title="cloture" value={task.cloture.toString()} />
+              <DetailItem title="Status" value={task.status} />
+              <DetailItem title="StartedAt" value={task.startedAt} />
+              <DetailItem title="CompletedAt" value={task.completedAt} />
+              {/* <DetailItem title="Driver" value={task.driver?.nom} /> */}
             </View>
-        </View> */}
+        </View>
     <View style={styles.buttons}>
       <TouchableOpacity style={styles2.updateButton}>
-        <Text style={styles2.updateButtonText}>Update Driver Info</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles2.updateButton}>
-        <Text style={styles2.updateButtonText}>Assign Task</Text>
+        <Text style={styles2.updateButtonText}>Update Task Info</Text>
       </TouchableOpacity>
     </View>
     
@@ -176,7 +174,7 @@ const styles = StyleSheet.create({
     color: '#E5114D',
     fontSize: 14,
   },
-  driverName: {
+  taskName: {
     fontSize: 24,
     // fontWeight: 'bold',
     textAlign: 'center',
@@ -231,7 +229,7 @@ const styles2 = StyleSheet.create({
     paddingRight: 16,
     width:'100%'
   },
-  driverName: {
+  taskName: {
     fontSize: 24,
     fontWeight: 'bold',
     marginBottom: 16,

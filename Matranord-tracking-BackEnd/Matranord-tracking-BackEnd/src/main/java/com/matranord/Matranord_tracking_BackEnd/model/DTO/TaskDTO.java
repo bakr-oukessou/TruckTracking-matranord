@@ -18,9 +18,19 @@ public class TaskDTO {
     private LocalDateTime startedAt;
     private LocalDateTime completedAt;
     private Tasks.TaskStatus status;
+    private DriverDTO driver;
     public enum TaskStatus {
         AVAILABLE, IN_PROGRESS, COMPLETED
     }
+
+    public DriverDTO getDriver() {
+        return driver;
+    }
+
+    public void setDriver(DriverDTO driver) {
+        this.driver = driver;
+    }
+
 
     public String getProvider() {
         return provider;

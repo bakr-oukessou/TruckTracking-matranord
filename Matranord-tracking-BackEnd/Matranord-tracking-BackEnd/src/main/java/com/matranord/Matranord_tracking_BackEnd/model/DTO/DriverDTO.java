@@ -25,6 +25,7 @@ public class DriverDTO {
 
     private String profilePictureBase64;
 
+    public DriverDTO(){}
     public DriverDTO(String profilePictureBase64, String experience, int idVehicule, Date validitePermit, String email, String adresse, String mobileNumber, String CIN, String nom, int id) {
         this.profilePictureBase64 = profilePictureBase64;
         this.experience = experience;

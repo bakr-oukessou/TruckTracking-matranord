@@ -50,7 +50,7 @@ export type RootStackParamList = {
     status:string;
     startedAt:string;
     completedAt:string;
-    driverCin:string; 
+    driver:Driver | null; 
   }
 
   export interface BaseProps {

@@ -141,12 +141,18 @@ export const AssignTask = async(taskId:any)=>{
     throw error;
   }
 }
-export const assignTaskToDriver = async (taskId: string, driverCin: string) => {
+export const assignTaskToDriver = async (taskId: string, driverCIN: string) => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/tasks/${taskId}/assign/${driverCin}`);
+    const response = await axios.post(`${API_BASE_URL}/tasks/${taskId}/assign/${driverCIN}`);
+    console.log('Response:', response.data);
     return response.data;
   } catch (error) {
     console.error('Error assigning task to driver:', error);
+    if (axios.isAxiosError(error)) {
+      console.error('Response data:', error.response?.data);
+      console.error('Response status:', error.response?.status);
+      console.error('Response headers:', error.response?.headers);
+    }
     throw error;
   }
 };

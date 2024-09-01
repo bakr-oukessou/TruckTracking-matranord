@@ -91,9 +91,15 @@ public class TasksController {
     }
 
     @PostMapping("/{taskId}/assign/{driverCIN}")
-    public ResponseEntity<Tasks> assignTaskToDriver(@PathVariable Long taskId, @RequestParam String driverCIN) {
-        Tasks assignedTask = tasksService.assignTaskToDriver(taskId, driverCIN);
-        return new ResponseEntity<>(assignedTask, HttpStatus.OK);
+    public ResponseEntity<?> assignTaskToDriver(@PathVariable Long taskId, @PathVariable String driverCIN) {
+        try {
+            Tasks assignedTask = tasksService.assignTaskToDriver(taskId, driverCIN);
+            return new ResponseEntity<>(assignedTask, HttpStatus.OK);
+        } catch (Exception e) {
+            logger.error("Error assigning task {} to driver {}: {}", taskId, driverCIN, e.getMessage());
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body("Error assigning task: " + e.getMessage());
+        }
     }
 
     @PostMapping("/{taskId}/complete")

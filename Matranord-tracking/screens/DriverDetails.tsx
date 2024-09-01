@@ -13,6 +13,7 @@ import axios from 'axios';
 import { getTaskByDriverCIN } from '../components/Api/api';
 import { FlashList } from '@shopify/flash-list';
 import UpdateModal from '../components/UpdateModal';
+import { Snackbar } from 'react-native-paper';
 
 type DriverDetailsRouteProp = RouteProp<RootStackParamList, 'DriverDetails'>;
 type DriverDetailsScreenNavigationProp = StackNavigationProp<RootStackParamList, 'DriverDetails'>;
@@ -138,14 +139,19 @@ const DriverDetails = ({ route }: { route: DriverDetailsRouteProp}) => {
               <DetailItem title="ValiditePermit" value={driver.validitePermit} />
             </View>
             ) : (
+              <ScrollView>
+              <View style={styles2.detailsContainer}>
               <FlashList
                 data={relatedTasks}
+                estimatedItemSize={104}
                 renderItem={renderTask}
                 keyExtractor={(item) => item.id.toString()}
                 ListEmptyComponent={() => (
                   <Text style={styles.emptyText}>No related tasks found.</Text>
                 )}
-              />
+                />
+              </View>
+              </ScrollView>
             )}
         </View>
     <View style={styles.buttons}>
@@ -168,6 +174,17 @@ const DriverDetails = ({ route }: { route: DriverDetailsRouteProp}) => {
         driver={driver}
         onUpdateSuccess={handleUpdateSuccess}
       />
+      {/* <Snackbar
+        visible={snackbar.visible}
+        onDismiss={() => setSnackbar(prev => ({ ...prev, visible: false }))}
+        action={{
+          label: 'Close',
+          onPress: () => setSnackbar(prev => ({ ...prev, visible: false })),
+        }}
+        duration={3000}
+        style={{ backgroundColor: snackbar.type === 'success' ? '#4CAF50' : '#F44336' }}>
+        {snackbar.message}
+      </Snackbar> */}
     </SafeAreaView>
   );
 };
@@ -295,7 +312,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   taskItem: {
-    backgroundColor: '#f0f0f0',
+    backgroundColor: '#d3dad6',
     padding: 16,
     marginBottom: 8,
     borderRadius: 8,

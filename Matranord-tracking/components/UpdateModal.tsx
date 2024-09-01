@@ -31,7 +31,7 @@ const UpdateModal: React.FC<UpdateModalProps> = ({ isVisible, onClose, driver, o
   };
 
   return (
-    <Modal visible={isVisible} animationType="slide" transparent={true}>
+    <Modal visible={isVisible} animationType="fade" transparent={true}>
       <View style={styles.modalContainer}>
         <View style={styles.modalContent}>
           <ScrollView>
@@ -93,6 +93,7 @@ const UpdateModal: React.FC<UpdateModalProps> = ({ isVisible, onClose, driver, o
 const styles = StyleSheet.create({
   modalContainer: {
     flex: 1,
+    // height: '100%',
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'rgba(0, 0, 0, 0.5)',

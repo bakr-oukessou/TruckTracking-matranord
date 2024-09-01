@@ -39,7 +39,7 @@ const TaskDetails = ({ route }: { route: TaskDetailsRouteProp}) => {
               <DetailItem title="details" value={task.details} />
               <DetailItem title="provider" value={task.provider} />
               <DetailItem title="observation" value={task.observation} />
-              <DetailItem title="dateHeureCreation" value={task.dateHeureCreation} />
+              <DetailItem title="dateHeureCreation" value={task.dateheurecreation} />
               <DetailItem title="cloture" value={task.cloture.toString()} />
               <DetailItem title="Status" value={task.status} />
               <DetailItem title="StartedAt" value={task.startedAt} />

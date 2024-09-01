@@ -242,11 +242,11 @@ const images = [
     setDatePickerVisibility(false);
   };
 
-  // const handleConfirm = (selectedDate: Date) => {
-  //   const formattedDate = selectedDate.toISOString().split('T')[0]; // Format: YYYY-MM-DD
-  //   // setDate(formattedDate);
-  //   hideDatePicker();
-  // };
+  const handleConfirm = (selectedDate: Date) => {
+    const formattedDate = selectedDate.toISOString().split('T')[0]; // Format: YYYY-MM-DD
+    setValiditePermit(formattedDate);
+    hideDatePicker();
+  };
 
   return (
     <PaperProvider>
@@ -279,7 +279,75 @@ const images = [
         animateFrom={animateFrom}
         // iconMode={iconMode}
         style={[itemStyles.fabStyle, style, fabStyle]}
-      />
+      /><Portal>
+      <Modal visible={Visible} onDismiss={hideModal} contentContainerStyle={containerStyle.containerStyle}>
+        <TextInput
+          label="CIN"
+          value={cin}
+          style={itemStyles.textinput}
+          onChangeText={text => setCin(text)}
+        />
+        <TextInput
+          label="Nom"
+          value={nom}
+          onChangeText={text => setNom(text)}
+          style={itemStyles.textinput}
+          onFocus={showDatePicker}
+          // editable={false}
+        />
+        <DateTimePicker
+          isVisible={isDatePickerVisible}
+          mode="date"
+          onConfirm={handleConfirm}
+          onCancel={hideDatePicker}
+          date={validitePermit ? new Date(validitePermit) : new Date()}
+        />
+        <TextInput
+          label="Email"
+          value={email}
+          style={itemStyles.textinput}
+          onChangeText={text => setEmail(text)}
+        />
+        <TextInput
+          label="Mobile Number"
+          value={mobileNumber}
+          style={itemStyles.textinput}
+          onChangeText={text => setMobileNumber(text)}
+        />
+        <TextInput
+          label="Adresse"
+          value={adresse}
+          style={itemStyles.textinput}
+          onChangeText={text => setAdresse(text)}
+        />
+        <TextInput
+          label="Experience"
+          value={experience}
+          style={itemStyles.textinput}
+          onChangeText={text => setExperience(text)}
+        />
+        <TextInput
+          label="Id Vehicule"
+          value={idVehicule}
+          style={itemStyles.textinput}
+          onChangeText={text => setIdVehicule(text)}
+        />
+        <Button icon="check" mode="contained" onPress={handleSubmit} style={{backgroundColor:'#729762'}}>
+          Enregister
+        </Button>
+      </Modal>
+      <Snackbar
+        visible={snackbar.visible}
+        onDismiss={() => setSnackbar(prev => ({ ...prev, visible: false }))}
+        action={{
+          label: 'Close',
+          onPress: () => setSnackbar(prev => ({ ...prev, visible: false })),
+        }}
+        duration={3000}
+        style={{ backgroundColor: snackbar.type === 'success' ? '#4CAF50' : '#F44336' }}>
+        {snackbar.message}
+      </Snackbar>
+    </Portal>
     </View>
     </PaperProvider>
   );
@@ -449,6 +517,18 @@ const styles = css`
       font-family: 'Poppins-Regular';
     }
   `;
+
+  const containerStyle = StyleSheet.create({
+    containerStyle: {
+    backgroundColor: '#FFF5E1',
+    padding: 40,
+    bottom:10,
+    width:350,
+    alignSelf:'center',
+    justifyContent:'center',
+    // flexWrap:'nowrap'
+    }
+  });
 
 export default DriverScreen;
 

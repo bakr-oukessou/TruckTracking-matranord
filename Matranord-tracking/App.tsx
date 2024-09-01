@@ -26,6 +26,7 @@ import { Icon, TouchableRipple } from 'react-native-paper';
 import DriverDetails from './screens/DriverDetails';
 import TaskScreen from './screens/TaskScreen';
 import TaskDetails from './screens/TaskDetails';
+import AssignTaskScreen from './screens/AssignTaskScreen';
 
 //***********token**************/
 const tokenCache = {
@@ -343,7 +344,16 @@ const App: React.FC = () => {
               }
             }}
            />
-          <Stack.Screen name="MapScreen" component={MapScreen} />
+             <Stack.Screen name="AssignTask" component={AssignTaskScreen} /> 
+          <Stack.Screen name="MapScreen" component={MapScreen} 
+            options={{ title: 'Available Tasks', 
+              // headerRight:(props)=>()
+              headerStyle:{
+                backgroundColor: '#AA304E',
+                borderBottomEndRadius:20,
+                borderBottomStartRadius:20,
+              }
+            }}/>
         </Stack.Navigator>
       </NavigationContainer>
       </ClerkLoaded>

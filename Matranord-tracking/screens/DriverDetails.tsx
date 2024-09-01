@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Pressable, ScrollView, Animated, ImageBackground, Alert } from 'react-native';
 
 import { RouteProp, useNavigation } from '@react-navigation/native';
@@ -10,6 +10,9 @@ import { StatusBar } from 'expo-status-bar';
 import { Driver } from '../types/types';
 import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
+import { getTaskByDriverCIN } from '../components/Api/api';
+import { FlashList } from '@shopify/flash-list';
+import UpdateModal from '../components/UpdateModal';
 
 type DriverDetailsRouteProp = RouteProp<RootStackParamList, 'DriverDetails'>;
 type DriverDetailsScreenNavigationProp = StackNavigationProp<RootStackParamList, 'DriverDetails'>;
@@ -19,6 +22,25 @@ const DriverDetails = ({ route }: { route: DriverDetailsRouteProp}) => {
   const { driver: initialDriver } = route.params;
   const navigation = useNavigation<DriverDetailsScreenNavigationProp>();
   const [driver, setDriver] = useState<Driver>(initialDriver);
+  const [activeTab, setActiveTab] = useState<'info' | 'tasks'>('info');
+  const [relatedTasks, setRelatedTasks] = useState<any[]>([]);
+  const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
+
+  useEffect(() => {
+    if (activeTab === 'tasks') {
+      fetchRelatedTasks();
+    }
+  }, [activeTab]);
+
+  const fetchRelatedTasks = async () => {
+    try {
+      const tasks = await getTaskByDriverCIN(driver.cin);
+      setRelatedTasks(tasks);
+    } catch (error) {
+      console.error('Error fetching related tasks:', error);
+      Alert.alert('Error', 'Failed to fetch related tasks');
+    }
+  };
   
   const uploadProfilePicture = async () => {
     const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
@@ -60,7 +82,19 @@ const DriverDetails = ({ route }: { route: DriverDetailsRouteProp}) => {
       }
     }
   };
+
+  const handleUpdateSuccess = (updatedDriver: Driver) => {
+    setDriver(updatedDriver);
+  };
   
+  const renderTask = ({ item }: { item: any }) => (
+    <View style={styles.taskItem}>
+      <Text style={styles.taskTitle}>{item.details}</Text>
+      <Text style={styles.taskProvider}>{item.provider}</Text>
+      <Text style={styles.taskStatus}>Status: {item.status}</Text>
+    </View>
+  );
+
   return (
     <SafeAreaView style={styles2.container}>
     <ImageBackground source={require('../assets/phoneBackground.jpg')} style={styles.image}>
@@ -79,13 +113,20 @@ const DriverDetails = ({ route }: { route: DriverDetailsRouteProp}) => {
             <Text style={styles.driverName}>{driver.nom}</Text>
           {/* <Text style={styles2.driverName}>Driver Details</Text> */}
           <View style={styles2.tabContainer}>
-            <TouchableOpacity style={[styles2.tab, styles2.activeTab]}>
-              <Text style={styles2.activeTabText}>Driver Info</Text>
+            <TouchableOpacity 
+                style={[styles2.tab, activeTab === 'info' && styles2.activeTab]}
+                onPress={() => setActiveTab('info')}>
+              <Text style={activeTab === 'info' ? styles2.activeTabText : styles2.tabText}>
+                Driver Info
+              </Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles2.tab}>
-              <Text style={styles2.tabText}>Related Tasks</Text>
+            <TouchableOpacity 
+                style={[styles2.tab, activeTab === 'tasks' && styles2.activeTab]}
+                onPress={() => setActiveTab('tasks')}>
+              <Text style={activeTab === 'tasks' ? styles2.activeTabText : styles2.tabText}>Related Tasks</Text>
             </TouchableOpacity>
           </View>
+          {activeTab === 'info' ? (
             <View style={styles2.detailsContainer}>
               <DetailItem title="CIN" value={driver.cin} />
               <DetailItem title="Idvehicule" value={driver.idVehicule} />
@@ -96,18 +137,37 @@ const DriverDetails = ({ route }: { route: DriverDetailsRouteProp}) => {
               <DetailItem title="Experience" value={driver.experience} />
               <DetailItem title="ValiditePermit" value={driver.validitePermit} />
             </View>
+            ) : (
+              <FlashList
+                data={relatedTasks}
+                renderItem={renderTask}
+                keyExtractor={(item) => item.id.toString()}
+                ListEmptyComponent={() => (
+                  <Text style={styles.emptyText}>No related tasks found.</Text>
+                )}
+              />
+            )}
         </View>
     <View style={styles.buttons}>
-      <TouchableOpacity style={styles2.updateButton}>
+      <TouchableOpacity 
+            style={styles2.updateButton}
+            onPress={() => setIsUpdateModalVisible(true)}>
         <Text style={styles2.updateButtonText}>Update Driver Info</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles2.updateButton}>
+      <TouchableOpacity style={styles2.updateButton} 
+        onPress={() => navigation.navigate('AssignTask', { driverCin: driver.cin })}>
         <Text style={styles2.updateButtonText}>Assign Task</Text>
       </TouchableOpacity>
     </View>
     
     </ScrollView>
     </ImageBackground>
+    <UpdateModal
+        isVisible={isUpdateModalVisible}
+        onClose={() => setIsUpdateModalVisible(false)}
+        driver={driver}
+        onUpdateSuccess={handleUpdateSuccess}
+      />
     </SafeAreaView>
   );
 };
@@ -233,6 +293,31 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontFamily: 'Poppins-Bold',
     marginBottom: 16,
+  },
+  taskItem: {
+    backgroundColor: '#f0f0f0',
+    padding: 16,
+    marginBottom: 8,
+    borderRadius: 8,
+  },
+  taskTitle: {
+    fontSize: 18,
+    fontWeight: 'bold',
+  },
+  taskProvider: {
+    fontSize: 14,
+    color: '#666',
+  },
+  taskStatus: {
+    fontSize: 14,
+    color: '#E5114D',
+    marginTop: 4,
+  },
+  emptyText: {
+    textAlign: 'center',
+    fontSize: 16,
+    color: '#666',
+    marginTop: 20,
   },
 });
 

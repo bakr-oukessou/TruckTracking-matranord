@@ -3,12 +3,13 @@ import { View, Text, TouchableOpacity, SafeAreaView, ScrollView, ImageBackground
 import { createTask, getAllTasks } from '../components/Api/api';
 import { Driver, RootStackParamList, Tasks, TasksProps } from '../types/types';
 import axios from 'axios';
-import { ActivityIndicator, PaperProvider } from 'react-native-paper';
+import { ActivityIndicator, AnimatedFAB, Button, Modal, PaperProvider, Portal, Snackbar, TextInput } from 'react-native-paper';
 import { MasonryFlashList } from '@shopify/flash-list';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 import { css } from '@emotion/react';
 import { MaterialIcons } from '@expo/vector-icons';
+import DateTimePicker from 'react-native-modal-datetime-picker';
 
 
 type TaskScreenNavigationProp = StackNavigationProp<RootStackParamList, 'TaskScreen'> & TasksProps;
@@ -136,6 +137,13 @@ const TaskScreen: React.FC<TasksProps> = ({
     const hideDatePicker = () => {
         setDatePickerVisibility(false);
     };
+
+    const handleConfirm = (selectedDate: Date) => {
+      const formattedDate = selectedDate.toISOString().split('T')[0]; // Format: YYYY-MM-DD
+      setDateHeureCreation(formattedDate);
+      hideDatePicker();
+    };
+  
     
 
   const handleSubmit = async () => {
@@ -208,7 +216,7 @@ const renderItem = ({ item }: { item: Tasks }) => (
             <Text style={itemStyles.text}><Text style={itemStyles.bold}>Provider:</Text> {item.provider}</Text>
             <Text style={itemStyles.text}><Text style={itemStyles.bold}>{item.observation}</Text> </Text>
             <Text style={itemStyles.text}><Text style={itemStyles.bold}>Driver: </Text>{item.driver ? item.driver.nom : 'Not assigned'} </Text>
-            <Text style={itemStyles.text}><Text style={itemStyles.bold}>Date Creation: </Text>{item.dateHeureCreation}</Text>
+            <Text style={itemStyles.text}><Text style={itemStyles.bold}>Date Creation: </Text>{item.dateheurecreation}</Text>
             <Text style={itemStyles.text}><Text style={itemStyles.bold}>Status:</Text> {item.status}</Text>
             <Text style={[itemStyles.text, itemStyles.status]}><Text style={[itemStyles.bold, itemStyles.statusData]}>Validite: </Text> {item.cloture ? item.cloture.toString().split('T')[0] : 'N/A'}</Text>
           </View>
@@ -245,12 +253,80 @@ const renderItem = ({ item }: { item: Tasks }) => (
                 <ActivityIndicator size="large" color="#0000ff" />
                 ) : (
                   <MasonryFlashList
-                  data={filteredTasks}
-                  numColumns={1}
-                  renderItem={renderItem}
-                  estimatedItemSize={100}
-                  refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+                    onScroll={onScroll}
+                    data={filteredTasks}
+                    numColumns={1}
+                    renderItem={renderItem}
+                    estimatedItemSize={100}
+                    refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
                 />)}
+                <AnimatedFAB
+                  icon={'plus'}
+                  label={'NEW'}
+                  extended={isExtended}
+                  onPress={showModal}
+                  visible={visible}
+                  animateFrom={animateFrom}
+                  // iconMode={iconMode}
+                  style={[itemStyles.fabStyle, style, fabStyle]}
+                />
+                <Portal>
+                  <Modal visible={Visible} onDismiss={hideModal} contentContainerStyle={containerStyle.containerStyle}>
+                    <TextInput
+                      label="Details"
+                      value={details}
+                      style={itemStyles.textinput}
+                      onChangeText={text => setDetails(text)}
+                    />
+                    <TextInput
+                      label="Provider"
+                      value={provider}
+                      onChangeText={text => setProvider(text)}
+                      style={itemStyles.textinput}
+                      onFocus={showDatePicker}
+                      // editable={false}
+                    />
+                    <DateTimePicker
+                      isVisible={isDatePickerVisible}
+                      mode="date"
+                      onConfirm={handleConfirm}
+                      onCancel={hideDatePicker}
+                      date={DateHeureCreation ? new Date(DateHeureCreation) : new Date()}
+                    />
+                    <TextInput
+                      label="Observation"
+                      value={Observation}
+                      style={itemStyles.textinput}
+                      onChangeText={text => setObservation(text)}
+                    />
+                    <TextInput
+                      label="cloture"
+                      value={Cloture}
+                      style={itemStyles.textinput}
+                      onChangeText={text => setCloture(text)}
+                    />
+                    <TextInput
+                      label="Status"
+                      value={status}
+                      style={itemStyles.textinput}
+                      onChangeText={text => setStatus(text)}
+                    />
+                    <Button icon="check" mode="contained" onPress={handleSubmit} style={{backgroundColor:'#729762'}}>
+                      Enregister
+                    </Button>
+                  </Modal>
+                  <Snackbar
+                    visible={snackbar.visible}
+                    onDismiss={() => setSnackbar(prev => ({ ...prev, visible: false }))}
+                    action={{
+                      label: 'Close',
+                      onPress: () => setSnackbar(prev => ({ ...prev, visible: false })),
+                    }}
+                    duration={3000}
+                    style={{ backgroundColor: snackbar.type === 'success' ? '#4CAF50' : '#F44336' }}>
+                    {snackbar.message}
+                  </Snackbar>
+                </Portal>
                 </PaperProvider>
             </View>
         </View>
@@ -287,6 +363,17 @@ const styles3 = css`
       font-family: 'Poppins-Regular';
     }
   `;
+  const containerStyle = StyleSheet.create({
+    containerStyle: {
+    backgroundColor: '#FFF5E1',
+    padding: 40,
+    bottom:10,
+    width:350,
+    alignSelf:'center',
+    justifyContent:'center',
+    // flexWrap:'nowrap'
+    }
+  });
 
 const styles = StyleSheet.create({
   container: {

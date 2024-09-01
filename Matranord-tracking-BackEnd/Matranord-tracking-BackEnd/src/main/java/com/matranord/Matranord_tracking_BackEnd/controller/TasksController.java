@@ -90,7 +90,7 @@ public class TasksController {
         return new ResponseEntity<>(tasks, HttpStatus.OK);
     }
 
-    @PostMapping("/{taskId}/assign")
+    @PostMapping("/{taskId}/assign/{driverCIN}")
     public ResponseEntity<Tasks> assignTaskToDriver(@PathVariable Long taskId, @RequestParam String driverCIN) {
         Tasks assignedTask = tasksService.assignTaskToDriver(taskId, driverCIN);
         return new ResponseEntity<>(assignedTask, HttpStatus.OK);

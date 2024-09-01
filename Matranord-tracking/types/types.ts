@@ -14,6 +14,7 @@ export type RootStackParamList = {
     SignIn:undefined;
     Driver:undefined;
     TaskScreen:undefined;
+    AssignTask:{driverCin:string};
     TaskDetails:{task:Tasks};
   };
   
@@ -46,7 +47,7 @@ export type RootStackParamList = {
     provider:string;
     observation:string;
     cloture:Date;
-    dateHeureCreation:string;
+    dateheurecreation:string;
     status:string;
     startedAt:string;
     completedAt:string;
@@ -68,6 +69,8 @@ export type RootStackParamList = {
   export interface DriverProps extends BaseProps, Partial<StackScreenProps<RootStackParamList, 'Driver'>> {}
 
   export interface TasksProps extends BaseProps, Partial<StackScreenProps<RootStackParamList, 'TaskScreen'>> {}
+
+  // export interface AssignTasksProps extends BaseProps, Partial<StackScreenProps<RootStackParamList, 'AssignTask'>> {}
 
   // export interface MyComponentProps extends Partial<StackScreenProps<RootStackParamList, 'Tracking'>> {
   //   animatedValue: Animated.Value;

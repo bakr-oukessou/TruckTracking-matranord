@@ -50,6 +50,16 @@ export const createDriver = async (driverData: { cin:string;
   }
 };
 
+export const updateDriver = async (driver: Driver) => {
+  try {
+    const response = await axios.put(`${API_BASE_URL}/drivers/${driver.id}`, driver);
+    return response.data;
+  } catch (error) {
+    console.error('Error updating driver:', error);
+    throw error;
+  }
+};
+
 export const getAllDrivers = async () => {
   try {
     const response = await axios.get(`${API_BASE_URL}/drivers`);
@@ -127,10 +137,19 @@ export const AssignTask = async(taskId:any)=>{
     await axios.post(`${API_BASE_URL}/tasks/${taskId}/assign`);
     getAvailableTasks();
   } catch (error) {
-    console.error(`Error assigning available tasks:`,error);
+    console.error(`Error assigning task:`,error);
     throw error;
   }
 }
+export const assignTaskToDriver = async (taskId: string, driverCin: string) => {
+  try {
+    const response = await axios.post(`${API_BASE_URL}/tasks/${taskId}/assign/${driverCin}`);
+    return response.data;
+  } catch (error) {
+    console.error('Error assigning task to driver:', error);
+    throw error;
+  }
+};
 
 export const DeleteTask = async(taskId:any)=>{
   try {

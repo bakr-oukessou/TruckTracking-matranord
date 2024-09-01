@@ -1,15 +1,16 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, SafeAreaView, ScrollView, ImageBackground, StyleSheet, Pressable, RefreshControl, StyleProp, ViewStyle, NativeSyntheticEvent, NativeScrollEvent } from 'react-native';
+import { View, Text, TouchableOpacity, SafeAreaView, ScrollView, ImageBackground, StyleSheet, Pressable, RefreshControl, StyleProp, ViewStyle, NativeSyntheticEvent, NativeScrollEvent,Modal } from 'react-native';
 import { createTask, getAllTasks } from '../components/Api/api';
 import { Driver, RootStackParamList, Tasks, TasksProps } from '../types/types';
 import axios from 'axios';
-import { ActivityIndicator, AnimatedFAB, Button, Modal, PaperProvider, Portal, Snackbar, TextInput } from 'react-native-paper';
+import { ActivityIndicator, AnimatedFAB, Button, PaperProvider, Portal, Snackbar, TextInput } from 'react-native-paper';
 import { MasonryFlashList } from '@shopify/flash-list';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useNavigation } from '@react-navigation/native';
 import { css } from '@emotion/react';
 import { MaterialIcons } from '@expo/vector-icons';
 import DateTimePicker from 'react-native-modal-datetime-picker';
+import AddTaskModal from '../components/AddTaskModal';
 
 
 type TaskScreenNavigationProp = StackNavigationProp<RootStackParamList, 'TaskScreen'> & TasksProps;
@@ -143,57 +144,78 @@ const TaskScreen: React.FC<TasksProps> = ({
       setDateHeureCreation(formattedDate);
       hideDatePicker();
     };
-  
+
+    const handleSubmit = async (newTask: any) => {
+      try {
+        const createdTask = await createTask(newTask);
+        console.log('Task added successfully:', createdTask);
+        
+        setSnackbar({
+          visible: true,
+          message: 'Task added successfully!',
+          type: 'success',
+        });
+        
+        fetchTasks(); // Refresh the task list
+      } catch (error) {
+        console.error('Error adding task:', error);
+        setSnackbar({
+          visible: true,
+          message: 'Error adding task. Please try again.',
+          type: 'error',
+        });
+      }
+    };
     
 
-  const handleSubmit = async () => {
-    try {
-      const newTask = {
-        details,
-        provider,
-        Observation,
-        Cloture:new Date(Cloture),
-        DateHeureCreation,
-        status,
-        startedAt,
-        completedAt,
-        driverCin
-      };
+  // const handleSubmit = async () => {
+  //   try {
+  //     const newTask = {
+  //       details,
+  //       provider,
+  //       Observation,
+  //       Cloture:new Date(Cloture),
+  //       DateHeureCreation,
+  //       status,
+  //       startedAt,
+  //       completedAt,
+  //       driverCin
+  //     };
   
-      const createdDriver = await createTask(newTask);
-      console.log('Driver added successfully:', createdDriver);
+  //     const createdDriver = await createTask(newTask);
+  //     console.log('Driver added successfully:', createdDriver);
     
-      setDetails('');
-      setProvider('');
-      setObservation('');
-      setCloture('');
-      setDateHeureCreation('');
-      setStatus('');
-      setStartedAt('');
-      setCompletedAt('');
-      setDriverCin('');
+  //     setDetails('');
+  //     setProvider('');
+  //     setObservation('');
+  //     setCloture('');
+  //     setDateHeureCreation('');
+  //     setStatus('');
+  //     setStartedAt('');
+  //     setCompletedAt('');
+  //     setDriverCin('');
       
 
-      hideModal();
+  //     hideModal();
 
       
-      setSnackbar({
-        visible: true,
-        message: 'Driver added successfully!',
-        type: 'success',
-      });
-      // getAllTrucks();
+  //     setSnackbar({
+  //       visible: true,
+  //       message: 'Driver added successfully!',
+  //       type: 'success',
+  //     });
+  //     // getAllTrucks();
 
-    } catch (error) {
-      console.error('Error adding driver:', error);
-      setSnackbar({
-        visible: true,
-        message: 'Error adding driver. Please try again.',
-        type: 'error',
-      }); 
-    }
-  };
-  /////////////////////////////////////////
+  //   } catch (error) {
+  //     console.error('Error adding driver:', error);
+  //     setSnackbar({
+  //       visible: true,
+  //       message: 'Error adding driver. Please try again.',
+  //       type: 'error',
+  //     }); 
+  //   }
+  // };
+  ///////////////////////////////////////
 
   const navigation = useNavigation<TaskScreenNavigationProp>();
 
@@ -270,51 +292,12 @@ const renderItem = ({ item }: { item: Tasks }) => (
                   // iconMode={iconMode}
                   style={[itemStyles.fabStyle, style, fabStyle]}
                 />
-                <Portal>
-                  <Modal visible={Visible} onDismiss={hideModal} contentContainerStyle={containerStyle.containerStyle}>
-                    <TextInput
-                      label="Details"
-                      value={details}
-                      style={itemStyles.textinput}
-                      onChangeText={text => setDetails(text)}
-                    />
-                    <TextInput
-                      label="Provider"
-                      value={provider}
-                      onChangeText={text => setProvider(text)}
-                      style={itemStyles.textinput}
-                      onFocus={showDatePicker}
-                      // editable={false}
-                    />
-                    <DateTimePicker
-                      isVisible={isDatePickerVisible}
-                      mode="date"
-                      onConfirm={handleConfirm}
-                      onCancel={hideDatePicker}
-                      date={DateHeureCreation ? new Date(DateHeureCreation) : new Date()}
-                    />
-                    <TextInput
-                      label="Observation"
-                      value={Observation}
-                      style={itemStyles.textinput}
-                      onChangeText={text => setObservation(text)}
-                    />
-                    <TextInput
-                      label="cloture"
-                      value={Cloture}
-                      style={itemStyles.textinput}
-                      onChangeText={text => setCloture(text)}
-                    />
-                    <TextInput
-                      label="Status"
-                      value={status}
-                      style={itemStyles.textinput}
-                      onChangeText={text => setStatus(text)}
-                    />
-                    <Button icon="check" mode="contained" onPress={handleSubmit} style={{backgroundColor:'#729762'}}>
-                      Enregister
-                    </Button>
-                  </Modal>
+                
+                <AddTaskModal
+                  visible={Visible}
+                  hideModal={hideModal}
+                  handleSubmit={handleSubmit}
+                />
                   <Snackbar
                     visible={snackbar.visible}
                     onDismiss={() => setSnackbar(prev => ({ ...prev, visible: false }))}
@@ -326,7 +309,6 @@ const renderItem = ({ item }: { item: Tasks }) => (
                     style={{ backgroundColor: snackbar.type === 'success' ? '#4CAF50' : '#F44336' }}>
                     {snackbar.message}
                   </Snackbar>
-                </Portal>
                 </PaperProvider>
             </View>
         </View>
@@ -461,7 +443,47 @@ const styles = StyleSheet.create({
     position:'absolute',
     width:'100%',
     marginTop:4,
-  }
+  },
+  modalContainer: {
+    flex: 1,
+    // height: '100%',
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: 'rgba(0, 0, 0, 0.5)',
+  },
+  modalContent: {
+    backgroundColor: 'white',
+    borderRadius: 10,
+    padding: 20,
+    width: '90%',
+    maxHeight: '80%',
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    textAlign: 'center',
+  },
+  input: {
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 10,
+  },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginTop: 20,
+  },
+  cancelButton: {
+    backgroundColor: '#999',
+  },
+  buttonText: {
+    color: 'white',
+    textAlign: 'center',
+    fontWeight: 'bold',
+  },
 });
 
 

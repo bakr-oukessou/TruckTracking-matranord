@@ -160,7 +160,7 @@ const DriverDetails = ({ route }: { route: DriverDetailsRouteProp}) => {
             onPress={() => setIsUpdateModalVisible(true)}>
         <Text style={styles2.updateButtonText}>Update Driver Info</Text>
       </TouchableOpacity>
-      <TouchableOpacity style={styles2.updateButton} 
+      <TouchableOpacity style={styles2.updateButton}
         onPress={() => navigation.navigate('AssignTask', { driverCin: driver.cin })}>
         <Text style={styles2.updateButtonText}>Assign Task</Text>
       </TouchableOpacity>

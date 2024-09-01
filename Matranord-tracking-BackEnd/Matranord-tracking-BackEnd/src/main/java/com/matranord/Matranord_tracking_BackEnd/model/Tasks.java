@@ -30,10 +30,10 @@ public class Tasks {
     @Column(name = "assigned_at",nullable = false)
     private String assignedAt;
 
-    @Column(name = "started_at",nullable = false)
+    @Column(name = "started_at",nullable = true)
     private LocalDateTime startedAt;
 
-    @Column(name = "completed_at",nullable = false)
+    @Column(name = "completed_at",nullable = true)
     private LocalDateTime completedAt;
 
     @Enumerated(EnumType.STRING)

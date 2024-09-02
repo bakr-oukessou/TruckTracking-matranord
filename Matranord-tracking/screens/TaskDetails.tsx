@@ -8,6 +8,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { Image, SafeAreaView,TouchableOpacity } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import * as ImagePicker from 'expo-image-picker';
+import UpdateTaskModal from '../components/UpdateTaskModal';
 
 type TaskDetailsRouteProp = RouteProp<RootStackParamList, 'TaskDetails'>;
 type TaskDetailsScreenNavigationProp = StackNavigationProp<RootStackParamList, 'TaskDetails'>;
@@ -17,8 +18,12 @@ const TaskDetails = ({ route }: { route: TaskDetailsRouteProp}) => {
   const { task: initialTask } = route.params;
   const navigation = useNavigation<TaskDetailsScreenNavigationProp>();
   const [task, setTask] = useState<Tasks>(initialTask);
+  const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
   
-
+  const handleUpdateSuccess = (updatedTask: Tasks) => {
+    setTask(updatedTask);
+  };
+  
   return (
     <SafeAreaView style={styles2.container}>
     <ImageBackground source={require('../assets/phoneBackground.jpg')} style={styles.image}>
@@ -48,13 +53,19 @@ const TaskDetails = ({ route }: { route: TaskDetailsRouteProp}) => {
             </View>
         </View>
     <View style={styles.buttons}>
-      <TouchableOpacity style={styles2.updateButton}>
+      <TouchableOpacity style={styles2.updateButton} onPress={() => setIsUpdateModalVisible(true)}>
         <Text style={styles2.updateButtonText}>Update Task Info</Text>
       </TouchableOpacity>
     </View>
     
     </ScrollView>
     </ImageBackground>
+    <UpdateTaskModal
+        isVisible={isUpdateModalVisible}
+        onClose={() => setIsUpdateModalVisible(false)}
+        task={task}
+        onUpdateSuccess={handleUpdateSuccess}
+      />
     </SafeAreaView>
   );
 };

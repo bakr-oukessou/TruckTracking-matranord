@@ -33,9 +33,9 @@ const TaskScreen: React.FC<TasksProps> = ({
   const [refreshing, setRefreshing] = useState(false);
   const [activeTab, setActiveTab] = useState<'available' | 'inProgress' | 'completed'>('available');
 
-  useEffect(() => {
-    filterTasks();
-  }, [searchQuery, tasks]);
+  // useEffect(() => {
+  //   filterTasks();
+  // }, [searchQuery, tasks]);
 
   useEffect(() => {
     fetchTasks();
@@ -47,7 +47,7 @@ const TaskScreen: React.FC<TasksProps> = ({
 
   useEffect(() => {
     filterTasks();
-  }, [searchQuery, tasks, activeTab]);
+  }, [tasks, activeTab]);
   
   useEffect(() => {
     // console.log("Filtered tasks state updated:", filteredTasks);
@@ -112,38 +112,13 @@ const TaskScreen: React.FC<TasksProps> = ({
   
     const fabStyle: StyleProp<ViewStyle> = { [animateFrom]: 16 };
   
-    const [details,setDetails] = useState('');
-    const [provider,setProvider] = useState('');
-    const [Observation,setObservation] = useState('');
-    const [Cloture,setCloture]=useState('');
-    const [DateHeureCreation,setDateHeureCreation] = useState('');
-    const [status,setStatus]=useState('');
-    const [startedAt,setStartedAt] = useState('');
-    const [completedAt,setCompletedAt] = useState('');
-    const [driverCin, setDriverCin] = useState('');
 
     const [Visible, setVisible] = React.useState(false);
 
-    const [text, setText] = React.useState("");
   
     const showModal = () => setVisible(true);
     const hideModal = () => setVisible(false);
 
-    const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-
-    const showDatePicker = () => {
-        setDatePickerVisibility(true);
-    };
-
-    const hideDatePicker = () => {
-        setDatePickerVisibility(false);
-    };
-
-    const handleConfirm = (selectedDate: Date) => {
-      const formattedDate = selectedDate.toISOString().split('T')[0]; // Format: YYYY-MM-DD
-      setDateHeureCreation(formattedDate);
-      hideDatePicker();
-    };
 
     const handleSubmit = async (newTask: any) => {
       try {
@@ -292,7 +267,6 @@ const renderItem = ({ item }: { item: Tasks }) => (
                   // iconMode={iconMode}
                   style={[itemStyles.fabStyle, style, fabStyle]}
                 />
-                
                 <AddTaskModal
                   visible={Visible}
                   hideModal={hideModal}

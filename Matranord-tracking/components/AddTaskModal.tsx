@@ -108,19 +108,19 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({ visible, hideModal, handleS
                     style={styles.textinput}
                     // editable={false}
                     />
-                    <TextInput
+                <TextInput
                     label="Date Heure de creation"
                     value={provider}
                     onChangeText={text => setProvider(text)}
                     style={styles.textinput}
                     // editable={false}
-                    />
+                    onFocus={showDatePicker}
+                />
                 <DateTimePicker
                     isVisible={isDatePickerVisible}
                     mode="date"
                     onConfirm={handleConfirm}
                     onCancel={hideDatePicker}
-                    // onFocus={showDatePicker}
                     date={dateHeureCreation ? new Date(dateHeureCreation) : new Date()}
                 />
                 <TextInput
@@ -133,7 +133,15 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({ visible, hideModal, handleS
                     label="cloture"
                     value={cloture}
                     style={styles.textinput}
+                    onFocus={showDatePicker}
                     onChangeText={text => setCloture(text)}
+                />
+                <DateTimePicker
+                    isVisible={isDatePickerVisible}
+                    mode="date"
+                    onConfirm={handleConfirm}
+                    onCancel={hideDatePicker}
+                    date={cloture ? new Date(cloture) : new Date()}
                 />
                 <TextInput
                     label="Status"

@@ -1,5 +1,5 @@
 import axios from "axios";
-import { Driver } from "../../types/types";
+import { Driver, Tasks } from "../../types/types";
 
 const API_BASE_URL = 'http://10.0.2.2:8080/api';
 
@@ -182,6 +182,15 @@ export const createTask = async (taskData: {
     return response.data;
   } catch (error) {
     console.error('Error creating task:', error);
+    throw error;
+  }
+};
+export const updateTask = async (task: Tasks) => {
+  try {
+    const response = await axios.put(`${API_BASE_URL}/tasks/${task.id}`, task);
+    return response.data;
+  } catch (error) {
+    console.error('Error updating task:', error);
     throw error;
   }
 };

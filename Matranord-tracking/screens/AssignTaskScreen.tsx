@@ -61,24 +61,30 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: '#fff',
+    backgroundColor: '#FFF5E1',
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
+    fontFamily:'Poppins-Bold',
     marginBottom: 16,
+    alignSelf: 'center',
   },
   taskItem: {
     backgroundColor: '#f0f0f0',
     padding: 16,
     marginBottom: 8,
     borderRadius: 8,
+    borderColor:'black',
+    borderWidth:1
   },
   taskTitle: {
     fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily:'Poppins-Bold',
+    // fontWeight: 'bold',
   },
   taskProvider: {
+    fontFamily:'Poppins-Regular',
     fontSize: 14,
     color: '#666',
   },

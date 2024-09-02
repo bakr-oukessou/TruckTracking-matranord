@@ -21,6 +21,7 @@ import { ActivityIndicator, AnimatedFAB, Button, Modal, PaperProvider, Portal, S
 import axios from 'axios';
 import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import DateTimePicker from 'react-native-modal-datetime-picker';
+import AddDriverModal from '../components/AddDriverModal';
 
 type DriverScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Driver'> & DriverProps;
 
@@ -40,6 +41,7 @@ const DriverScreen: React.FC<DriverProps> = ({
     const [searchQuery, setSearchQuery] = useState('');
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
+    const [modalVisible, setModalVisible] = useState(false);
   
     useEffect(() => {
       filterDrivers();
@@ -100,15 +102,6 @@ const DriverScreen: React.FC<DriverProps> = ({
 
   const [refreshing, setRefreshing] = useState(false);
 
-  const [cin, setCin] = useState('');
-  const [nom, setNom] = useState('');
-  const [email,setEmail] = useState('');
-  const [mobileNumber, setMobileNumber] = useState('');
-  const [adresse, setAdresse] = useState('');
-  const [validitePermit, setValiditePermit] = useState('');
-  const [idVehicule, setIdVehicule] = useState('');
-  const [experience, setExperience] = useState('');
-
   
 
   // const [snackbarVisible, setSnackbarVisible] = useState(false);
@@ -125,42 +118,18 @@ const DriverScreen: React.FC<DriverProps> = ({
     fetchDrivers().then(() => setRefreshing(false));
   }, []);
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (newDriver: Driver) => {
     try {
-      const newDriver = {
-        cin,
-        nom,
-        email,
-        mobileNumber,
-        adresse,
-        validitePermit,
-        idVehicule,
-        experience,
-      };
-  
       const createdDriver = await createDriver(newDriver);
       console.log('Driver added successfully:', createdDriver);
-    
-      setCin('');
-      setNom('');
-      setEmail('');
-      setMobileNumber('');
-      setAdresse('');
-      setValiditePermit('');
-      setIdVehicule('');
-      setExperience('');
-      
-
-      hideModal();
-
       
       setSnackbar({
         visible: true,
         message: 'Driver added successfully!',
         type: 'success',
       });
-      // getAllTrucks();
-
+      
+      fetchDrivers(); // Refresh the driver list
     } catch (error) {
       console.error('Error adding driver:', error);
       setSnackbar({
@@ -225,28 +194,8 @@ const images = [
     </View>
   );
 
-  const [Visible, setVisible] = React.useState(false);
+  
 
-  const [text, setText] = React.useState("");
-
-  const showModal = () => setVisible(true);
-  const hideModal = () => setVisible(false);
-
-  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
-
-  const showDatePicker = () => {
-    setDatePickerVisibility(true);
-  };
-
-  const hideDatePicker = () => {
-    setDatePickerVisibility(false);
-  };
-
-  const handleConfirm = (selectedDate: Date) => {
-    const formattedDate = selectedDate.toISOString().split('T')[0]; // Format: YYYY-MM-DD
-    setValiditePermit(formattedDate);
-    hideDatePicker();
-  };
 
   return (
     <PaperProvider>
@@ -274,68 +223,17 @@ const images = [
         icon={'plus'}
         label={'NEW'}
         extended={isExtended}
-        onPress={showModal}
-        visible={visible}
+        onPress={() => setModalVisible(true)} visible={visible}
         animateFrom={animateFrom}
         // iconMode={iconMode}
         style={[itemStyles.fabStyle, style, fabStyle]}
-      /><Portal>
-      <Modal visible={Visible} onDismiss={hideModal} contentContainerStyle={containerStyle.containerStyle}>
-        <TextInput
-          label="CIN"
-          value={cin}
-          style={itemStyles.textinput}
-          onChangeText={text => setCin(text)}
-        />
-        <TextInput
-          label="Nom"
-          value={nom}
-          onChangeText={text => setNom(text)}
-          style={itemStyles.textinput}
-          onFocus={showDatePicker}
-          // editable={false}
-        />
-        <DateTimePicker
-          isVisible={isDatePickerVisible}
-          mode="date"
-          onConfirm={handleConfirm}
-          onCancel={hideDatePicker}
-          date={validitePermit ? new Date(validitePermit) : new Date()}
-        />
-        <TextInput
-          label="Email"
-          value={email}
-          style={itemStyles.textinput}
-          onChangeText={text => setEmail(text)}
-        />
-        <TextInput
-          label="Mobile Number"
-          value={mobileNumber}
-          style={itemStyles.textinput}
-          onChangeText={text => setMobileNumber(text)}
-        />
-        <TextInput
-          label="Adresse"
-          value={adresse}
-          style={itemStyles.textinput}
-          onChangeText={text => setAdresse(text)}
-        />
-        <TextInput
-          label="Experience"
-          value={experience}
-          style={itemStyles.textinput}
-          onChangeText={text => setExperience(text)}
-        />
-        <TextInput
-          label="Id Vehicule"
-          value={idVehicule}
-          style={itemStyles.textinput}
-          onChangeText={text => setIdVehicule(text)}
-        />
-        <Button icon="check" mode="contained" onPress={handleSubmit} style={{backgroundColor:'#729762'}}>
-          Enregister
-        </Button>
-      </Modal>
+      />
+      <Portal>
+      <AddDriverModal
+        visible={modalVisible}
+        hideModal={() => setModalVisible(false)}
+        onSubmit={handleSubmit}
+      />
       <Snackbar
         visible={snackbar.visible}
         onDismiss={() => setSnackbar(prev => ({ ...prev, visible: false }))}

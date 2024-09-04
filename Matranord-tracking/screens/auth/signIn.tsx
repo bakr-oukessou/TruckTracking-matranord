@@ -37,6 +37,7 @@ const SignIn: React.FC<Props> = ({ navigation }) => {
         })
         .catch((error) => {
           console.log('error');
+          Alert.alert('Error Authentication')
         });
     } catch (error) {
       console.log('error');

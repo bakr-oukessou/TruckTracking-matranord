@@ -129,7 +129,7 @@ const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
           },
           buttonStyles,
         ]}>
-        <MaterialIcons name="attach-file" size={30} color="black" />
+        <MaterialIcons name="person" size={30} color="black" />
         <Text style={textStyle2}>Drivers</Text>
       </Pressable>
       <Pressable onPress={() => navigation.navigate('TaskScreen')} android_ripple={{color: 'gray',radius:175}} style={({pressed}) => [
@@ -344,16 +344,15 @@ const App: React.FC = () => {
               }
             }}
            />
-             <Stack.Screen name="AssignTask" component={AssignTaskScreen} /> 
-          <Stack.Screen name="MapScreen" component={MapScreen} 
-            options={{ title: 'Available Tasks', 
+             <Stack.Screen name="AssignTask" component={AssignTaskScreen}options={{ title: 'Available Tasks', 
               // headerRight:(props)=>()
               headerStyle:{
                 backgroundColor: '#AA304E',
                 borderBottomEndRadius:20,
                 borderBottomStartRadius:20,
               }
-            }}/>
+            }} /> 
+          <Stack.Screen name="MapScreen" component={MapScreen} />
         </Stack.Navigator>
       </NavigationContainer>
       </ClerkLoaded>

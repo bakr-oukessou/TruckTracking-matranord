@@ -8,15 +8,16 @@ import { RootStackParamList } from "../../types/types";
 import { AnimatedView } from "react-native-reanimated/lib/typescript/reanimated2/component/View";
 import Animated, { FadeInUp } from "react-native-reanimated";
 
-type MainScreenRouteProp = RouteProp<RootStackParamList, 'MainScreen'>;
-type MainScreenNavigationProp = StackNavigationProp<RootStackParamList, 'MainScreen'>;
+type WelcomeRouteProp = RouteProp<RootStackParamList, 'Welcome'>;
+type WelcomeNavigationProp = StackNavigationProp<RootStackParamList, 'Welcome'>;
 
-type MainScreenProps = {
-  navigation: MainScreenNavigationProp;
-  route: MainScreenRouteProp;
+type WelcomeProps = {
+  navigation: WelcomeNavigationProp;
+  route: WelcomeRouteProp;
 };
 
-const Mainscreen:React.FC<MainScreenProps> = ({ navigation }) =>{
+const Welcome:React.FC<WelcomeProps> = ({ navigation }) =>{
+      console.log('Rendering Welcome page');
     return(
         <ImageBackground source={require('../../assets/background9.jpg')} style={styles.bgimage}>
             <View style={styles.view}>
@@ -36,6 +37,7 @@ const Mainscreen:React.FC<MainScreenProps> = ({ navigation }) =>{
             </View>
         </ImageBackground>
     )
+    
 };
 
 const styles = StyleSheet.create({
@@ -94,4 +96,4 @@ const styles = StyleSheet.create({
   text-align: center;
   color:rgba(150, 10, 44, 1);
 `;
-export default Mainscreen;
+export default Welcome;

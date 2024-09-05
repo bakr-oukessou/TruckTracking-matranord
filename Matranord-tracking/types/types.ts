@@ -2,7 +2,7 @@ import { StackScreenProps } from "@react-navigation/stack";
 import { Animated, StyleProp, ViewStyle } from "react-native";
 
 export type RootStackParamList = {
-    Main: undefined;
+    Welcome: undefined;
     Tracking: undefined;
     CMR: undefined;
     PLOMOS: undefined;

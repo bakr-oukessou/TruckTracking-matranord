@@ -17,7 +17,7 @@ import * as SecureStore from 'expo-secure-store';
 import TruckDetails from './screens/TruckDetails';
 import { RootStackParamList } from './types/types';
 import MapScreen from './components/Location';
-import Mainscreen from './screens/auth/main';
+import Mainscreen from './screens/auth/Welcome';
 import SignUp from './screens/auth/signUp';
 import SignIn from './screens/auth/signIn';
 import Driver from './screens/Driver';
@@ -28,6 +28,8 @@ import TaskScreen from './screens/TaskScreen';
 import TaskDetails from './screens/TaskDetails';
 import AssignTaskScreen from './screens/AssignTaskScreen';
 import { ErrorBoundary, ErrorFallback } from './components/ErrorBoundary';
+import MainScreen from './screens/MainScreen';
+import Welcome from './screens/auth/Welcome';
 
 //***********token**************/
 const tokenCache = {
@@ -73,140 +75,18 @@ const fetchFonts = () => {
   });
 };
 
-type MainScreenRouteProp = RouteProp<RootStackParamList, 'Main'>;
-type MainScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Main'>;
 
-type MainScreenProps = {
-  navigation: MainScreenNavigationProp;
-  route: MainScreenRouteProp;
-};
 
-const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
-  
-    const [fontsLoaded, setFontsLoaded] = useState(false);
+// const MainScreenWrapper: React.FC = () => {
+//   const navigation = useNavigation<MainScreenNavigationProp>();
+//   const route = useRoute<MainScreenRouteProp>();
 
-    useEffect(() => {
-      const loadFonts = async () => {
-        try {
-          await fetchFonts();
-          setFontsLoaded(true);
-          await SplashScreen.hideAsync();
-        } catch (err) {
-          console.log(err);
-        }
-      };
-  
-      loadFonts();
-    }, []);
-  
-  return (
-    <View style={styles}>
-      <ImageBackground source={require('./assets/pngwing.com.png')}/>
-      {/* <Text style={textStyle}>Matran<MaterialIcons name="public" size={35} color="black" />
-      rd</Text> */}
-      <Image source={require('./assets/Logo-png-1.png')} style={imagestyles.image}/>
-      <Pressable onPress={() => navigation.navigate('Tracking')} android_ripple={{color: 'gray',radius:175}} style={({pressed}) => [
-        {
-          backgroundColor: pressed ? '#EAD196' : 'white',
-        }, 
-        buttonStyles,
-      ]}>
-        <MaterialIcons name="local-shipping" size={30} color="#AA3A3A" />
-        <Text style={textStyle2}>TRACKING</Text>
-      </Pressable>
-      <Pressable onPress={() => navigation.navigate('MainScreen')} android_ripple={{color: 'gray',radius:175}} style={({pressed}) => [
-          {
-            backgroundColor: pressed ? '#EAD196' : 'white',
-          },
-          buttonStyles,
-        ]}>
-        <MaterialIcons name="description" size={30} color="#365E32" />
-        <Text style={textStyle2}>MainScreen</Text>
-      </Pressable>
-      <Pressable onPress={() => navigation.navigate('Driver')} android_ripple={{color: 'gray',radius:175}} style={({pressed}) => [
-          {
-            backgroundColor: pressed ? '#EAD196' : 'white',
-          },
-          buttonStyles,
-        ]}>
-        <MaterialIcons name="person" size={30} color="black" />
-        <Text style={textStyle2}>Drivers</Text>
-      </Pressable>
-      <Pressable onPress={() => navigation.navigate('TaskScreen')} android_ripple={{color: 'gray',radius:175}} style={({pressed}) => [
-          {
-            backgroundColor: pressed ? '#EAD196' : 'white',
-          },
-          buttonStyles,
-        ]}>
-        <MaterialIcons name="attach-file" size={30} color="black" />
-        <Text style={textStyle2}>Tasks</Text>
-      </Pressable>
-    </View>
-  );
-};
+//   return <MainScreen navigation={navigation} route={route} />;
+// };
 
 
 
-const MainScreenWrapper: React.FC = () => {
-  const navigation = useNavigation<MainScreenNavigationProp>();
-  const route = useRoute<MainScreenRouteProp>();
 
-  return <MainScreen navigation={navigation} route={route} />;
-};
-
-
-
-const styles = css`
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  // align-items:center;
-  align-content:space-evenly;
-  flex-grow:1;
-  flex: 1;
-  background-color: #FFF5E1;
-  padding: 20px;
-  & > * {
-    color: black;
-    font-size: 18px;
-    font-family:'Poppins-Regular';
-  }
-  
-`;
-const buttonStyles = css`
-    // padding:20px;
-    margin:10px;
-    align-items:center;
-    justify-content:center;
-    height:100px;
-    border-radius:20px;
-    border: 2px solid black;
-    background-color: #F1C27B;
-`;
-const imagestyles = StyleSheet.create({
-  image:{
-    margin:30,
-    alignSelf:'center',
-    objectFit:'contain',
-    height:110,
-  }
-})
-const textStyle = css`
-  font-size: 50px;  
-  font-family:'Poppins-Bold';
-  text-align: center;
-  color:#BF3131;
-  top:0;
-  padding:20px;
-`;
-const textStyle2 = css`
-  font-size: 20px;
-  padding-top:5px;  
-  font-family:'Poppins-Regular';
-  text-align: center;
-  // width:auto;
-  top:0;
-`;
 const ButtonStyle = css`
   padding: 10px;
   margin-right:10px;
@@ -248,16 +128,12 @@ const TasksWrapper: React.FC<StackScreenProps<RootStackParamList, 'TaskScreen'>>
   />
 );
 const App: React.FC = () => {
-  
-  useEffect(() => {
-    console.log('App component mounted');
-  }, []);
 
   return (
     <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
       <ClerkLoaded>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="MainScreen" screenOptions={{
+        <Stack.Navigator initialRouteName="Welcome" screenOptions={{
           headerStyle: {
             backgroundColor: '#AA304E',
             // borderBottomEndRadius:20,
@@ -270,13 +146,13 @@ const App: React.FC = () => {
           },
         }}>
           <Stack.Screen
-            name="Main"
-            component={MainScreenWrapper}
+            name="Welcome"
+            component={Welcome}
             options={{ headerShown: false }}
           />
           <Stack.Screen name="Tracking" component={TrackingWrapper} options={{ title: 'Trucks' }}/>
           <Stack.Screen name="CMR" component={CMR} />  
-          <Stack.Screen name="MainScreen" component={Mainscreen} options={{ headerShown: false }}/>  
+          <Stack.Screen name="MainScreen" component={MainScreen} options={{ headerShown: false }}/>  
           <Stack.Screen name="SignUp" component={SignUp} options={{ headerShown: false }}/>  
           <Stack.Screen name="SignIn" component={SignIn} options={{ headerShown: false }}/>  
           <Stack.Screen name="PLOMOS" component={PLOMOS} />

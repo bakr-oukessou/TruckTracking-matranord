@@ -27,6 +27,7 @@ import DriverDetails from './screens/DriverDetails';
 import TaskScreen from './screens/TaskScreen';
 import TaskDetails from './screens/TaskDetails';
 import AssignTaskScreen from './screens/AssignTaskScreen';
+import { ErrorBoundary, ErrorFallback } from './components/ErrorBoundary';
 
 //***********token**************/
 const tokenCache = {
@@ -71,7 +72,6 @@ const fetchFonts = () => {
     'Poppins-Regular': require('./assets/fonts/Poppins-Regular.ttf'),
   });
 };
-
 
 type MainScreenRouteProp = RouteProp<RootStackParamList, 'Main'>;
 type MainScreenNavigationProp = StackNavigationProp<RootStackParamList, 'Main'>;
@@ -247,12 +247,17 @@ const TasksWrapper: React.FC<StackScreenProps<RootStackParamList, 'TaskScreen'>>
     iconMode="static"
   />
 );
-const App: React.FC = () => { 
+const App: React.FC = () => {
+  
+  useEffect(() => {
+    console.log('App component mounted');
+  }, []);
+
   return (
     <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
       <ClerkLoaded>
       <NavigationContainer>
-        <Stack.Navigator initialRouteName="Main" screenOptions={{
+        <Stack.Navigator initialRouteName="MainScreen" screenOptions={{
           headerStyle: {
             backgroundColor: '#AA304E',
             // borderBottomEndRadius:20,
@@ -360,4 +365,15 @@ const App: React.FC = () => {
   );
 };
 
-export default App;
+const AppWrapper: React.FC = () => {
+  return (
+    <React.Suspense fallback={<Text>Loading...</Text>}>
+      <ErrorBoundary FallbackComponent={ErrorFallback}>
+        <App />
+      </ErrorBoundary>
+    </React.Suspense>
+  );
+};
+
+
+export default AppWrapper;

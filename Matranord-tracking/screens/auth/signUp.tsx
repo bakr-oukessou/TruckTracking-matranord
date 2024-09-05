@@ -18,8 +18,8 @@ interface Props {
 }
 
 const SignUp: React.FC<Props> = ({ navigation }) => {
-  const [email, setEmail] = useState('');
-  const [pass, setPass] = useState('');
+  // const [email, setEmail] = useState('');
+  // const [pass, setPass] = useState('');
   const { isLoaded, signUp, setActive } = useSignUp();
   const router = useRouter();
 

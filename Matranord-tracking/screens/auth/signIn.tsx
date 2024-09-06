@@ -27,22 +27,7 @@ const SignIn: React.FC<Props> = ({ navigation }) => {
 
   const [emailAddress, setEmailAddress] = React.useState("");
   const [password, setPassword] = React.useState("");
-  const logIn = () => {
-    try {
-      firebase
-        .auth()
-        .signInWithEmailAndPassword(email, pass)
-        .then((user: any) => {
-          Alert.alert('Welcome');
-        })
-        .catch((error) => {
-          console.log('error');
-          Alert.alert('Error Authentication')
-        });
-    } catch (error) {
-      console.log('error');
-    }
-  };
+
   const onSignInPress = React.useCallback(async () => {
     if (!isLoaded) {
       return;

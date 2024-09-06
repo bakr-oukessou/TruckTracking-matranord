@@ -1,9 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { View, Text, StyleSheet,TouchableOpacity, Button, TextInput, Image, ImageBackground } from 'react-native';
+import { View, Text, StyleSheet,TouchableOpacity, Button, TextInput, Image, ImageBackground, Alert } from 'react-native';
 import { TextInput as PaperTextInput } from 'react-native-paper';
 import firebase from 'firebase/app';
 import 'firebase/auth';
-import { useSignUp } from "@clerk/clerk-expo";
+import { useAuth, useSignUp } from "@clerk/clerk-expo";
 import { useRouter } from "expo-router";
 import Animated, { BounceIn, BounceInDown, BounceInUp } from 'react-native-reanimated';
 import loadFonts from '../../components/LoadFonts';
@@ -18,17 +18,17 @@ interface Props {
 }
 
 const SignUp: React.FC<Props> = ({ navigation }) => {
-  // const [email, setEmail] = useState('');
-  // const [pass, setPass] = useState('');
   const { isLoaded, signUp, setActive } = useSignUp();
+  const { isSignedIn, signOut } = useAuth();
   const router = useRouter();
 
+  const [username, setUsername] = useState("");
   const [emailAddress, setEmailAddress] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [pendingVerification, setPendingVerification] = React.useState(false);
-  const [code, setCode] = React.useState("");
 
   const [verificationCode, setVerificationCode] = useState(['', '', '', '','','']);
+  const [error, setError] = React.useState<string | null>(null);
   const inputRefs = useRef<Array<TextInput | null>>([]);
 
 
@@ -53,13 +53,20 @@ const SignUp: React.FC<Props> = ({ navigation }) => {
     if (!loaded) {
       return null;
     }
+
   const onSignUpPress = async () => {
     if (!isLoaded) {
       return;
     }
+    setError(null);
 
     try {
+      if (isSignedIn) {
+        await signOut();
+      }
+
       await signUp.create({
+        username,
         emailAddress,
         password,
       });
@@ -68,6 +75,8 @@ const SignUp: React.FC<Props> = ({ navigation }) => {
 
       setPendingVerification(true);
     } catch (err: any) {
+      console.error('Sign up error:', err.errors?.[0]?.longMessage || err.message);
+      setError(err.errors?.[0]?.longMessage || "An error occurred during sign up.");
       console.error(JSON.stringify(err, null, 2));
     }
   };
@@ -85,17 +94,38 @@ const SignUp: React.FC<Props> = ({ navigation }) => {
 
       if (completeSignUp.status === 'complete') {
         await setActive({ session: completeSignUp.createdSessionId });
-        router.replace('/');
+        console.log("Verification complete. Attempting to navigate...");
+        
+        if (router && typeof router.replace === 'function') {
+          try {
+            await navigation.reset({
+              index: 0,
+              routes: [{ name: 'MainScreen' }],
+            });
+            console.log("Navigation successful");
+          } catch (navError) {
+            console.error("Navigation error:", navError);
+            Alert.alert("Navigation Error", "Unable to navigate to the main screen. Please try again or restart the app.");
+          }
+        } else {
+          console.error("Router is not available or doesn't have a replace method");
+          Alert.alert("Navigation Error", "Unable to navigate to the main screen. Please try again or restart the app.");
+        }
       } else {
-        console.error(JSON.stringify(completeSignUp, null, 2));
+        console.error("Verification not complete:", JSON.stringify(completeSignUp, null, 2));
+        Alert.alert("Verification failed. Please try again");
+        setError("Verification failed. Please try again.");
       }
     } catch (err: any) {
-      console.error(JSON.stringify(err, null, 2));
+      console.error('Verification error:', err);
+      setError(err.errors?.[0]?.longMessage || "An error occurred during verification.");
     }
   };
+
   return (
     <ImageBackground source={require('../../assets/background3.jpg')} style={styles.bgimage}>
     <View style={styles.container}>
+    {error && <Text style={styles.errorText}>{error}</Text>}
       {!pendingVerification && (
         <>
       <Text style={styles.headerTxt}>WELCOME TO </Text>
@@ -103,9 +133,11 @@ const SignUp: React.FC<Props> = ({ navigation }) => {
       <Animated.View style={styles.subView} entering={BounceInDown.delay(200).duration(1000)}>
         <Text style={styles.subTxt}>Signup</Text>
         <PaperTextInput
-         style={styles.nameInput}
-         label="Username" 
-         activeUnderlineColor='#9c0327'
+          style={styles.nameInput}
+          label="Username" 
+          value={username}
+          onChangeText={setUsername}
+          activeUnderlineColor='#9c0327'
         />
         <PaperTextInput
           autoCapitalize="none"
@@ -267,9 +299,10 @@ const styles = StyleSheet.create({
     // flex: 0,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#FFFFFF',
+    backgroundColor: 'rgba(80, 70, 94, 0.4)',
     padding: 20,
-    paddingTop:200
+    // paddingTop:200,
+    height:'100%'
   },
   verificationTitle: {
     fontSize: 24,
@@ -280,7 +313,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     textAlign: 'center',
     marginBottom: 5,
-    color: '#666',
+    color: '#fff',
     fontFamily: 'Poppins_400Regular',
   },
   phoneNumber: {
@@ -327,6 +360,10 @@ const styles = StyleSheet.create({
   //   borderRadius: 12,
     overflow: 'hidden',
   },
+  errorText:{
+    color: '#9c0327',
+    fontFamily: 'Poppins_700Bold',
+  }
 });
 
 export default SignUp;

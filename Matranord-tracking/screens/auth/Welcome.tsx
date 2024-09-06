@@ -44,7 +44,7 @@ const styles = StyleSheet.create({
     image:{
       marginTop:100,
       alignSelf:'center',
-      objectFit:'contain',
+      resizeMode:'contain',
       height:130,
     },
     bgimage:{

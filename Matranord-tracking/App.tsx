@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { View, Text, Button, StyleSheet, Pressable, Image, Animated, ImageBackground, Platform, TouchableOpacity } from 'react-native';
 import { NavigationContainer, useNavigation, useRoute } from '@react-navigation/native';
 import { createStackNavigator, StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
@@ -17,12 +17,11 @@ import * as SecureStore from 'expo-secure-store';
 import TruckDetails from './screens/TruckDetails';
 import { RootStackParamList } from './types/types';
 import MapScreen from './components/Location';
-import Mainscreen from './screens/auth/Welcome';
 import SignUp from './screens/auth/signUp';
 import SignIn from './screens/auth/signIn';
 import Driver from './screens/Driver';
 import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo"
-import { Icon, TouchableRipple } from 'react-native-paper';
+import { ActivityIndicator, Icon, TouchableRipple } from 'react-native-paper';
 import DriverDetails from './screens/DriverDetails';
 import TaskScreen from './screens/TaskScreen';
 import TaskDetails from './screens/TaskDetails';
@@ -68,16 +67,20 @@ if (!publishableKey) {
 
 SplashScreen.preventAutoHideAsync();
 
-const fetchFonts = () => {
-  return Font.loadAsync({
-    'Poppins-Bold': require('./assets/fonts/Poppins-Bold.ttf'),
-    'Poppins-Regular': require('./assets/fonts/Poppins-Regular.ttf'),
-  });
-};
+// const [fontsLoaded] = useFonts({
+//   'Poppins-Regular': require('./assets/fonts/Poppins-Regular.ttf'),
+//   'Poppins-Bold': require('./assets/fonts/Poppins-Bold.ttf'),
+// });
+
+// const onLayoutRootView = useCallback(async () => {
+//   if (fontsLoaded) {
+//     await SplashScreen.hideAsync();
+//   }
+// }, [fontsLoaded]);
 
 
 
-// const MainScreenWrapper: React.FC = () => {
+// const WelcomeWrapper: React.FC = () => {
 //   const navigation = useNavigation<MainScreenNavigationProp>();
 //   const route = useRoute<MainScreenRouteProp>();
 
@@ -129,15 +132,36 @@ const TasksWrapper: React.FC<StackScreenProps<RootStackParamList, 'TaskScreen'>>
 );
 const App: React.FC = () => {
 
+  const [fontsLoaded] = useFonts({
+    'Poppins-Regular': require('./assets/fonts/Poppins-Regular.ttf'),
+    'Poppins-Bold': require('./assets/fonts/Poppins-Bold.ttf'),
+  });
+
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded) {
+      await SplashScreen.hideAsync(); // Hide the splash screen after fonts load (optional)
+    }
+  }, [fontsLoaded]);
+
+  // If the fonts are not loaded yet, show a loading spinner
+  if (!fontsLoaded) {
+    return (
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" color="#AA304E" />
+      </View>
+    );
+  }
+
   return (
     <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>
       <ClerkLoaded>
+      <View style={{ flex: 1 }} onLayout={onLayoutRootView}>
       <NavigationContainer>
         <Stack.Navigator initialRouteName="Welcome" screenOptions={{
           headerStyle: {
             backgroundColor: '#AA304E',
-            // borderBottomEndRadius:20,
-            // borderBottomStartRadius:20,
+            borderBottomEndRadius:20,
+            borderBottomStartRadius:20,
             // height:150
           },
           headerTintColor: '#fff',
@@ -236,6 +260,7 @@ const App: React.FC = () => {
           <Stack.Screen name="MapScreen" component={MapScreen} />
         </Stack.Navigator>
       </NavigationContainer>
+      </View>
       </ClerkLoaded>
     </ClerkProvider>
   );

@@ -20,7 +20,7 @@ import MapScreen from './components/Location';
 import SignUp from './screens/auth/signUp';
 import SignIn from './screens/auth/signIn';
 import Driver from './screens/Driver';
-import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo"
+import { ClerkProvider, ClerkLoaded, useAuth } from "@clerk/clerk-expo"
 import { ActivityIndicator, Icon, TouchableRipple } from 'react-native-paper';
 import DriverDetails from './screens/DriverDetails';
 import TaskScreen from './screens/TaskScreen';
@@ -132,6 +132,8 @@ const TasksWrapper: React.FC<StackScreenProps<RootStackParamList, 'TaskScreen'>>
 );
 const App: React.FC = () => {
 
+  // const {isSignedIn} = useAuth();
+
   const [fontsLoaded] = useFonts({
     'Poppins-Regular': require('./assets/fonts/Poppins-Regular.ttf'),
     'Poppins-Bold': require('./assets/fonts/Poppins-Bold.ttf'),
@@ -160,15 +162,17 @@ const App: React.FC = () => {
         <Stack.Navigator initialRouteName="Welcome" screenOptions={{
           headerStyle: {
             backgroundColor: '#AA304E',
-            borderBottomEndRadius:20,
-            borderBottomStartRadius:20,
+            // borderBottomEndRadius:20,
+            // borderBottomStartRadius:20,
             // height:150
           },
           headerTintColor: '#fff',
           headerTitleStyle: {
             fontFamily: 'Poppins-Bold',
           },
-        }}>
+        }}
+        // redirect={!isSignedIn}
+        >
           <Stack.Screen
             name="Welcome"
             component={Welcome}

@@ -1,6 +1,6 @@
-import { MaterialIcons } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import React, { useEffect, useState } from 'react';
-import { View, Text, Button, StyleSheet, Pressable, Image, Animated, ImageBackground, Platform, TouchableOpacity } from 'react-native';
+import { View, Text, Button, StyleSheet, Pressable, Image, Animated, ImageBackground, Platform, TouchableOpacity, Alert } from 'react-native';
 import { NavigationContainer, useNavigation, useRoute } from '@react-navigation/native';
 import { createStackNavigator, StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
@@ -11,7 +11,7 @@ import { useFonts } from 'expo-font';
 import * as SplashScreen from 'expo-splash-screen';
 import axios from 'axios';
 import { RootStackParamList } from '../types/types';
-import { ClerkProvider, ClerkLoaded } from "@clerk/clerk-expo"
+import { ClerkProvider, ClerkLoaded, useAuth } from "@clerk/clerk-expo"
 import { Icon, TouchableRipple } from 'react-native-paper';
 import { ErrorBoundary, ErrorFallback } from '../components/ErrorBoundary';
 
@@ -35,6 +35,7 @@ SplashScreen.preventAutoHideAsync();
   const MainScreen: React.FC<MainScreenProps> = ({ navigation }) => {
     
       const [fontsLoaded, setFontsLoaded] = useState(false);
+      const {signOut}=useAuth();
   
       useEffect(() => {
         const loadFonts = async () => {
@@ -49,9 +50,42 @@ SplashScreen.preventAutoHideAsync();
     
         loadFonts();
       }, []);
+
+      const handleSignOut = async () => {
+        Alert.alert(
+          "Sign Out",
+          "Are you sure you want to sign out?",
+          [
+            {
+              text: "Cancel",
+              style: "cancel"
+            },
+            { 
+              text: "Yes", 
+              onPress: async () => {
+                try {
+                  await signOut();
+                  
+                  // After successful sign out, navigate to the sign-in screen
+                  navigation.reset({
+                    index: 0,
+                    routes: [{ name: 'Welcome' }],
+                  });
+                } catch (err) {
+                  console.error("Error signing out:", err);
+                  Alert.alert("Error", "Failed to sign out. Please try again.");
+                }
+              }
+            }
+          ]
+        );
+      };
     
     return (
       <View style={styles}>
+        <Pressable onPress={handleSignOut} style={styles2.signOutButton}>
+          <Ionicons name="log-out" size={40} color={'#e74c3c'}/>
+        </Pressable>
         <ImageBackground source={require('../assets/pngwing.com.png')}/>
         {/* <Text style={textStyle}>Matran<MaterialIcons name="public" size={35} color="black" />
         rd</Text> */}
@@ -64,15 +98,6 @@ SplashScreen.preventAutoHideAsync();
         ]}>
           <MaterialIcons name="local-shipping" size={30} color="#AA3A3A" />
           <Text style={textStyle2}>TRACKING</Text>
-        </Pressable>
-        <Pressable onPress={() => navigation.navigate('Welcome')} android_ripple={{color: 'gray',radius:175}} style={({pressed}) => [
-            {
-              backgroundColor: pressed ? '#EAD196' : 'white',
-            },
-            buttonStyles,
-          ]}>
-          <MaterialIcons name="description" size={30} color="#365E32" />
-          <Text style={textStyle2}>MainScreen</Text>
         </Pressable>
         <Pressable onPress={() => navigation.navigate('Driver')} android_ripple={{color: 'gray',radius:175}} style={({pressed}) => [
             {
@@ -130,6 +155,17 @@ const imagestyles = StyleSheet.create({
     height:110,
   }
 });
+const styles2 = StyleSheet.create({
+  signOutButton: {
+    // backgroundColor: '#e74c3c',
+    padding: 10,
+    borderRadius: 50,
+    top:20,
+    right:0,
+    position:'absolute',
+    // marginTop: 20,
+  },
+})
 const textStyle2 = css`
   font-size: 20px;
   padding-top:5px;  

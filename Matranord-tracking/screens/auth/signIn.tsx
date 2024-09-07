@@ -11,7 +11,7 @@ import {
 // import firebase from '../Api/firebaseConfig';
 import 'firebase/compat/auth';
 import firebase from 'firebase/compat/app';
-import { useSignIn } from "@clerk/clerk-expo";
+import { useAuth, useSignIn } from "@clerk/clerk-expo";
 import { useRouter } from "expo-router";
 import Animated, { BounceIn, BounceInDown, BounceInUp } from 'react-native-reanimated';
 import { TextInput } from 'react-native-paper';
@@ -20,20 +20,25 @@ interface Props {
 }
 
 const SignIn: React.FC<Props> = ({ navigation }) => {
-  const [email, setEmail] = useState('');
-  const [pass, setPass] = useState('');
   const { signIn, setActive, isLoaded } = useSignIn();
+  const { isSignedIn, signOut } = useAuth();
   const router = useRouter();
 
   const [emailAddress, setEmailAddress] = React.useState("");
   const [password, setPassword] = React.useState("");
+  const [error, setError] = React.useState<string | null>(null);
 
   const onSignInPress = React.useCallback(async () => {
     if (!isLoaded) {
       return;
     }
+    setError(null);
 
     try {
+
+      if (isSignedIn) {
+        await signOut();
+      }
       const signInAttempt = await signIn.create({
         identifier: emailAddress,
         password,
@@ -41,7 +46,10 @@ const SignIn: React.FC<Props> = ({ navigation }) => {
 
       if (signInAttempt.status === 'complete') {
         await setActive({ session: signInAttempt.createdSessionId });
-        router.replace('/');
+        navigation.reset({
+              index: 0,
+              routes: [{ name: 'MainScreen' }],
+            });
       } else {
         console.error(JSON.stringify(signInAttempt, null, 2));
       }

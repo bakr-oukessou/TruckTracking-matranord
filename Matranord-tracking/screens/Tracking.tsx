@@ -202,7 +202,6 @@ const Tracking: React.FC<TrackingProps> = ({
 
   const [Visible, setVisible] = React.useState(false);
 
-  const [text, setText] = React.useState("");
 
   const showModal = () => setVisible(true);
   const hideModal = () => setVisible(false);

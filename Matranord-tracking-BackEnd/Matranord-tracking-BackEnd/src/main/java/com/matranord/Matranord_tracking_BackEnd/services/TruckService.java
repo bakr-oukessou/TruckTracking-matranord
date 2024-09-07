@@ -1,5 +1,7 @@
 package com.matranord.Matranord_tracking_BackEnd.services;
 //import com.google.firebase.database.*;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.http.HttpStatus;
 import com.matranord.Matranord_tracking_BackEnd.model.Truck;
@@ -16,9 +18,6 @@ import java.util.concurrent.CountDownLatch;
 public class TruckService {
     @Autowired
     private TruckRepository truckRepository;
-//    private final DatabaseReference databaseReference;
-
-
 
     public List<Truck> getAllTrucks() {
         return truckRepository.findAll();
@@ -32,10 +31,16 @@ public class TruckService {
         return truckRepository.save(truck);
     }
 
-    public void deleteTruck(Long id) {
+    public void deleteTruck(int id) {
         truckRepository.deleteById(id);
     }
 
+    @Transactional
+    public void deleteTruckByMatricule(String matricule) {
+        Truck truck = truckRepository.findByMatricule(matricule)
+                .orElseThrow(() -> new EntityNotFoundException("Truck not found with matricule: " + matricule));
+        truckRepository.delete(truck);
+    }
 
     // **************Firebase Methods**************
 //    public TruckService() {

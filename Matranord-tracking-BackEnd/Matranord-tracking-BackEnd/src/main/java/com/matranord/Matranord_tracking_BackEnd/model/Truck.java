@@ -11,6 +11,7 @@ public class Truck{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     @Column(name = "matricule",nullable = false)
     private String matricule;
 
@@ -68,6 +69,22 @@ public class Truck{
         this.latitude = latitude;
         this.positionnement = positionnement;
         this.status = status;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getNumero_dossier() {
+        return numero_dossier;
+    }
+
+    public void setNumero_dossier(String numero_dossier) {
+        this.numero_dossier = numero_dossier;
     }
 
     public Date getDate() {

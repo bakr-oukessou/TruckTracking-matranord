@@ -40,6 +40,9 @@ public class DriverService {
     public void deleteDriver(String CIN) {
         driverRepository.deleteByCIN(CIN);
     }
+    public void deleteDriverByid(int id) {
+        driverRepository.deleteById(id);
+    }
 
     public List<Driver> getAllDrivers() {
         return driverRepository.findAll();

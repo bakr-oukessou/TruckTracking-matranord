@@ -19,6 +19,7 @@ export type RootStackParamList = {
   };
   
   export interface Truck {
+    id:number;
     date: string;
     matricule: string;
     numeroDossier: string;
@@ -29,7 +30,7 @@ export type RootStackParamList = {
   };
 
   export interface Driver {
-    id:string;
+    id:number;
     cin:string;
     nom: string;
     email: string;
@@ -42,7 +43,7 @@ export type RootStackParamList = {
   };
 
   export interface Tasks{
-    id:string;
+    id:number;
     details:string;
     provider:string;
     observation:string;

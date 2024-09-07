@@ -32,6 +32,27 @@ export const createTruck = async (truckData: { matricule: string; date: string; 
     throw error;
   }
 };
+export const DeleteTruck = async(truckId:number)=>{
+  try {
+    const response = await axios.delete(`${API_BASE_URL}/trucks/${truckId}`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error deleting truck:`,error);
+    throw error;
+  }
+}
+export const DeleteTruckByMatricule = async (matricule: string) => {
+  try {
+    const response = await axios.delete(`${API_BASE_URL}/trucks/${matricule}`);
+    return response.data;
+  } catch (error) {
+    if (axios.isAxiosError(error) && error.response?.status === 404) {
+      throw new Error("Truck not found");
+    }
+    console.error(`Error deleting truck:`, error);
+    throw error;
+  }
+}
 
 export const createDriver = async (driverData: { cin:string;
   nom: string;
@@ -59,6 +80,16 @@ export const updateDriver = async (driver: Driver) => {
     throw error;
   }
 };
+
+export const DeleteDriver = async(id:number)=>{
+  try {
+    const response = await axios.delete(`${API_BASE_URL}/drivers/${id}`);
+    return response.data;
+  } catch (error) {
+    console.error(`Error deleting driver:`,error);
+    throw error;
+  }
+}
 
 export const getAllDrivers = async () => {
   try {
@@ -157,7 +188,7 @@ export const assignTaskToDriver = async (taskId: string, driverCIN: string) => {
   }
 };
 
-export const DeleteTask = async(taskId:any)=>{
+export const DeleteTask = async(taskId:number)=>{
   try {
     const response = await axios.delete(`${API_BASE_URL}/tasks/${taskId}`);
     return response.data;

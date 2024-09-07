@@ -2,6 +2,7 @@ package com.matranord.Matranord_tracking_BackEnd.controller;
 
 import com.matranord.Matranord_tracking_BackEnd.model.Truck;
 import com.matranord.Matranord_tracking_BackEnd.services.TruckService;
+import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -52,8 +53,18 @@ public class TruckController {
     }
 
     @DeleteMapping("/{id}")
-    public void deleteTruck(@PathVariable Long id) {
+    public void deleteTruck(@PathVariable int id) {
         truckService.deleteTruck(id);
+    }
+
+    @DeleteMapping("/{matricule}")
+    public ResponseEntity<Void> deleteTruckByMatricule(@PathVariable String matricule) {
+        try {
+            truckService.deleteTruckByMatricule(matricule);
+            return ResponseEntity.ok().build();
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 
     //******************Firebase methods******************

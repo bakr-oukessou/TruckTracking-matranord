@@ -78,6 +78,12 @@ public class DriverController {
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteDriver(@PathVariable int id) {
+        driverService.deleteDriverByid(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
+
     @GetMapping
     public ResponseEntity<List<Driver>> getAllDrivers() {
         List<Driver> drivers = driverService.getAllDrivers();

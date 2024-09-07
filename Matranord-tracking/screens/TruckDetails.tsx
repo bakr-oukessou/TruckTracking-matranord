@@ -1,5 +1,5 @@
-import React from 'react';
-import { View, Text, StyleSheet, Pressable, ScrollView, Animated, ImageBackground } from 'react-native';
+import React, { useState } from 'react';
+import { View, Text, StyleSheet, Pressable, ScrollView, Animated, ImageBackground, Alert } from 'react-native';
 
 import { RouteProp, useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../types/types';
@@ -8,6 +8,8 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { Image, SafeAreaView,TouchableOpacity } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Truck } from '../types/types';
+import { DeleteTruck, DeleteTruckByMatricule } from '../components/Api/api';
+import { Snackbar } from 'react-native-paper';
 
 type TruckDetailsRouteProp = RouteProp<RootStackParamList, 'TruckDetails'>;
 type TruckDetailsScreenNavigationProp = StackNavigationProp<RootStackParamList, 'TruckDetails'>;
@@ -15,6 +17,62 @@ type TruckDetailsScreenNavigationProp = StackNavigationProp<RootStackParamList, 
 const TruckDetails = ({ route }: { route: TruckDetailsRouteProp}) => {
   const { truck } = route.params;
   const navigation = useNavigation<TruckDetailsScreenNavigationProp>();
+  
+  const [snackbar, setSnackbar] = useState({
+    visible: false,
+    message: '',
+    type: 'success | error', // or 'error'
+  });
+
+  const handleDelete = async () => {
+    if (truck.matricule === undefined || truck.matricule === null) {
+      Alert.alert("Error", "Invalid truck ID. Cannot delete this truck.");
+      return;
+    }
+    Alert.alert(
+      "Delete Truck",
+      "Are you sure you want to delete this truck?",
+      [
+        {
+          text: "Cancel",
+          style: "cancel"
+        },
+        {
+          text: "Delete",
+          onPress: async () => {
+            try {
+              await DeleteTruckByMatricule(truck.matricule);
+              setSnackbar({
+                visible: true,
+                message: 'Truck deleted successfully!',
+                type: 'success',
+              });
+              navigation.goBack(); // Navigate back to the truck list
+            } catch (error) {
+              console.error("Error deleting truck:", error);
+              setSnackbar({
+                visible: true,
+                message: 'Error deleting truck. Please try again.',
+                type: 'error',
+              });
+            }
+          },
+          style: "destructive"
+        }
+      ]
+    );
+  };
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity onPress={handleDelete} style={{ marginRight: 15 }}>
+          <MaterialIcons name="delete" size={30} color="lightgrey" />
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation]);
+
   return (
     <SafeAreaView style={styles2.container}>
     <ImageBackground source={require('../assets/phoneBackground.jpg')} style={styles.image}>
@@ -103,6 +161,17 @@ const TruckDetails = ({ route }: { route: TruckDetailsRouteProp}) => {
         <Text style={styles2.updateButtonText}>Update Truck Info</Text>
       </TouchableOpacity>
     </View>
+        <Snackbar
+          visible={snackbar.visible}
+          onDismiss={() => setSnackbar(prev => ({ ...prev, visible: false }))}
+          action={{
+            label: 'Close',
+            onPress: () => setSnackbar(prev => ({ ...prev, visible: false })),
+          }}
+          duration={3000}
+          style={{ backgroundColor: snackbar.type === 'success' ? '#4CAF50' : '#F44336' }}>
+          {snackbar.message}
+        </Snackbar>
     
     </ScrollView>
     </ImageBackground>

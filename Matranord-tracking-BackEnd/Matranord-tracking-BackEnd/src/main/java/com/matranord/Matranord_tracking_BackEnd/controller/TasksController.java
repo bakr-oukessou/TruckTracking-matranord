@@ -80,7 +80,7 @@ public class TasksController {
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteTask(@PathVariable String id) {
+    public ResponseEntity<Void> deleteTask(@PathVariable int id) {
         tasksService.deleteTasks(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

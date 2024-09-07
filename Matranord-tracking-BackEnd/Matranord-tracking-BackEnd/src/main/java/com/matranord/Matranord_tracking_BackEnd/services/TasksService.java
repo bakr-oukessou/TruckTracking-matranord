@@ -92,13 +92,14 @@ public class TasksService {
         return tasksRepository.save(task);
     }
 
-    public void deleteTasks(String id) {
-        tasksRepository.deleteById(Long.valueOf(id));
+    public void deleteTasks(int id) {
+        tasksRepository.deleteById((long) id);
     }
 
     public List<Tasks> getAllTasks() {
         return tasksRepository.findAll();
     }
+
     public TaskDTO convertToDTO(Tasks task) {
         TaskDTO dto = new TaskDTO();
         dto.setId(Long.valueOf(task.getId()));

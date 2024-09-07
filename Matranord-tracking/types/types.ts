@@ -22,7 +22,7 @@ export type RootStackParamList = {
     id:number;
     date: string;
     matricule: string;
-    numeroDossier: string;
+    numero_dossier: string;
     trajet: string;
     chargement: string;
     dechargement: string;

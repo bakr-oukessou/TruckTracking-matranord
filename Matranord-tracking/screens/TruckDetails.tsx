@@ -8,7 +8,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { Image, SafeAreaView,TouchableOpacity } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import { Truck } from '../types/types';
-import { DeleteTruck, DeleteTruckByMatricule } from '../components/Api/api';
+import { DeleteTruck } from '../components/Api/api';
 import { Snackbar } from 'react-native-paper';
 
 type TruckDetailsRouteProp = RouteProp<RootStackParamList, 'TruckDetails'>;
@@ -25,7 +25,7 @@ const TruckDetails = ({ route }: { route: TruckDetailsRouteProp}) => {
   });
 
   const handleDelete = async () => {
-    if (truck.matricule === undefined || truck.matricule === null) {
+    if (truck.id === undefined || truck.id === null) {
       Alert.alert("Error", "Invalid truck ID. Cannot delete this truck.");
       return;
     }
@@ -41,12 +41,13 @@ const TruckDetails = ({ route }: { route: TruckDetailsRouteProp}) => {
           text: "Delete",
           onPress: async () => {
             try {
-              await DeleteTruckByMatricule(truck.matricule);
+              await DeleteTruck(truck.id);
               setSnackbar({
                 visible: true,
                 message: 'Truck deleted successfully!',
                 type: 'success',
               });
+              Alert.alert("Success", "Truck deleted successfully");
               navigation.goBack(); // Navigate back to the truck list
             } catch (error) {
               console.error("Error deleting truck:", error);
@@ -90,7 +91,7 @@ const TruckDetails = ({ route }: { route: TruckDetailsRouteProp}) => {
             <View style={styles2.detailsContainer}>
               <DetailItem title="Date" value={truck.date} />
               <DetailItem title="Matricule" value={truck.matricule} />
-              <DetailItem title="Numero de Dossier" value={truck.numeroDossier} />
+              <DetailItem title="Numero de Dossier" value={truck.numero_dossier} />
               <DetailItem title="Trajet" value={truck.trajet} />
               <DetailItem title="Chargement" value={truck.chargement} />
               <DetailItem title="Dechargement" value={truck.dechargement} />

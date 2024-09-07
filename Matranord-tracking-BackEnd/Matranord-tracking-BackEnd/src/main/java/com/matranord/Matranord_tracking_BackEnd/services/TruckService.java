@@ -31,16 +31,17 @@ public class TruckService {
         return truckRepository.save(truck);
     }
 
+    @Transactional
     public void deleteTruck(int id) {
         truckRepository.deleteById(id);
     }
 
-    @Transactional
-    public void deleteTruckByMatricule(String matricule) {
-        Truck truck = truckRepository.findByMatricule(matricule)
-                .orElseThrow(() -> new EntityNotFoundException("Truck not found with matricule: " + matricule));
-        truckRepository.delete(truck);
-    }
+//    @Transactional
+//    public void deleteTruckByMatricule(String matricule) {
+//        Truck truck = truckRepository.findByMatricule(matricule)
+//                .orElseThrow(() -> new EntityNotFoundException("Truck not found with matricule: " + matricule));
+//        truckRepository.delete(truck);
+//    }
 
     // **************Firebase Methods**************
 //    public TruckService() {

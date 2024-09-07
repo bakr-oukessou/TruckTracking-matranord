@@ -57,15 +57,15 @@ public class TruckController {
         truckService.deleteTruck(id);
     }
 
-    @DeleteMapping("/{matricule}")
-    public ResponseEntity<Void> deleteTruckByMatricule(@PathVariable String matricule) {
-        try {
-            truckService.deleteTruckByMatricule(matricule);
-            return ResponseEntity.ok().build();
-        } catch (EntityNotFoundException e) {
-            return ResponseEntity.notFound().build();
-        }
-    }
+//    @DeleteMapping("/{matricule}")
+//    public ResponseEntity<Void> deleteTruckByMatricule(@PathVariable String matricule) {
+//        try {
+//            truckService.deleteTruckByMatricule(matricule);
+//            return ResponseEntity.ok().build();
+//        } catch (EntityNotFoundException e) {
+//            return ResponseEntity.notFound().build();
+//        }
+//    }
 
     //******************Firebase methods******************
 //    @PutMapping("/{id}")

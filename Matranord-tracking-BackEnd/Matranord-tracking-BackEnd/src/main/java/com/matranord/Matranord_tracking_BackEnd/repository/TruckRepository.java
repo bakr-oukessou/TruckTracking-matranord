@@ -9,5 +9,5 @@ import java.util.Optional;
 @Repository
 public interface TruckRepository extends JpaRepository<Truck, Long> {
     void deleteById(int id);
-    Optional<Truck> findByMatricule(String matricule);
+//    Optional<Truck> findByMatricule(String matricule);
 }

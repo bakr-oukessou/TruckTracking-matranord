@@ -10,6 +10,7 @@ import { StatusBar } from 'expo-status-bar';
 import { Truck } from '../types/types';
 import { DeleteTruck } from '../components/Api/api';
 import { Snackbar } from 'react-native-paper';
+import AlertDialog from '../components/AlertDialog';
 
 type TruckDetailsRouteProp = RouteProp<RootStackParamList, 'TruckDetails'>;
 type TruckDetailsScreenNavigationProp = StackNavigationProp<RootStackParamList, 'TruckDetails'>;
@@ -17,6 +18,7 @@ type TruckDetailsScreenNavigationProp = StackNavigationProp<RootStackParamList, 
 const TruckDetails = ({ route }: { route: TruckDetailsRouteProp}) => {
   const { truck } = route.params;
   const navigation = useNavigation<TruckDetailsScreenNavigationProp>();
+  const [isAlertVisible, setIsAlertVisible] = useState(false);
   
   const [snackbar, setSnackbar] = useState({
     visible: false,
@@ -25,44 +27,75 @@ const TruckDetails = ({ route }: { route: TruckDetailsRouteProp}) => {
   });
 
   const handleDelete = async () => {
-    if (truck.id === undefined || truck.id === null) {
-      Alert.alert("Error", "Invalid truck ID. Cannot delete this truck.");
-      return;
-    }
-    Alert.alert(
-      "Delete Truck",
-      "Are you sure you want to delete this truck?",
-      [
-        {
-          text: "Cancel",
-          style: "cancel"
-        },
-        {
-          text: "Delete",
-          onPress: async () => {
-            try {
-              await DeleteTruck(truck.id);
-              setSnackbar({
-                visible: true,
-                message: 'Truck deleted successfully!',
-                type: 'success',
-              });
-              Alert.alert("Success", "Truck deleted successfully");
-              navigation.goBack(); // Navigate back to the truck list
-            } catch (error) {
-              console.error("Error deleting truck:", error);
-              setSnackbar({
-                visible: true,
-                message: 'Error deleting truck. Please try again.',
-                type: 'error',
-              });
-            }
-          },
-          style: "destructive"
-        }
-      ]
-    );
+    setIsAlertVisible(true);
   };
+
+  const onConfirmDelete = async () => {
+    setIsAlertVisible(false);
+    try {
+      await DeleteTruck(truck.id);
+      setSnackbar({
+         visible: true,
+         message: 'Truck deleted successfully',
+         type: 'success'
+        });
+        navigation.goBack();
+        setSnackbar({
+          visible: true,
+          message: 'Truck deleted successfully',
+          type: 'success'
+         });
+        Alert.alert("succesfly deleted")
+    } catch (error) {
+      console.error("Error deleting truck:", error);
+      setSnackbar({
+        visible: true,
+        message: 'Error deleting truck. Please try again.',
+        type: 'error',
+      });
+      // You might want to show another alert here for the error
+    }
+  };
+
+  // const handleDelete = async () => {
+  //   if (truck.id === undefined || truck.id === null) {
+  //     Alert.alert("Error", "Invalid truck ID. Cannot delete this truck.");
+  //     return;
+  //   }
+  //   Alert.alert(
+  //     "Delete Truck",
+  //     "Are you sure you want to delete this truck?",
+  //     [
+  //       {
+  //         text: "Cancel",
+  //         style: "cancel"
+  //       },
+  //       {
+  //         text: "Delete",
+  //         onPress: async () => {
+  //           try {
+  //             await DeleteTruck(truck.id);
+  //             setSnackbar({
+  //               visible: true,
+  //               message: 'Truck deleted successfully!',
+  //               type: 'success',
+  //             });
+  //             Alert.alert("Success", "Truck deleted successfully");
+  //             navigation.goBack(); // Navigate back to the truck list
+  //           } catch (error) {
+  //             console.error("Error deleting truck:", error);
+  //             setSnackbar({
+  //               visible: true,
+  //               message: 'Error deleting truck. Please try again.',
+  //               type: 'error',
+  //             });
+  //           }
+  //         },
+  //         style: "destructive"
+  //       }
+  //     ]
+  //   );
+  // };
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -173,7 +206,15 @@ const TruckDetails = ({ route }: { route: TruckDetailsRouteProp}) => {
           style={{ backgroundColor: snackbar.type === 'success' ? '#4CAF50' : '#F44336' }}>
           {snackbar.message}
         </Snackbar>
-    
+        <AlertDialog
+          visible={isAlertVisible}
+          title="Delete Truck"
+          message="Are you sure you want to delete this truck?"
+          onCancel={() => setIsAlertVisible(false)}
+          onConfirm={onConfirmDelete}
+          cancelText="Cancel"
+          confirmText="Delete"
+        />
     </ScrollView>
     </ImageBackground>
     </SafeAreaView>

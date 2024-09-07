@@ -76,6 +76,7 @@ const SignUp: React.FC<Props> = ({ navigation }) => {
       setPendingVerification(true);
     } catch (err: any) {
       console.error('Sign up error:', err.errors?.[0]?.longMessage || err.message);
+      Alert.alert(err.errors?.[0]?.longMessage || "An error occurred during sign up.")
       setError(err.errors?.[0]?.longMessage || "An error occurred during sign up.");
       console.error(JSON.stringify(err, null, 2));
     }
@@ -125,7 +126,7 @@ const SignUp: React.FC<Props> = ({ navigation }) => {
   return (
     <ImageBackground source={require('../../assets/background3.jpg')} style={styles.bgimage}>
     <View style={styles.container}>
-    {error && <Text style={styles.errorText}>{error}</Text>}
+    {/* {error && <Text style={styles.errorText}>{error}</Text>} */}
       {!pendingVerification && (
         <>
       <Text style={styles.headerTxt}>WELCOME TO </Text>

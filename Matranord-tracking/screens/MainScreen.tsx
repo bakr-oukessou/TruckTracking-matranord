@@ -14,6 +14,7 @@ import { RootStackParamList } from '../types/types';
 import { ClerkProvider, ClerkLoaded, useAuth } from "@clerk/clerk-expo"
 import { Icon, TouchableRipple } from 'react-native-paper';
 import { ErrorBoundary, ErrorFallback } from '../components/ErrorBoundary';
+import AlertDialog from "../components/AlertDialog";
 
 const fetchFonts = () => {
     return Font.loadAsync({
@@ -36,6 +37,7 @@ SplashScreen.preventAutoHideAsync();
     
       const [fontsLoaded, setFontsLoaded] = useState(false);
       const {signOut}=useAuth();
+      const [isAlertVisible, setIsAlertVisible] = useState(false);
   
       useEffect(() => {
         const loadFonts = async () => {
@@ -52,35 +54,24 @@ SplashScreen.preventAutoHideAsync();
       }, []);
 
       const handleSignOut = async () => {
-        Alert.alert(
-          "Sign Out",
-          "Are you sure you want to sign out?",
-          [
-            {
-              text: "Cancel",
-              style: "cancel"
-            },
-            { 
-              text: "Yes", 
-              onPress: async () => {
-                try {
-                  await signOut();
-                  
-                  // After successful sign out, navigate to the sign-in screen
-                  navigation.reset({
-                    index: 0,
-                    routes: [{ name: 'Welcome' }],
-                  });
-                } catch (err) {
-                  console.error("Error signing out:", err);
-                  Alert.alert("Error", "Failed to sign out. Please try again.");
-                }
-              }
-            }
-          ]
-        );
+        setIsAlertVisible(true);
       };
-    
+
+      const SignOutConfirm = async () => {
+        setIsAlertVisible(false);
+            try {
+              await signOut();                  
+              navigation.reset({
+                index: 0,
+                routes: [{ name: 'Welcome' }],
+              });
+            } catch (err) {
+              console.error("Error signing out:", err);
+              Alert.alert("Error", "Failed to sign out. Please try again.");
+            }
+        }
+
+
     return (
       <View style={styles}>
         <Pressable onPress={handleSignOut} style={styles2.signOutButton}>
@@ -117,6 +108,15 @@ SplashScreen.preventAutoHideAsync();
           <MaterialIcons name="attach-file" size={30} color="black" />
           <Text style={textStyle2}>Tasks</Text>
         </Pressable>
+        <AlertDialog
+          visible={isAlertVisible}
+          title="Sign Out"
+          message="Are you sure you want to sign Out?"
+          onCancel={() => setIsAlertVisible(false)}
+          onConfirm={SignOutConfirm}
+          cancelText="Cancel"
+          confirmText="signOut"
+        />
       </View>
     );
   };

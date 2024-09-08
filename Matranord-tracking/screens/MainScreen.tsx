@@ -1,6 +1,6 @@
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import React, { useEffect, useState } from 'react';
-import { View, Text, Button, StyleSheet, Pressable, Image, Animated, ImageBackground, Platform, TouchableOpacity, Alert } from 'react-native';
+import { View, Text, Button, StyleSheet, Pressable, Image, Animated, ImageBackground, Platform, TouchableOpacity} from 'react-native';
 import { NavigationContainer, useNavigation, useRoute } from '@react-navigation/native';
 import { createStackNavigator, StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
@@ -15,6 +15,7 @@ import { ClerkProvider, ClerkLoaded, useAuth } from "@clerk/clerk-expo"
 import { Icon, TouchableRipple } from 'react-native-paper';
 import { ErrorBoundary, ErrorFallback } from '../components/ErrorBoundary';
 import AlertDialog from "../components/AlertDialog";
+import Alert from "../components/Alert";
 
 const fetchFonts = () => {
     return Font.loadAsync({
@@ -67,7 +68,21 @@ SplashScreen.preventAutoHideAsync();
               });
             } catch (err) {
               console.error("Error signing out:", err);
-              Alert.alert("Error", "Failed to sign out. Please try again.");
+              // <Alert
+              //   visible={isAlertVisible}
+              //   title="Error"
+              //   message="Failed to sign out. Please try again."
+              //   onConfirm={SignOutConfirm!}
+              //   confirmText="signOut"
+              // />
+              <Alert
+                visible={true}
+                title="Error!"
+                message="Failed to sign out. Please try again."
+                onClose={() => console.log('Confirmed')}
+                type="error"
+              />
+              // Alert.alert("Error", "Failed to sign out. Please try again.");
             }
         }
 

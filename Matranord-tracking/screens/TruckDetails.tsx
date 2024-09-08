@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Pressable, ScrollView, Animated, ImageBackground, Alert } from 'react-native';
+import { View, Text, StyleSheet, Pressable, ScrollView, Animated, ImageBackground } from 'react-native';
 
 import { RouteProp, useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../types/types';
@@ -11,6 +11,7 @@ import { Truck } from '../types/types';
 import { DeleteTruck } from '../components/Api/api';
 import { Snackbar } from 'react-native-paper';
 import AlertDialog from '../components/AlertDialog';
+import Alert from '../components/Alert';
 
 type TruckDetailsRouteProp = RouteProp<RootStackParamList, 'TruckDetails'>;
 type TruckDetailsScreenNavigationProp = StackNavigationProp<RootStackParamList, 'TruckDetails'>;
@@ -19,6 +20,7 @@ const TruckDetails = ({ route }: { route: TruckDetailsRouteProp}) => {
   const { truck } = route.params;
   const navigation = useNavigation<TruckDetailsScreenNavigationProp>();
   const [isAlertVisible, setIsAlertVisible] = useState(false);
+  const [Alertmessage, setAlert] = useState({ visible: false,title:'', message: '', type: 'success' as 'success' | 'error' |'warning'|'info'});
   
   const [snackbar, setSnackbar] = useState({
     visible: false,
@@ -34,26 +36,21 @@ const TruckDetails = ({ route }: { route: TruckDetailsRouteProp}) => {
     setIsAlertVisible(false);
     try {
       await DeleteTruck(truck.id);
-      setSnackbar({
-         visible: true,
-         message: 'Truck deleted successfully',
-         type: 'success'
-        });
-        navigation.goBack();
-        setSnackbar({
-          visible: true,
-          message: 'Truck deleted successfully',
-          type: 'success'
-         });
-        Alert.alert("succesfly deleted")
+      // setSnackbar({
+      //    visible: true,
+      //    message: 'Truck deleted successfully',
+      //    type: 'success'
+      //   });
+      setAlert({ visible: true,title:'Success', message: 'Truck deleted successfully', type: 'success' });
+      setTimeout(() => navigation.goBack(), 3000);
     } catch (error) {
       console.error("Error deleting truck:", error);
+      setAlert({ visible: true,title:'Error', message: 'Failed to delete truck', type: 'error' });
       setSnackbar({
         visible: true,
         message: 'Error deleting truck. Please try again.',
         type: 'error',
       });
-      // You might want to show another alert here for the error
     }
   };
 
@@ -214,6 +211,13 @@ const TruckDetails = ({ route }: { route: TruckDetailsRouteProp}) => {
           onConfirm={onConfirmDelete}
           cancelText="Cancel"
           confirmText="Delete"
+        />
+        <Alert
+          visible={true}
+          title={Alertmessage.title}
+          message={Alertmessage.message}
+          type={"info"}
+          onClose={() => setAlert(prev => ({ ...prev, visible: false }))}
         />
     </ScrollView>
     </ImageBackground>

@@ -72,11 +72,11 @@ public class DriverController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-    @DeleteMapping("/{CIN}")
-    public ResponseEntity<Void> deleteDriver(@PathVariable String CIN) {
-        driverService.deleteDriver(CIN);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-    }
+//    @DeleteMapping("/{CIN}")
+//    public ResponseEntity<Void> deleteDriver(@PathVariable String CIN) {
+//        driverService.deleteDriver(CIN);
+//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+//    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteDriver(@PathVariable int id) {

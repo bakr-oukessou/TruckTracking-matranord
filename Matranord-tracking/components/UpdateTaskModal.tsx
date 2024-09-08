@@ -4,7 +4,7 @@ import { View, Text, TextInput, StyleSheet, Modal, TouchableOpacity, ScrollView,
 import { Driver, Tasks } from '../types/types';
 import { getAllDrivers, updateDriver, updateTask } from './Api/api';
 import { Picker } from '@react-native-picker/picker'; // Install if necessary
-
+import AlertComponent from '../components/Alert';
 
 interface UpdateTaskModalProps {
   isVisible: boolean;
@@ -16,6 +16,7 @@ interface UpdateTaskModalProps {
 const UpdateTaskModal: React.FC<UpdateTaskModalProps> = ({ isVisible, onClose, task, onUpdateSuccess }) => {
   const [updatedTask, setUpdatedTask] = useState<Tasks>(task);
   const [drivers, setDrivers] = useState<Driver[]>([]);
+  const [Alertmessage, setAlert] = useState({ visible: false,title:'', message: '', type: 'success' as 'success' | 'error' |'warning'|'info'});
 
   useEffect(() => {
     setUpdatedTask(task);
@@ -30,15 +31,18 @@ const UpdateTaskModal: React.FC<UpdateTaskModalProps> = ({ isVisible, onClose, t
       console.error('Error fetching drivers:', error);
     }
   };
+
   const handleUpdateTask = async () => {
     try {
       const result = await updateTask(updatedTask);
       onUpdateSuccess(result);
-      Alert.alert('Success', 'Task information updated successfully');
+      // Alert.alert('Success', 'Task information updated successfully');
+      // setAlert({ visible: true,title:'Success', message: 'Task Information Updated successfully please reload page', type: 'success' });
       onClose();
     } catch (error) {
       console.error('Error updating task:', error);
-      Alert.alert('Error', 'Failed to update task information');
+      // Alert.alert('Error', 'Failed to update task information');
+      setAlert({ visible: true,title:'Error', message: 'Failed to update Task information', type: 'error' });
     }
   };
 
@@ -114,6 +118,13 @@ const UpdateTaskModal: React.FC<UpdateTaskModalProps> = ({ isVisible, onClose, t
           </ScrollView>
         </View>
       </View>
+      <AlertComponent
+          visible={Alertmessage.visible}
+          title={Alertmessage.title}
+          message={Alertmessage.message}
+          type={Alertmessage.type}
+          onClose={() => setAlert(prev => ({ ...prev, visible: false }))}
+        />
     </Modal>
   );
 };

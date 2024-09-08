@@ -163,7 +163,7 @@ const Tracking: React.FC<TrackingProps> = ({
         message: 'Truck added successfully!',
         type: 'success',
       });
-      // getAllTrucks();
+      fetchTrucks();
 
     } catch (error) {
       console.error('Error adding truck:', error);

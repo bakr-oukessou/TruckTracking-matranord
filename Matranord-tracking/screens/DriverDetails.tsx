@@ -10,10 +10,12 @@ import { StatusBar } from 'expo-status-bar';
 import { Driver } from '../types/types';
 import * as ImagePicker from 'expo-image-picker';
 import axios from 'axios';
-import { getTaskByDriverCIN } from '../components/Api/api';
+import { DeleteDriver, getTaskByDriverCIN } from '../components/Api/api';
 import { FlashList } from '@shopify/flash-list';
 import UpdateModal from '../components/UpdateModal';
 import { Snackbar } from 'react-native-paper';
+import AlertDialog from '../components/AlertDialog';
+import AlertComponent from '../components/Alert';
 
 type DriverDetailsRouteProp = RouteProp<RootStackParamList, 'DriverDetails'>;
 type DriverDetailsScreenNavigationProp = StackNavigationProp<RootStackParamList, 'DriverDetails'>;
@@ -26,7 +28,9 @@ const DriverDetails = ({ route }: { route: DriverDetailsRouteProp}) => {
   const [activeTab, setActiveTab] = useState<'info' | 'tasks'>('info');
   const [relatedTasks, setRelatedTasks] = useState<any[]>([]);
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
-
+  const [isAlertVisible, setIsAlertVisible] = useState(false);
+  const [Alertmessage, setAlert] = useState({ visible: false,title:'', message: '', type: 'success' as 'success' | 'error' |'warning'|'info'});
+  
   useEffect(() => {
     if (activeTab === 'tasks') {
       fetchRelatedTasks();
@@ -39,7 +43,8 @@ const DriverDetails = ({ route }: { route: DriverDetailsRouteProp}) => {
       setRelatedTasks(tasks);
     } catch (error) {
       console.error('Error fetching related tasks:', error);
-      Alert.alert('Error', 'Failed to fetch related tasks');
+      setAlert({ visible: true,title:'Error', message: 'Failed to fetch related tasks', type: 'error' });
+
     }
   };
   
@@ -48,6 +53,7 @@ const DriverDetails = ({ route }: { route: DriverDetailsRouteProp}) => {
     
     if (permissionResult.granted === false) {
       Alert.alert("Permission Required", "You need to grant camera roll permissions to upload a profile picture.");
+      // setAlert({ visible: true,title:'Error', message: 'Failed to delete driver', type: 'error' });
       return;
     }
 
@@ -75,16 +81,17 @@ const DriverDetails = ({ route }: { route: DriverDetailsRouteProp}) => {
 
         if (response.status === 200) {
           setDriver({ ...driver, profilePicture: result.assets[0].uri });
-          Alert.alert("Success", "Profile picture uploaded successfully");
+          setAlert({ visible: true,title:'Success', message: 'driver picture uploaded successfuly', type: 'success' });
         }
       } catch (error) {
         console.error('Error uploading profile picture:', error);
-        Alert.alert("Error", "Failed to upload profile picture");
+        setAlert({ visible: true,title:'Error', message: 'Error uploading profile picture', type: 'error' });
       }
     }
   };
 
   const handleUpdateSuccess = (updatedDriver: Driver) => {
+    setAlert({ visible: true,title:'Success', message: 'Driver Information Updated successfully', type: 'success' });
     setDriver(updatedDriver);
   };
   
@@ -95,6 +102,31 @@ const DriverDetails = ({ route }: { route: DriverDetailsRouteProp}) => {
       <Text style={styles.taskStatus}>Status: {item.status}</Text>
     </View>
   );
+  const handleDelete = async () => {
+    setIsAlertVisible(true);
+  };
+
+  const onConfirmDelete = async () => {
+    setIsAlertVisible(false);
+    try {
+      await DeleteDriver(driver.id);
+      setAlert({ visible: true,title:'Success', message: 'Driver deleted successfully please reload page', type: 'success' });
+      setTimeout(() => navigation.goBack(), 3000);
+    } catch (error) {
+      // console.error("Error deleting driver:", error);
+      setAlert({ visible: true,title:'Error', message: 'Failed to delete driver', type: 'error' });
+    }
+  };
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity onPress={handleDelete} style={{ marginRight: 15 }}>
+          <MaterialIcons name="delete" size={30} color="lightgrey" />
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation]);
 
   return (
     <SafeAreaView style={styles2.container}>
@@ -174,6 +206,22 @@ const DriverDetails = ({ route }: { route: DriverDetailsRouteProp}) => {
         driver={driver}
         onUpdateSuccess={handleUpdateSuccess}
       />
+      <AlertDialog
+          visible={isAlertVisible}
+          title="Delete Driver"
+          message="Are you sure you want to delete this Driver?"
+          onCancel={() => setIsAlertVisible(false)}
+          onConfirm={onConfirmDelete}
+          cancelText="Cancel"
+          confirmText="Delete"
+        />
+        <AlertComponent
+          visible={Alertmessage.visible}
+          title={Alertmessage.title}
+          message={Alertmessage.message}
+          type={Alertmessage.type}
+          onClose={() => setAlert(prev => ({ ...prev, visible: false }))}
+        />
       {/* <Snackbar
         visible={snackbar.visible}
         onDismiss={() => setSnackbar(prev => ({ ...prev, visible: false }))}
@@ -255,11 +303,12 @@ const styles = StyleSheet.create({
   buttons:{
     display:'flex',
     flexDirection:'row',
-    flexWrap:'wrap',
+    // flexWrap:'nowrap',
     fontFamily: 'Poppins-Regular',
-    flex:1,
-    flexGrow:1,
-    justifyContent:'center',
+    width:'100%',
+    // flex:1,
+    // flexGrow:1,
+    justifyContent:'space-between',
   },
   bold:{
     fontSize: 16,
@@ -404,11 +453,13 @@ const styles2 = StyleSheet.create({
     borderBottomColor: '#E5114D',
   },
   tabText: {
+    fontFamily:'Poppins-Regular',
     color: 'gray',
   },
   activeTabText: {
     color: '#E5114D',
-    fontWeight: 'bold',
+    fontFamily:'Poppins-Bold',
+    // fontWeight: 'bold',
   },
   detailsContainer: {
     backgroundColor: '#F0F0F0',
@@ -418,6 +469,7 @@ const styles2 = StyleSheet.create({
   detailItem: {
     flexDirection: 'row',
     justifyContent: 'space-between',
+    fontFamily:'Poppins-Regular',
     marginBottom: 8,
   },
   detailTitle: {
@@ -430,14 +482,17 @@ const styles2 = StyleSheet.create({
     backgroundColor: '#AA304E',
     padding: 16,
     alignItems: 'center',
-    width:'100%',
+    // width:'100%',
+    minWidth: 180,
     marginTop:10,
+    borderRadius: 10,
+    elevation: 2,
   },
   updateButtonText: {
     color: 'white',
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
     fontSize: 16,
-    fontFamily:'Poppins-Regular',
+    fontFamily:'Poppins-Bold',
   },
 });
 

@@ -36,12 +36,7 @@ const TruckDetails = ({ route }: { route: TruckDetailsRouteProp}) => {
     setIsAlertVisible(false);
     try {
       await DeleteTruck(truck.id);
-      // setSnackbar({
-      //    visible: true,
-      //    message: 'Truck deleted successfully',
-      //    type: 'success'
-      //   });
-      setAlert({ visible: true,title:'Success', message: 'Truck deleted successfully', type: 'success' });
+      setAlert({ visible: true,title:'Success', message: 'Truck deleted successfully please reload page', type: 'success' });
       setTimeout(() => navigation.goBack(), 3000);
     } catch (error) {
       console.error("Error deleting truck:", error);
@@ -213,10 +208,10 @@ const TruckDetails = ({ route }: { route: TruckDetailsRouteProp}) => {
           confirmText="Delete"
         />
         <Alert
-          visible={true}
+          visible={Alertmessage.visible}
           title={Alertmessage.title}
           message={Alertmessage.message}
-          type={"info"}
+          type={Alertmessage.type}
           onClose={() => setAlert(prev => ({ ...prev, visible: false }))}
         />
     </ScrollView>

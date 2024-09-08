@@ -37,9 +37,9 @@ public class DriverService {
         return driverRepository.save(driver);
     }
 
-    public void deleteDriver(String CIN) {
-        driverRepository.deleteByCIN(CIN);
-    }
+//    public void deleteDriver(String CIN) {
+//        driverRepository.deleteByCIN(CIN);
+//    }
     public void deleteDriverByid(int id) {
         driverRepository.deleteById(id);
     }

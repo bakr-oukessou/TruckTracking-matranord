@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
-import { View, Text, Button, StyleSheet, Pressable, Image, Animated, ImageBackground, Platform, TouchableOpacity } from 'react-native';
+import { View, Text, Button, StyleSheet, Pressable, Image, Animated, ImageBackground, Platform, TouchableOpacity, LogBox } from 'react-native';
 import { NavigationContainer, useNavigation, useRoute } from '@react-navigation/native';
 import { createStackNavigator, StackNavigationProp, StackScreenProps } from '@react-navigation/stack';
 import { RouteProp } from '@react-navigation/native';
@@ -153,6 +153,8 @@ const App: React.FC = () => {
       </View>
     );
   }
+  LogBox.ignoreAllLogs();
+
 
   return (
     <ClerkProvider tokenCache={tokenCache} publishableKey={publishableKey}>

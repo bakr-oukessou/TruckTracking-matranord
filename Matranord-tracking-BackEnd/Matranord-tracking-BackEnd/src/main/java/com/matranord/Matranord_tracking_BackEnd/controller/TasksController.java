@@ -84,6 +84,7 @@ public class TasksController {
         tasksService.deleteTasks(id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+    
     @GetMapping("/available")
     public ResponseEntity<List<Tasks>> getAvailableTasks() {
         List<Tasks> tasks = tasksService.getAvailableTasks();

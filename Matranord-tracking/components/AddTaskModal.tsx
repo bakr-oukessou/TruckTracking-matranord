@@ -6,15 +6,15 @@ import DateTimePicker from 'react-native-modal-datetime-picker';
 interface AddTaskModalProps {
   visible: boolean;
   hideModal: () => void;
-  handleSubmit: (newTask: any) => void;
+  onSubmit: (newTask: any) => void;
 }
 
-const AddTaskModal: React.FC<AddTaskModalProps> = ({ visible, hideModal, handleSubmit }) => {
+const AddTaskModal: React.FC<AddTaskModalProps> = ({ visible, hideModal, onSubmit }) => {
   const [details, setDetails] = useState('');
   const [provider, setProvider] = useState('');
+  const [dateHeureCreation, setDateHeureCreation] = useState('');
   const [observation, setObservation] = useState('');
   const [cloture, setCloture] = useState('');
-  const [dateHeureCreation, setDateHeureCreation] = useState('');
   const [status, setStatus] = useState('');
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
 
@@ -27,7 +27,7 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({ visible, hideModal, handleS
     hideDatePicker();
   };
 
-  const onSubmit = () => {
+  const handleSubmit = () => {
     const newTask = {
       details,
       provider,
@@ -36,7 +36,7 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({ visible, hideModal, handleS
       dateHeureCreation,
       status,
     };
-    handleSubmit(newTask);
+    onSubmit(newTask);
     hideModal();
   };
   
@@ -106,14 +106,11 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({ visible, hideModal, handleS
                     value={provider}
                     onChangeText={text => setProvider(text)}
                     style={styles.textinput}
-                    // editable={false}
                     />
                 <TextInput
                     label="Date Heure de creation"
                     value={provider}
-                    onChangeText={text => setProvider(text)}
                     style={styles.textinput}
-                    // editable={false}
                     onFocus={showDatePicker}
                 />
                 <DateTimePicker

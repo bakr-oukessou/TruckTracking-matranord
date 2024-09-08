@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Pressable, ScrollView, Animated, ImageBackground, Alert } from 'react-native';
+import { View, Text, StyleSheet, Pressable, ScrollView, Animated, ImageBackground} from 'react-native';
 
 import { RouteProp, useNavigation } from '@react-navigation/native';
 import { RootStackParamList, Tasks } from '../types/types';
@@ -9,6 +9,9 @@ import { Image, SafeAreaView,TouchableOpacity } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import * as ImagePicker from 'expo-image-picker';
 import UpdateTaskModal from '../components/UpdateTaskModal';
+import { DeleteTask } from '../components/Api/api';
+import AlertDialog from '../components/AlertDialog';
+import Alert from '../components/Alert';
 
 type TaskDetailsRouteProp = RouteProp<RootStackParamList, 'TaskDetails'>;
 type TaskDetailsScreenNavigationProp = StackNavigationProp<RootStackParamList, 'TaskDetails'>;
@@ -19,10 +22,39 @@ const TaskDetails = ({ route }: { route: TaskDetailsRouteProp}) => {
   const navigation = useNavigation<TaskDetailsScreenNavigationProp>();
   const [task, setTask] = useState<Tasks>(initialTask);
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
-  
+  const [isAlertVisible, setIsAlertVisible] = useState(false);
+  const [Alertmessage, setAlert] = useState({ visible: false,title:'', message: '', type: 'success' as 'success' | 'error' |'warning'|'info'});
+
   const handleUpdateSuccess = (updatedTask: Tasks) => {
+    setAlert({ visible: true,title:'Success', message: 'Task Information Updated successfully', type: 'success' });
     setTask(updatedTask);
   };
+
+  const handleDelete = async () => {
+    setIsAlertVisible(true);
+  };
+
+  const onConfirmDelete = async () => {
+    setIsAlertVisible(false);
+    try {
+      await DeleteTask(task.id);
+      setAlert({ visible: true,title:'Success', message: 'Task deleted successfully please reload page', type: 'success' });
+      setTimeout(() => navigation.goBack(), 3000);
+    } catch (error) {
+      console.error("Error deleting task:", error);
+      setAlert({ visible: true,title:'Error', message: 'Failed to delete task', type: 'error' });
+    }
+  };
+
+  React.useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity onPress={handleDelete} style={{ marginRight: 15 }}>
+          <MaterialIcons name="delete" size={30} color="lightgrey" />
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation]);
   
   return (
     <SafeAreaView style={styles2.container}>
@@ -40,7 +72,7 @@ const TaskDetails = ({ route }: { route: TaskDetailsRouteProp}) => {
             </TouchableOpacity>
           </View>
             <View style={styles2.detailsContainer}>
-              <DetailItem title="id" value={task.id} />
+              <DetailItem title="id" value={task.id.toString()} />
               <DetailItem title="details" value={task.details} />
               <DetailItem title="provider" value={task.provider} />
               <DetailItem title="observation" value={task.observation} />
@@ -66,6 +98,22 @@ const TaskDetails = ({ route }: { route: TaskDetailsRouteProp}) => {
         task={task}
         onUpdateSuccess={handleUpdateSuccess}
       />
+      <AlertDialog
+          visible={isAlertVisible}
+          title="Delete Task"
+          message="Are you sure you want to delete this Task?"
+          onCancel={() => setIsAlertVisible(false)}
+          onConfirm={onConfirmDelete}
+          cancelText="Cancel"
+          confirmText="Delete"
+        />
+        <Alert
+          visible={Alertmessage.visible}
+          title={Alertmessage.title}
+          message={Alertmessage.message}
+          type={Alertmessage.type}
+          onClose={() => setAlert(prev => ({ ...prev, visible: false }))}
+        />
     </SafeAreaView>
   );
 };

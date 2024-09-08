@@ -151,7 +151,7 @@ const styles = StyleSheet.create({
     },
     iconSuccess: {
         tintColor: '#2ecc71',
-        width: 60,
+        width: 50,
         height: 50,
     },
     iconError: {

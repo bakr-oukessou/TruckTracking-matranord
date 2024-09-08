@@ -270,7 +270,7 @@ const renderItem = ({ item }: { item: Tasks }) => (
                 <AddTaskModal
                   visible={Visible}
                   hideModal={hideModal}
-                  handleSubmit={handleSubmit}
+                  onSubmit={handleSubmit}
                 />
                   <Snackbar
                     visible={snackbar.visible}

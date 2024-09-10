@@ -211,7 +211,7 @@ const renderItem = ({ item }: { item: Tasks }) => (
           </View>
           <View style={itemStyles.info}>
             <Text style={itemStyles.text}><Text style={itemStyles.bold}>Provider:</Text> {item.provider}</Text>
-            <Text style={itemStyles.text}><Text style={itemStyles.bold}>{item.observation}</Text> </Text>
+            <Text style={itemStyles.text}><Text style={[itemStyles.bold, itemStyles.observation ]}>{item.observation}</Text> </Text>
             <Text style={itemStyles.text}><Text style={itemStyles.bold}>Driver: </Text>{item.driver ? item.driver.nom : 'Not assigned'} </Text>
             <Text style={itemStyles.text}><Text style={itemStyles.bold}>Date Creation: </Text>{item.dateheurecreation}</Text>
             <Text style={itemStyles.text}><Text style={itemStyles.bold}>Status:</Text> {item.status}</Text>
@@ -564,7 +564,7 @@ const styles2 = StyleSheet.create({
 });
 const itemStyles = StyleSheet.create({
   container: {
-    backgroundColor: '#f7e9cb',
+    backgroundColor: '#fff3d1',
     padding: 3,
     marginVertical: 8,
     borderRadius: 13,
@@ -689,6 +689,12 @@ const itemStyles = StyleSheet.create({
     display:'flex',
     flexDirection:'row',
     
+  },
+  observation:{
+    // fontSize:12,
+    color:'#ea928a',
+    
+
   }
 
 });

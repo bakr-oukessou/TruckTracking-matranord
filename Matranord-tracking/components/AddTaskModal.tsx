@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, ScrollView, StyleSheet, TouchableOpacity,Modal } from 'react-native';
 import { Portal, TextInput, Button } from 'react-native-paper';
 import DateTimePicker from 'react-native-modal-datetime-picker';
+import { Picker } from '@react-native-picker/picker';
+import { Driver } from '../types/types';
+import { createTask, getAllDrivers } from './Api/api';
 
 interface AddTaskModalProps {
   visible: boolean;
@@ -12,32 +15,78 @@ interface AddTaskModalProps {
 const AddTaskModal: React.FC<AddTaskModalProps> = ({ visible, hideModal, onSubmit }) => {
   const [details, setDetails] = useState('');
   const [provider, setProvider] = useState('');
-  const [dateHeureCreation, setDateHeureCreation] = useState('');
-  const [observation, setObservation] = useState('');
-  const [cloture, setCloture] = useState('');
-  const [status, setStatus] = useState('');
+  const [DateHeureCreation, setDateHeureCreation] = useState('');
+  const [Observation, setObservation] = useState('');
+  const [Cloture, setCloture] = useState('');
+  const [status, setStatus] = useState('AVAILABLE');
+  const [driverId, setDriverID] = useState('');
+  const [started_at, setStarted_at] = useState('');
+  const [completed_at, setCompleted_at] = useState('');
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [datePickerMode, setDatePickerMode] = useState<'date' | 'time'>('date');
+  const [Alertmessage, setAlert] = useState({ visible: false,title:'', message: '', type: 'success' as 'success' | 'error' |'warning'|'info'});
+  const [currentDateField, setCurrentDateField] = useState<'dateHeureCreation' | 'cloture' | 'startedAt' | 'completedAt'>('dateHeureCreation');
 
-  const showDatePicker = () => setDatePickerVisibility(true);
+
+
+  const showDatePicker = (mode: 'date' | 'time', field: 'dateHeureCreation' | 'cloture' | 'startedAt' | 'completedAt') => {
+    setDatePickerMode(mode);
+    setCurrentDateField(field);
+    setDatePickerVisibility(true);
+  };
   const hideDatePicker = () => setDatePickerVisibility(false);
 
   const handleConfirm = (selectedDate: Date) => {
-    const formattedDate = selectedDate.toISOString().split('T')[0];
-    setDateHeureCreation(formattedDate);
+    const formattedDate = datePickerMode === 'date' 
+      ? selectedDate.toISOString().split('T')[0]
+      : selectedDate.toTimeString().split(' ')[0];
+
+    switch (currentDateField) {
+      case 'dateHeureCreation':
+        setDateHeureCreation(formattedDate);
+        break;
+      case 'cloture':
+        setCloture(formattedDate);
+        break;
+      // case 'startedAt':
+      //   setStartedAt(formattedDate);
+      //   break;
+      // case 'completedAt':
+      //   setCompletedAt(formattedDate);
+      //   break;
+    }
     hideDatePicker();
   };
 
-  const handleSubmit = () => {
-    const newTask = {
-      details,
-      provider,
-      observation,
-      cloture: new Date(cloture),
-      dateHeureCreation,
-      status,
-    };
-    onSubmit(newTask);
-    hideModal();
+  const handleSubmit = async () => {
+    try {
+      const newTask = {
+        details,
+        provider,
+        Observation,
+        Cloture: new Date(Cloture),
+        DateHeureCreation: new Date(DateHeureCreation),
+        status,
+        started_at,
+        completed_at,
+        driverId
+      };
+      // Reset form fields
+      setDetails('');
+      setProvider('');
+      setObservation('');
+      setCloture('');
+      setDateHeureCreation('');
+      setStatus('AVAILABLE');
+      setDriverID('');
+
+      onSubmit(newTask);
+      hideModal();
+
+    } catch (error) {
+      console.error('Error adding task:', error);
+      // Handle error (e.g., show an error message to the user)
+    }
   };
   
 //   const handleSubmit = async () => {
@@ -90,75 +139,77 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({ visible, hideModal, onSubmi
 
   return (
     <Portal>
-        <Modal visible={visible} onDismiss={hideModal} animationType="fade" transparent={true}>
-        <View style={styles.modalContainer}>
-        <View style={styles.modalContent}>
-            <ScrollView>
-                <Text style={styles.modalTitle}>Add New Task</Text>
-                <TextInput
-                    label="Details"
-                    value={details}
-                    style={styles.textinput}
-                    onChangeText={text => setDetails(text)}
-                />
-                <TextInput
-                    label="Provider"
-                    value={provider}
-                    onChangeText={text => setProvider(text)}
-                    style={styles.textinput}
-                    />
-                <TextInput
-                    label="Date Heure de creation"
-                    value={provider}
-                    style={styles.textinput}
-                    onFocus={showDatePicker}
-                />
-                <DateTimePicker
-                    isVisible={isDatePickerVisible}
-                    mode="date"
-                    onConfirm={handleConfirm}
-                    onCancel={hideDatePicker}
-                    date={dateHeureCreation ? new Date(dateHeureCreation) : new Date()}
-                />
-                <TextInput
-                    label="Observation"
-                    value={observation}
-                    style={styles.textinput}
-                    onChangeText={text => setObservation(text)}
-                />
-                <TextInput
-                    label="cloture"
-                    value={cloture}
-                    style={styles.textinput}
-                    onFocus={showDatePicker}
-                    onChangeText={text => setCloture(text)}
-                />
-                <DateTimePicker
-                    isVisible={isDatePickerVisible}
-                    mode="date"
-                    onConfirm={handleConfirm}
-                    onCancel={hideDatePicker}
-                    date={cloture ? new Date(cloture) : new Date()}
-                />
-                <TextInput
-                    label="Status"
-                    value={status}
-                    style={styles.textinput}
-                    onChangeText={text => setStatus(text)}
-                />
-                <View style={styles.buttonContainer}>
-                    <Button icon="check" mode="contained" onPress={handleSubmit} style={styles.submitButton}>
-                        Enregister
-                    </Button>
-                    <Button mode="outlined" onPress={hideModal} style={styles.cancelButton}>
-                        Cancel
-                    </Button>
-                </View>
-            </ScrollView>
-        </View>
-        </View>
-        </Modal>
-    </Portal> 
+         <Modal visible={visible} onDismiss={hideModal} animationType="fade" transparent={true}>
+           <View style={styles.modalContainer}>
+             <View style={styles.modalContent}>
+               <ScrollView>
+                 <Text style={styles.modalTitle}>Add New Task</Text>
+                 <TextInput
+                   label="Details"
+                   value={details}
+                   style={styles.textinput}
+                   onChangeText={setDetails}
+                 />
+                 <TextInput
+                   label="Provider"
+                   value={provider}
+                   onChangeText={setProvider}
+                   style={styles.textinput}
+                 />
+                 <TextInput
+                   label="Date Heure de creation"
+                   value={DateHeureCreation}
+                   style={styles.textinput}
+                   onFocus={() => showDatePicker('date', 'dateHeureCreation')}
+                 />
+                 <TextInput
+                   label="Observation"
+                   value={Observation}
+                   style={styles.textinput}
+                   onChangeText={setObservation}
+                 />
+                 <TextInput
+                   label="Cloture"
+                   value={Cloture}
+                   style={styles.textinput}
+                   onFocus={() => showDatePicker('date', 'cloture')}
+                 />
+                 <TextInput
+                   label="Driver"
+                   value={driverId}
+                   style={styles.textinput}
+                   onChangeText={setDriverID}
+                 />
+                 <Text style={styles.pickerLabel}>Task Status</Text>
+                 <Picker
+                   selectedValue={status}
+                   onValueChange={setStatus}
+                   style={styles.picker}
+                 >
+                   <Picker.Item label="AVAILABLE" value="AVAILABLE" />
+                   <Picker.Item label="IN_PROGRESS" value="IN_PROGRESS" />
+                   <Picker.Item label="COMPLETED" value="COMPLETED" />
+                 </Picker>
+                 <View style={styles.buttonContainer}>
+                   <Button icon="check" mode="contained" onPress={handleSubmit} style={styles.submitButton}>
+                     Enregistrer
+                   </Button>
+                   <Button mode="outlined" onPress={hideModal} style={styles.cancelButton}>
+                     Cancel
+                   </Button>
+                 </View>
+               </ScrollView>
+             </View>
+           </View>
+         </Modal>
+         <DateTimePicker
+           isVisible={isDatePickerVisible}
+           mode={datePickerMode}
+           onConfirm={handleConfirm}
+           onCancel={hideDatePicker}
+           date={new Date()}
+         />
+       </Portal> 
   );
 };
 
@@ -206,7 +257,8 @@ const styles = StyleSheet.create({
   },
   modalTitle: {
     fontSize: 20,
-    fontWeight: 'bold',
+    // fontWeight: 'bold',
+    fontFamily:'Poppins-Bold',
     marginBottom: 20,
     textAlign: 'center',
   },
@@ -215,7 +267,7 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     borderRadius: 5,
     padding: 10,
-    marginBottom: 10,
+    marginBottom: 10, 
   },
   buttonContainer: {
     flexDirection: 'row',
@@ -233,6 +285,20 @@ const styles = StyleSheet.create({
     margin:10,
     borderColor:'#AF8260',
     borderWidth:1,
+  },
+  pickerLabel: {
+    marginLeft:15,
+    marginBottom: 10,
+    fontWeight: 'bold',
+  },
+  picker: {
+    borderWidth: 2,
+    borderColor: 'blacks',
+    backgroundColor:'#e7e0ec',
+    maxWidth: 295,
+    marginLeft:10,
+    borderRadius: 5,
+    marginBottom: 10,
   },
 });
 

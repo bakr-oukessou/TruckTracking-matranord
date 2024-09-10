@@ -6,9 +6,11 @@ import com.matranord.Matranord_tracking_BackEnd.model.Driver;
 import com.matranord.Matranord_tracking_BackEnd.model.Tasks;
 import com.matranord.Matranord_tracking_BackEnd.repository.DriverRepository;
 import com.matranord.Matranord_tracking_BackEnd.repository.TasksRepository;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -80,9 +82,43 @@ public class TasksService {
         return tasksRepository.findByDriverCIN(driverCIN);
     }
 
-    public Tasks createTasks(Tasks task) {
+//    public Tasks createTasks(Tasks task) {
+//        return tasksRepository.save(task);
+//    }
+
+    @Transactional
+    public Tasks createTask(Tasks task) {
+        // Validate input
+        if (task == null) {
+            throw new IllegalArgumentException("Task cannot be null");
+        }
+
+        // Set task properties
+        task.setStatus(Tasks.TaskStatus.AVAILABLE);
+
+        // Ensure DateHeureCreation is set
+        if (task.getDateHeureCreation() == null) {
+            task.setDateHeureCreation(LocalDateTime.now().toString());
+        }
+
+        // Validate other required fields
+        if (task.getDetails() == null || task.getDetails().isEmpty()) {
+            throw new IllegalArgumentException("Task details are required");
+        }
+        if (task.getProvider() == null || task.getProvider().isEmpty()) {
+            throw new IllegalArgumentException("Provider is required");
+        }
+        if (task.getObservation() == null || task.getObservation().isEmpty()) {
+            throw new IllegalArgumentException("Observation is required");
+        }
+        if (task.getCloture() == null) {
+            throw new IllegalArgumentException("Cloture date is required");
+        }
+
+        // Save and return the task
         return tasksRepository.save(task);
     }
+
 
     public Optional<Tasks> getTasksById(int id) {
         return tasksRepository.findById(Long.valueOf(id));

@@ -42,17 +42,18 @@ export type RootStackParamList = {
     profilePicture:string | undefined ;
   };
 
-  export interface Tasks{
-    id:number;
-    details:string;
-    provider:string;
-    observation:string;
-    cloture:Date;
-    dateheurecreation:string;
-    status:string;
-    startedAt:string;
-    completedAt:string;
-    driver:Driver | null; 
+  export interface Tasks {
+    id: number;
+    details: string;
+    provider: string;
+    observation: string;
+    cloture: Date;
+    dateheurecreation: string;
+    assignedAt: string | null;
+    startedAt: Date | null;
+    completedAt: Date | null;
+    status: 'AVAILABLE' | 'IN_PROGRESS' | 'COMPLETED';
+    driver: Driver | null;
   }
 
   export interface BaseProps {

@@ -48,12 +48,23 @@ public class TasksController {
                 .collect(Collectors.toList());
     }
 
-
     @PostMapping
-    public ResponseEntity<Tasks> createTask(@RequestBody Tasks task, @RequestParam String driverCIN) {
-        Tasks createdTask = tasksService.createTask(task, driverCIN);
-        return new ResponseEntity<>(createdTask, HttpStatus.CREATED);
+    public ResponseEntity<?> createTask(@RequestBody Tasks task) {
+        try {
+            Tasks createdTask = tasksService.createTask(task);
+            return new ResponseEntity<>(createdTask, HttpStatus.CREATED);
+        } catch (IllegalArgumentException e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        } catch (Exception e) {
+            return new ResponseEntity<>("An error occurred while creating the task: " + e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
+
+//    @PostMapping
+//    public ResponseEntity<Tasks> createTask(@RequestBody Tasks task, @RequestParam String driverCIN) {
+//        Tasks createdTask = tasksService.createTask(task, driverCIN);
+//        return new ResponseEntity<>(createdTask, HttpStatus.CREATED);
+//    }
 
     @GetMapping("/{id}")
     public ResponseEntity<Tasks> getTask(@PathVariable int id) {

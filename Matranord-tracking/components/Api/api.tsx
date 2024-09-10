@@ -200,7 +200,7 @@ export const DeleteTask = async(taskId:number)=>{
 
 export const createTask = async (newTask: Tasks) => {
   try {
-    const response = await axios.post('/api/tasks', newTask);
+    const response = await axios.post(`${API_BASE_URL}/tasks`, newTask);
     console.log('Task created successfully:', response.data);
     return response.data;
   } catch (error) {

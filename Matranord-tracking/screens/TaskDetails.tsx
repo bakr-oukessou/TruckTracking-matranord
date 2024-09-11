@@ -12,6 +12,7 @@ import UpdateTaskModal from '../components/UpdateTaskModal';
 import { DeleteTask } from '../components/Api/api';
 import AlertDialog from '../components/AlertDialog';
 import Alert from '../components/Alert';
+import { format } from 'date-fns';
 
 type TaskDetailsRouteProp = RouteProp<RootStackParamList, 'TaskDetails'>;
 type TaskDetailsScreenNavigationProp = StackNavigationProp<RootStackParamList, 'TaskDetails'>;
@@ -46,6 +47,19 @@ const TaskDetails = ({ route }: { route: TaskDetailsRouteProp}) => {
     }
   };
 
+  const formatDate = (date: Date | null): string => {
+    if (!date) return 'N/A';
+    try {
+      return format(new Date(date), 'yyyy-MM-dd');
+    } catch {
+      return 'Invalid Date';
+    }
+  };
+  const safeString = (value: any): string => {
+    if (value === null || value === undefined) return 'N/A';
+    return String(value);
+  };
+
   React.useLayoutEffect(() => {
     navigation.setOptions({
       headerRight: () => (
@@ -77,10 +91,10 @@ const TaskDetails = ({ route }: { route: TaskDetailsRouteProp}) => {
               <DetailItem title="provider" value={task.provider} />
               <DetailItem title="observation" value={task.observation} />
               <DetailItem title="dateHeureCreation" value={task.dateheurecreation} />
-              <DetailItem title="cloture" value={task.cloture.toString()} />
+              <DetailItem title="cloture" value={formatDate(task.cloture)} />
               <DetailItem title="Status" value={task.status} />
-              <DetailItem title="StartedAt" value={task.startedAt} />
-              <DetailItem title="CompletedAt" value={task.completedAt} />
+              <DetailItem title="StartedAt" value={formatDate(task.startedAt)} />
+              <DetailItem title="CompletedAt" value={formatDate(task.completedAt)} />
               {/* <DetailItem title="Driver" value={task.driver?.nom} /> */}
             </View>
         </View>

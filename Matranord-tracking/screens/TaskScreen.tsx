@@ -11,6 +11,7 @@ import { css } from '@emotion/react';
 import { MaterialIcons } from '@expo/vector-icons';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import AddTaskModal from '../components/AddTaskModal';
+import { format } from 'date-fns'; // Make sure to install this package if you haven't already
 
 
 type TaskScreenNavigationProp = StackNavigationProp<RootStackParamList, 'TaskScreen'> & TasksProps;
@@ -141,7 +142,15 @@ const TaskScreen: React.FC<TasksProps> = ({
         });
       }
     };
-    
+
+    const formatDate = (date: Date | null): string => {
+      if (!date) return 'N/A';
+      try {
+        return format(new Date(date), 'yyyy-MM-dd');
+      } catch {
+        return 'Invalid Date';
+      }
+    };
 
   // const handleSubmit = async () => {
   //   try {
@@ -215,7 +224,7 @@ const renderItem = ({ item }: { item: Tasks }) => (
             <Text style={itemStyles.text}><Text style={itemStyles.bold}>Driver: </Text>{item.driver ? item.driver.nom : 'Not assigned'} </Text>
             <Text style={itemStyles.text}><Text style={itemStyles.bold}>Date Creation: </Text>{item.dateheurecreation}</Text>
             <Text style={itemStyles.text}><Text style={itemStyles.bold}>Status:</Text> {item.status}</Text>
-            <Text style={[itemStyles.text, itemStyles.status]}><Text style={[itemStyles.bold, itemStyles.statusData]}>Validite: </Text> {item.cloture ? item.cloture.toString().split('T')[0] : 'N/A'}</Text>
+            <Text style={[itemStyles.text, itemStyles.status]}><Text style={[itemStyles.bold, itemStyles.statusData]}>Validite: </Text> {formatDate(item.cloture)}</Text>
           </View>
         </View>
       </Pressable>

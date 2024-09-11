@@ -27,7 +27,7 @@ public class Tasks {
     @Column(name = "Dateheurecreation",nullable = false)
     private String Dateheurecreation;
 
-    @Column(name = "assigned_at",nullable = false)
+    @Column(name = "assigned_at",nullable = true)
     private String assignedAt;
 
     @Column(name = "started_at",nullable = true)
@@ -52,6 +52,7 @@ public class Tasks {
         this.driver = driver;
         this.status = TaskStatus.IN_PROGRESS;
         this.startedAt = LocalDateTime.now();
+        this.assignedAt = String.valueOf(LocalDateTime.now());
     }
 
     public void completeTask() {

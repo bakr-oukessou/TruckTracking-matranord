@@ -15,9 +15,9 @@ interface AddTaskModalProps {
 const AddTaskModal: React.FC<AddTaskModalProps> = ({ visible, hideModal, onSubmit }) => {
   const [details, setDetails] = useState('');
   const [provider, setProvider] = useState('');
-  const [DateHeureCreation, setDateHeureCreation] = useState('');
-  const [Observation, setObservation] = useState('');
-  const [Cloture, setCloture] = useState('');
+  const [Dateheurecreation, setDateHeureCreation] = useState('');
+  const [observation, setObservation] = useState('');
+  const [cloture, setCloture] = useState('');
   const [status, setStatus] = useState('AVAILABLE');
   const [driverId, setDriverID] = useState('');
   const [started_at, setStarted_at] = useState('');
@@ -63,13 +63,13 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({ visible, hideModal, onSubmi
       const newTask = {
         details,
         provider,
-        Observation,
-        Cloture: new Date(Cloture),
-        DateHeureCreation: new Date(DateHeureCreation),
+        observation,
+        cloture: new Date(cloture),
+        // Dateheurecreation: new Date(Dateheurecreation),
         status,
         started_at,
         completed_at,
-        driverId
+        // driverId
       };
       // Reset form fields
       setDetails('');
@@ -78,7 +78,7 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({ visible, hideModal, onSubmi
       setCloture('');
       setDateHeureCreation('');
       setStatus('AVAILABLE');
-      setDriverID('');
+      // setDriverID('');
 
       onSubmit(newTask);
       hideModal();
@@ -157,29 +157,18 @@ const AddTaskModal: React.FC<AddTaskModalProps> = ({ visible, hideModal, onSubmi
                    style={styles.textinput}
                  />
                  <TextInput
-                   label="Date Heure de creation"
-                   value={DateHeureCreation}
-                   style={styles.textinput}
-                   onFocus={() => showDatePicker('date', 'dateHeureCreation')}
-                 />
-                 <TextInput
                    label="Observation"
-                   value={Observation}
+                   value={observation}
                    style={styles.textinput}
                    onChangeText={setObservation}
                  />
                  <TextInput
                    label="Cloture"
-                   value={Cloture}
+                   value={cloture}
                    style={styles.textinput}
                    onFocus={() => showDatePicker('date', 'cloture')}
                  />
-                 <TextInput
-                   label="Driver"
-                   value={driverId}
-                   style={styles.textinput}
-                   onChangeText={setDriverID}
-                 />
+                
                  <Text style={styles.pickerLabel}>Task Status</Text>
                  <Picker
                    selectedValue={status}

@@ -41,6 +41,7 @@ public class TasksService {
 
             if (task.getStatus() == Tasks.TaskStatus.AVAILABLE) {
                 task.startTask(driver);
+                task.setAssignedAt(String.valueOf(LocalDateTime.now()));
                 return tasksRepository.save(task);
             } else {
                 throw new RuntimeException("Tasks is not available");
@@ -95,7 +96,7 @@ public class TasksService {
 
         // Set task properties
         task.setStatus(Tasks.TaskStatus.AVAILABLE);
-
+        task.setAssignedAt(null);
         // Ensure DateHeureCreation is set
         if (task.getDateHeureCreation() == null) {
             task.setDateHeureCreation(LocalDateTime.now().toString());

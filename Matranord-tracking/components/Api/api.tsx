@@ -204,8 +204,25 @@ export const createTask = async (newTask: Tasks) => {
     console.log('Task created successfully:', response.data);
     return response.data;
   } catch (error) {
-    console.error('Error creating task:', error);
-    throw error;
+    if (axios.isAxiosError(error)) {
+      if (error.response) {
+        // The request was made and the server responded with a status code
+        // that falls out of the range of 2xx
+        console.error('Error creating task:', error.response.data);
+        throw new Error(error.response.data);
+      } else if (error.request) {
+        // The request was made but no response was received
+        console.error('No response received:', error.request);
+        throw new Error('No response received from server');
+      } else {
+        // Something happened in setting up the request that triggered an Error
+        console.error('Error', error.message);
+        throw new Error(error.message);
+      }
+    } else {
+      console.error('Unexpected error:', error);
+      throw new Error('An unexpected error occurred');
+    }
   }
 };
 

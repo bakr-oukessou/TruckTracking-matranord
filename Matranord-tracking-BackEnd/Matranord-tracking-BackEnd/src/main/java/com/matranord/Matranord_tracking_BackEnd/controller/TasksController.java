@@ -67,10 +67,13 @@ public class TasksController {
 //    }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Tasks> getTask(@PathVariable int id) {
+    public ResponseEntity<TaskDTO> getTask(@PathVariable int id) {
         return tasksService.getTasksById(id)
-                .map(task -> new ResponseEntity<>(task, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+                .map(task -> {
+                    TaskDTO taskDTO = tasksService.convertToDTO(task);
+                    return ResponseEntity.ok(taskDTO);
+                })
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping("/driver/{driverCIN}")

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Pressable, ScrollView, Animated, ImageBackground} from 'react-native';
 
 import { RouteProp, useNavigation } from '@react-navigation/native';
@@ -9,10 +9,11 @@ import { Image, SafeAreaView,TouchableOpacity } from 'react-native';
 import { StatusBar } from 'expo-status-bar';
 import * as ImagePicker from 'expo-image-picker';
 import UpdateTaskModal from '../components/UpdateTaskModal';
-import { DeleteTask } from '../components/Api/api';
+import { DeleteTask, getDriverById } from '../components/Api/api';
 import AlertDialog from '../components/AlertDialog';
 import Alert from '../components/Alert';
 import { format } from 'date-fns';
+import { FlashList } from '@shopify/flash-list';
 
 type TaskDetailsRouteProp = RouteProp<RootStackParamList, 'TaskDetails'>;
 type TaskDetailsScreenNavigationProp = StackNavigationProp<RootStackParamList, 'TaskDetails'>;
@@ -22,6 +23,8 @@ const TaskDetails = ({ route }: { route: TaskDetailsRouteProp}) => {
   const { task: initialTask } = route.params;
   const navigation = useNavigation<TaskDetailsScreenNavigationProp>();
   const [task, setTask] = useState<Tasks>(initialTask);
+  const [activeTab, setActiveTab] = useState<'info' | 'driver'>('info');
+  const [relatedDriver, setRelatedDriver] = useState<any | null>(null);
   const [isUpdateModalVisible, setIsUpdateModalVisible] = useState(false);
   const [isAlertVisible, setIsAlertVisible] = useState(false);
   const [Alertmessage, setAlert] = useState({ visible: false,title:'', message: '', type: 'success' as 'success' | 'error' |'warning'|'info'});
@@ -31,6 +34,45 @@ const TaskDetails = ({ route }: { route: TaskDetailsRouteProp}) => {
     setTask(updatedTask);
   };
 
+  useEffect(() => {
+    if (activeTab === 'driver' && task.driver?.id) {
+      fetchRelatedDriver();
+    }
+  }, [activeTab, task.driver?.id]);
+  
+  const fetchRelatedDriver = async () => {
+    if (!task.driver?.id) {
+      setAlert({ visible: true, title: 'Info', message: 'No driver assigned to this task', type: 'info' });
+      return;
+    }
+
+    try {
+      const driver = await getDriverById(task.driver.id);
+      setRelatedDriver(driver);
+    } catch (error) {
+      console.error('Error fetching related Driver:', error);
+      setAlert({ visible: true,title:'Error', message: 'Failed to fetch related Driver', type: 'error' });
+    }
+  };
+
+  const renderDriver = () => {
+    if (!relatedDriver) {
+      return <Text style={styles.emptyText}>No related driver found.</Text>;
+    }
+
+    return (
+      <View style={styles2.detailsContainer}>
+        <DetailItem title="CIN" value={relatedDriver.cin}/>
+        <DetailItem title="Idvehicule" value={relatedDriver.idVehicule} />
+        <DetailItem title="Nom" value={relatedDriver.nom} />
+        <DetailItem title="Email" value={relatedDriver.email} />
+        <DetailItem title="Telephone" value={relatedDriver.mobileNumber} />
+        <DetailItem title="Adresse" value={relatedDriver.adresse} />
+        <DetailItem title="Experience" value={relatedDriver.experience} />
+        <DetailItem title="ValiditePermit" value={relatedDriver.validitePermit} />
+      </View>
+    );
+  };
   const handleDelete = async () => {
     setIsAlertVisible(true);
   };
@@ -75,16 +117,19 @@ const TaskDetails = ({ route }: { route: TaskDetailsRouteProp}) => {
     <ImageBackground source={require('../assets/phoneBackground.jpg')} style={styles.image}>
     <ScrollView contentContainerStyle={styles.container}>
         <View style={styles2.infoContainer}>
-            {/* <Text style={styles.taskName}>{task.details}</Text> */}
+            <Text style={styles.taskName}>{task.details}</Text>
           {/* <Text style={styles2.taskName}>task Details</Text> */}
           <View style={styles2.tabContainer}>
-            <TouchableOpacity style={[styles2.tab, styles2.activeTab]}>
-              <Text style={styles2.activeTabText}>task Info</Text>
+            <TouchableOpacity style={[styles2.tab, activeTab === 'info' && styles2.activeTab]}
+                onPress={() => setActiveTab('info')}>
+              <Text style={activeTab === 'info' ? styles2.activeTabText : styles2.tabText}>task Info</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={styles2.tab}>
-              <Text style={styles2.tabText}>Related Driver</Text>
+            <TouchableOpacity  style={[styles2.tab, activeTab === 'driver' && styles2.activeTab]}
+                onPress={() => setActiveTab('driver')}>
+              <Text style={activeTab === 'driver' ? styles2.activeTabText : styles2.tabText}>Related Driver</Text>
             </TouchableOpacity>
           </View>
+          {activeTab === 'info' ? (
             <View style={styles2.detailsContainer}>
               <DetailItem title="id" value={task.id.toString()} />
               <DetailItem title="details" value={task.details} />
@@ -97,6 +142,13 @@ const TaskDetails = ({ route }: { route: TaskDetailsRouteProp}) => {
               <DetailItem title="CompletedAt" value={formatDate(task.completedAt)} />
               {/* <DetailItem title="Driver" value={task.driver?.nom} /> */}
             </View>
+            ) : (
+              <ScrollView>
+              <View style={styles2.detailsContainer}>
+                {renderDriver()}
+              </View>
+              </ScrollView>
+            )}
         </View>
     <View style={styles.buttons}>
       <TouchableOpacity style={styles2.updateButton} onPress={() => setIsUpdateModalVisible(true)}>
@@ -251,8 +303,15 @@ const styles = StyleSheet.create({
     fontSize: 24,
     // fontWeight: 'bold',
     textAlign: 'center',
+    color: '#83243b',
     fontFamily: 'Poppins-Bold',
     marginBottom: 16,
+  },
+  emptyText: {
+    textAlign: 'center',
+    fontSize: 16,
+    color: '#666',
+    marginTop: 20,
   },
 });
 
@@ -305,6 +364,7 @@ const styles2 = StyleSheet.create({
   taskName: {
     fontSize: 24,
     fontWeight: 'bold',
+    fontFamily:'Poppins-Regular',
     marginBottom: 16,
   },
   tabContainer: {
@@ -349,13 +409,14 @@ const styles2 = StyleSheet.create({
     padding: 16,
     alignItems: 'center',
     width:'100%',
-    marginTop:10,
+    // marginTop:10,
+    bottom:10,
+    position:'absolute'
   },
   updateButtonText: {
     color: 'white',
-    fontWeight: 'bold',
     fontSize: 16,
-    fontFamily:'Poppins-Regular',
+    fontFamily:'Poppins-Bold',
   },
 });
 

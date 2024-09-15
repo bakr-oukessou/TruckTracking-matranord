@@ -1,6 +1,7 @@
 package com.matranord.Matranord_tracking_BackEnd.controller;
 
 import com.matranord.Matranord_tracking_BackEnd.model.Truck;
+import com.matranord.Matranord_tracking_BackEnd.model.User;
 import com.matranord.Matranord_tracking_BackEnd.services.TruckService;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
@@ -15,7 +16,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/trucks")
-public class TruckController {
+public class TruckController extends User {
 
     @Autowired
     private TruckService truckService;

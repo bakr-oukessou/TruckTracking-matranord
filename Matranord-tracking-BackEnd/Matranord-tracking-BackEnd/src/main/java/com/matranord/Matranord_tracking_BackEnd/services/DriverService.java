@@ -60,10 +60,26 @@ public class DriverService {
         Driver driver = driverRepository.findById(driverId)
                 .orElseThrow(() -> new RuntimeException("Driver not found"));
 
-        DriverDTO driverDTO = null; // map driver to DriverDTO
+        DriverDTO driverDTO = new DriverDTO();
+        // Map driver properties to driverDTO
+        driverDTO.setId(driver.getId());
+        driverDTO.setNom(driver.getNom());
+        driverDTO.setCIN(driver.getCIN());
+        driverDTO.setMobileNumber(driver.getMobileNumber());
+        driverDTO.setEmail(driver.getEmail());
+        driverDTO.setExperience(driver.getExperience());
+        driverDTO.setAdresse(driver.getAdresse());
+        driverDTO.setIdVehicule(driver.getIdVehicule());
+        driverDTO.setValiditePermit(driver.getValiditePermit());
+        driverDTO.setProfilePictureBase64(driver.getProfilePicture());
+//        driverDTO.setTasks(driver.getTasks());
+
+
         if (driver.getProfilePicture() != null) {
-            driverDTO.setProfilePictureBase64(Base64.getEncoder().encodeToString(driver.getProfilePicture()));
+            String base64Picture = Base64.getEncoder().encodeToString(driver.getProfilePicture());
+            driverDTO.setProfilePictureBase64(base64Picture.getBytes());
         }
+
         return driverDTO;
     }
 }

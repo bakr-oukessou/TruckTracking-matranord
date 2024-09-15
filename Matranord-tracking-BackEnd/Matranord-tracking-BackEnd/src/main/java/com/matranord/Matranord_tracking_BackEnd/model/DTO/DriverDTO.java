@@ -23,10 +23,10 @@ public class DriverDTO {
     private String experience;
     private List<TaskDTO> tasks ;
 
-    private String profilePictureBase64;
+    private byte[] profilePictureBase64;
 
     public DriverDTO(){}
-    public DriverDTO(String profilePictureBase64, String experience, int idVehicule, Date validitePermit, String email, String adresse, String mobileNumber, String CIN, String nom, int id) {
+    public DriverDTO(byte[] profilePictureBase64, String experience, int idVehicule, Date validitePermit, String email, String adresse, String mobileNumber, String CIN, String nom, int id) {
         this.profilePictureBase64 = profilePictureBase64;
         this.experience = experience;
         IdVehicule = idVehicule;
@@ -39,11 +39,11 @@ public class DriverDTO {
         this.id = id;
     }
 
-    public String getProfilePictureBase64() {
+    public byte[] getProfilePictureBase64() {
         return profilePictureBase64;
     }
 
-    public void setProfilePictureBase64(String profilePictureBase64) {
+    public void setProfilePictureBase64(byte[] profilePictureBase64) {
         this.profilePictureBase64 = profilePictureBase64;
     }
 

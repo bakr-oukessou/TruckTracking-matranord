@@ -49,12 +49,12 @@ public class DriverController {
         return new ResponseEntity<>(createdDriver, HttpStatus.CREATED);
     }
 
-    @GetMapping("/{CIN}")
-    public ResponseEntity<Driver> getDriver(@PathVariable String CIN) {
-        return driverService.getDriverByCIN(CIN)
-                .map(driver -> new ResponseEntity<>(driver, HttpStatus.OK))
-                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
-    }
+//    @GetMapping("/{CIN}")
+//    public ResponseEntity<Driver> getDriver(@PathVariable String CIN) {
+//        return driverService.getDriverByCIN(CIN)
+//                .map(driver -> new ResponseEntity<>(driver, HttpStatus.OK))
+//                .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
+//    }
 
 //    @GetMapping("/{id}")
 //    public Optional<Driver> getDriverById(@PathVariable int id) {
@@ -72,11 +72,6 @@ public class DriverController {
                 .orElseGet(() -> new ResponseEntity<>(HttpStatus.NOT_FOUND));
     }
 
-//    @DeleteMapping("/{CIN}")
-//    public ResponseEntity<Void> deleteDriver(@PathVariable String CIN) {
-//        driverService.deleteDriver(CIN);
-//        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-//    }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteDriver(@PathVariable int id) {
@@ -102,7 +97,11 @@ public class DriverController {
 
     @GetMapping("/{id}")
     public ResponseEntity<DriverDTO> getDriver(@PathVariable int id) {
-        DriverDTO driver = driverService.getDriverWithProfilePicture(id);
-        return ResponseEntity.ok(driver);
+        try {
+            DriverDTO driverDTO = driverService.getDriverWithProfilePicture(id);
+            return ResponseEntity.ok(driverDTO);
+        } catch (RuntimeException e) {
+            return ResponseEntity.notFound().build();
+        }
     }
 }
